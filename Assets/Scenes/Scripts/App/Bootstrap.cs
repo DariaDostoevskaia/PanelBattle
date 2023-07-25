@@ -7,11 +7,12 @@ namespace LegoBattaleRoyal.App
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] private CharacterView _characterView;
+        [SerializeField] private float _moveDuration = 3f;
         private Characters.Controllers.CharacterController _characterController;
 
         private void Start()
         {
-            var characterModel = new CharacterModel(3f);
+            var characterModel = new CharacterModel(_moveDuration);
             _characterController = new Characters.Controllers.CharacterController(characterModel, _characterView);
         }
 

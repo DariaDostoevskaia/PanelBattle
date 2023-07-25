@@ -1,6 +1,4 @@
-﻿using LegoBattaleRoyal.Characters.Controllers;
-
-namespace LegoBattaleRoyal.Characters.Domain
+﻿namespace LegoBattaleRoyal.Characters.Domain
 {
     public class CharacterModel
     {
