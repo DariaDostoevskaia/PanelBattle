@@ -471,8 +471,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbbde2be8e2978c4b96b6fbc31c5427a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterView: {fileID: 0}
-  _moveDuration: 3
+  _characterViewPrefab: {fileID: 7357837026706244094, guid: d655ed2f057ec0441a05a98c52df5e49,
+    type: 3}
+  _characterSO: {fileID: 11400000, guid: 93b417e1bf99e4c44b44373929faf783, type: 2}
 --- !u!1 &1574454136
 GameObject:
   m_ObjectHideFlags: 0

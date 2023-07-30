@@ -1,4 +1,4 @@
-﻿namespace LegoBattaleRoyal.Characters.Domain
+﻿namespace LegoBattaleRoyal.Characters.Models
 {
     public class CharacterModel
     {

@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8212974e5ea96fa44bd255456efc0384, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: ba8b6e792d2ce53469f10c6ddea62040, type: 3}
+  m_Name: CharacterSO
   m_EditorClassIdentifier: 
-  swordName: Player
-  description: Player data
-  icon: {fileID: 0}
-  speed: 0.8
-  jumpHeight: 0.5
+  _moveDuration: 3
