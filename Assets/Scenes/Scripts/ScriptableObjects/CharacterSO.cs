@@ -6,15 +6,10 @@ namespace LegoBattaleRoyal.ScriptableObjects
     public class CharacterSO : ScriptableObject
     {
         [SerializeField] private float _moveDuration = 3f;
+        [SerializeField] private float _jumpHeight = 5f;
 
         public float MoveDuration => _moveDuration;
-        //[SerializeField]
-        //public string JumpHeight
-        //{
-        //    get
-        //    {
-        //        return JumpHeight;
-        //    }
-        //}
+
+        public float JumpHeight => _jumpHeight;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using LegoBattaleRoyal.ScriptableObjects;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.View
@@ -6,7 +7,7 @@ namespace LegoBattaleRoyal.Characters.View
     [RequireComponent(typeof(Rigidbody))]
     public class CharacterView : MonoBehaviour
     {
-        [SerializeField] private int _jumpPower = 3;
+        [SerializeField] private CharacterSO _characterSO;
         private Rigidbody _rigidbody;
         private Tween _move;
 
@@ -33,7 +34,7 @@ namespace LegoBattaleRoyal.Characters.View
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _rigidbody.velocity = new Vector3(0, _jumpPower);
+                _rigidbody.velocity = new Vector3(0, _characterSO.JumpHeight);
             }
         }
     }
