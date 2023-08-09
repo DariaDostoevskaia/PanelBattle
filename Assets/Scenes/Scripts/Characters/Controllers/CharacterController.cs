@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
+using LegoBattaleRoyal.ScriptableObjects;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
@@ -23,7 +24,10 @@ namespace LegoBattaleRoyal.Characters.Controllers
 
         private void MoveCharacter(Vector3 hitPoint)
         {
-            _characterView.MoveTo(hitPoint, _characterModel.MoveDuration);
+            hitPoint.x = _characterModel.MoveDuration;
+            hitPoint.y = _characterModel.JumpHeight;
+
+            _characterView.JumpTo(hitPoint.x, hitPoint.y);
         }
     }
 }

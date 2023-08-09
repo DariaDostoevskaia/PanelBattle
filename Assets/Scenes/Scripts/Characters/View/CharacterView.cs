@@ -1,5 +1,8 @@
 ﻿using DG.Tweening;
+using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.View
@@ -9,33 +12,25 @@ namespace LegoBattaleRoyal.Characters.View
     {
         [SerializeField] private CharacterSO _characterSO;
         private Rigidbody _rigidbody;
-        private Tween _move;
+
+        //private float _positionX;
+        //private float _positionY;
 
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        private void Update()
+        public void JumpTo(float moveDuration, float jumpHeight)
         {
-            JumpTo();
-        }
+            var positionX = moveDuration;
+            var positionY = jumpHeight;
 
-        public void MoveTo(Vector3 point, float moveDuration)
-        {
-            if (_move != null && _move.IsActive())
-                _move.Kill();
+            var moveSpeed = _characterSO.Speed;
 
-            var movePoint = new Vector3(point.x, _rigidbody.position.y, point.z);
-            _move = _rigidbody.DOMove(movePoint, moveDuration);
-        }
+            var mousePosition = Input.mousePosition;
 
-        public void JumpTo()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _rigidbody.velocity = new Vector3(0, _characterSO.JumpHeight);
-            }
+            _rigidbody.velocity = new Vector3(mousePosition.x * moveSpeed, mousePosition.y * positionY, _rigidbody.position.z);
         }
     }
 }

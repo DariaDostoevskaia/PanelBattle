@@ -15,7 +15,7 @@ namespace LegoBattaleRoyal.App
 
         private void Start()
         {
-            var characterModel = new CharacterModel(_characterSO.MoveDuration);
+            var characterModel = new CharacterModel(_characterSO.MoveDuration, _characterSO.JumpHeight, _characterSO.Speed);
 
             var characterView = Instantiate(_characterViewPrefab);
 

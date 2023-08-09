@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: CharacterSO
   m_EditorClassIdentifier: 
   _moveDuration: 3
+  _jumpHeight: 5
+  _speed: 3
