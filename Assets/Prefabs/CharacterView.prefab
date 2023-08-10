@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7357837026706244094}
   m_Layer: 0
   m_Name: CharacterView
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,4 +149,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterSO: {fileID: 11400000, guid: 93b417e1bf99e4c44b44373929faf783, type: 2}
-  _characterView: {fileID: 7357837026706244094}
+  _speed: 1
