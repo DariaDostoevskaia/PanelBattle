@@ -1,11 +1,7 @@
 ﻿using DG.Tweening;
-using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.ScriptableObjects;
-using System;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace LegoBattaleRoyal.Characters.View
 {
@@ -20,6 +16,8 @@ namespace LegoBattaleRoyal.Characters.View
         public float _speed = 1f;
         private float moveDuration;
         private float jumpHeight;
+        private Vector3 point;
+        private Tween _move;
 
         private void Start()
         {
@@ -28,11 +26,18 @@ namespace LegoBattaleRoyal.Characters.View
 
         private void Update()
         {
-            JumpTo(moveDuration, jumpHeight);
+            JumpTo(moveDuration, jumpHeight, point);
         }
 
-        public void JumpTo(float moveDuration, float jumpHeight)
+        public void JumpTo(float moveDuration, float jumpHeight, Vector3 point)
         {
+            if (_move != null && _move.IsActive())
+                _move.Kill();
+            var moveSpeed = _characterSO.Speed;
+
+            var movePoint = new Vector3(point.x, _rigidbody.position.y, point.z);
+            _move = _rigidbody.DOJump(point, jumpHeight, 1, moveDuration);
+
             //var positionX = moveDuration;
             //var positionY = jumpHeight;
 
@@ -57,30 +62,30 @@ namespace LegoBattaleRoyal.Characters.View
             //    }
             //}
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                RaycastHit placeInfo;
-                if (Physics.Raycast(ray, out placeInfo))
-                {
-                    if (placeInfo.collider.CompareTag("Ground"))
-                    {
-                        _targetPosition = new Vector3(placeInfo.point.x, transform.position.y, placeInfo.point.z);
-                        _isMoving = true;
-                    }
-                }
-            }
+            //    RaycastHit placeInfo;
+            //    if (Physics.Raycast(ray, out placeInfo))
+            //    {
+            //        if (placeInfo.collider.CompareTag("Ground"))
+            //        {
+            //            _targetPosition = new Vector3(placeInfo.point.x, transform.position.y, placeInfo.point.z);
+            //            _isMoving = true;
+            //        }
+            //    }
+            //}
 
-            if (_isMoving == true)
-            {
-                transform.LookAt(_targetPosition);
-                transform.Translate(new Vector3(Input.mousePosition.x /** _speed * Time.deltaTime*/, jumpHeight));
-                if (Vector3.Distance(_targetPosition, transform.position) < 0.01)
-                {
-                    _isMoving = false;
-                }
-            }
+            //if (_isMoving == true)
+            //{
+            //    transform.LookAt(_targetPosition);
+            //    transform.Translate(new Vector3(Input.mousePosition.x /** _speed * Time.deltaTime*/, jumpHeight));
+            //    if (Vector3.Distance(_targetPosition, transform.position) < 0.01)
+            //    {
+            //        _isMoving = false;
+            //    }
+            //}
         }
 
         //private Vector3 FindWhereClicked(MouseState ms)

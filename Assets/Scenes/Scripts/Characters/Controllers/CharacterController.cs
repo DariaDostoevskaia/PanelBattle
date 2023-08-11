@@ -27,7 +27,7 @@ namespace LegoBattaleRoyal.Characters.Controllers
             hitPoint.x = _characterModel.MoveDuration;
             hitPoint.y = _characterModel.JumpHeight;
 
-            _characterView.JumpTo(hitPoint.x, hitPoint.y);
+            _characterView.JumpTo(hitPoint.x, hitPoint.y, hitPoint);
         }
     }
 }
