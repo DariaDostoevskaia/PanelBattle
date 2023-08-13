@@ -2,12 +2,13 @@ using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
 {
-    public class CharacterController
+    public class CharacterController : IDisposable
     {
         private readonly CharacterModel _characterModel;
         private readonly CharacterView _characterView;
@@ -26,6 +27,11 @@ namespace LegoBattaleRoyal.Characters.Controllers
         private void MoveCharacter(Vector3 hitPoint)
         {
             _characterView.JumpTo(_characterModel.MoveDuration, _characterModel.JumpHeight, hitPoint);
+        }
+
+        public void Dispose()
+        {
+            _inputService.OnClicked -= MoveCharacter;
         }
     }
 }

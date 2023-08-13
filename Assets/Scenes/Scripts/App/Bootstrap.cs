@@ -12,6 +12,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterSO _characterSO;
 
         private IInputService _inputService;
+        private Characters.Controllers.CharacterController _characterController;
 
         private void Start()
         {
@@ -21,12 +22,17 @@ namespace LegoBattaleRoyal.App
 
             _inputService = new InputService();
 
-            var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, _inputService);
+            _characterController = new Characters.Controllers.CharacterController(characterModel, characterView, _inputService);
         }
 
         private void Update()
         {
             _inputService.Update();
+        }
+
+        private void OnDestroy()
+        {
+            _characterController.Dispose();
         }
     }
 }
