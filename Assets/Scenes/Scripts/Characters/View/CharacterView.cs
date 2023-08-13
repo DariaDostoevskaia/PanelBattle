@@ -1,4 +1,7 @@
 ﻿using DG.Tweening;
+using LegoBattaleRoyal.Characters.Interfaces;
+using LegoBattaleRoyal.ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.View
@@ -14,13 +17,15 @@ namespace LegoBattaleRoyal.Characters.View
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        public void MoveTo(Vector3 point, float moveDuration)
+        public void JumpTo(float moveDuration, float jumpHeight, Vector3 endValue)
         {
             if (_move != null && _move.IsActive())
-                _move.Kill();
+                return;
 
-            var movePoint = new Vector3(point.x, _rigidbody.position.y, point.z);
-            _move = _rigidbody.DOMove(movePoint, moveDuration);
+            _move?.Kill();
+
+            var movePoint = new Vector3(endValue.x, _rigidbody.position.y, endValue.z);
+            _move = _rigidbody.DOJump(movePoint, jumpHeight, 1, moveDuration);
         }
     }
 }

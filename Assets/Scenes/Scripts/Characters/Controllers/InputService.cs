@@ -1,7 +1,6 @@
 ﻿namespace LegoBattaleRoyal.Characters.Controllers
 {
-    public interface IUpdate
+    public class InputService
     {
-        void Update();
     }
 }
