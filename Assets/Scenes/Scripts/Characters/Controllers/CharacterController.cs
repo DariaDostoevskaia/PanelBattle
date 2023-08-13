@@ -2,6 +2,7 @@ using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.ScriptableObjects;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
