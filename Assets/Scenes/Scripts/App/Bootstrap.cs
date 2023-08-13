@@ -28,7 +28,15 @@ namespace LegoBattaleRoyal.App
             _characterController = new Characters.Controllers.CharacterController(characterModel, characterView, _inputService);
 
             var gridFactory = new GridFactory(_panelSettings);
-            gridFactory.CreatePairs(_levelContainer);
+            var pairs = gridFactory.CreatePairs(_levelContainer);
+
+            //panel controller
+            //foreach (var (panelModel, panelView) in pairs)
+            //{
+            //    panelView.OnClicked;
+            //    panelView.transform.position;
+            //    _characterController.MoveCharacter();
+            //}
         }
 
         private void Update()
