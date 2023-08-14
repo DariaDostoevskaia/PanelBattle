@@ -10,7 +10,7 @@ namespace LegoBattaleRoyal.App
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] private CharacterView _characterViewPrefab;
-        [SerializeField] private CharacterSO _characterSO; //создать геймсеттинг с so, переместить grid panel settings so
+        [SerializeField] private CharacterSO _characterSO;
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private Transform _levelContainer;
 
