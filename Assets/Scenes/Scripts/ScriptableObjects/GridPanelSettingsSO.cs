@@ -1,5 +1,3 @@
-using LegoBattaleRoyal.Panels.View;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects

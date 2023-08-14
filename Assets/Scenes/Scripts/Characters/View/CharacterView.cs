@@ -1,6 +1,4 @@
 ﻿using DG.Tweening;
-using LegoBattaleRoyal.Characters.Interfaces;
-using LegoBattaleRoyal.ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
 

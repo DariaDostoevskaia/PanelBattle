@@ -3,7 +3,6 @@ using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.Panels.Controllers
 {
