@@ -2,13 +2,14 @@ using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.Panels.Controllers
 {
     public class GridFactory
     {
+        private readonly GridPanelSettingsSO _gridPanelSettings;
         private readonly PanelSO[] _panelSettings;
 
         public GridFactory(PanelSO[] panelSettings)
@@ -18,8 +19,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            var grid = BlockMatrixGenerator.GenerateGrid(new int[] { 8, 8 }); //создать grid panel settings so
-            var polygon = BlockMatrixGenerator.GeneratePolygon(new float[] { 0, 0 }, new int[] { 8, 8 }, 10f); //перенести все настройки в grid panel settings so
+            var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
+
+            var polygon = BlockMatrixGenerator
+                .GeneratePolygon(_gridPanelSettings.StartedPosition, _gridPanelSettings.Rect, _gridPanelSettings.Spacing);
 
             var pairs = polygon
                 .Select((cell, i) =>

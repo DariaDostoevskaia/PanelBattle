@@ -9,8 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37b539f20b6f61d4291a44e8de775a4f, type: 3}
-  m_Name: PanelSO 1
+  m_Script: {fileID: 11500000, guid: 384e1b6869d2fef42ae5939e30018d03, type: 3}
+  m_Name: YellowGridPanelSettingsSO 2
   m_EditorClassIdentifier: 
-  _panelViewPrefab: {fileID: 2088445532471831807, guid: 5836133e9e7ed20419aa7bc3cad5a82d,
+  _panelViewPrefab: {fileID: 851972335476917206, guid: ad8b49dd0ef7fd04e94c0bd9b09a80fa,
     type: 3}
+  _rect: 0800000008000000
+  _startedPosition:
+  - 0
+  - 0
+  _spacing: 10

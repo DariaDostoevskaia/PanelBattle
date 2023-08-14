@@ -33,9 +33,9 @@ namespace LegoBattaleRoyal.App
             //panel controller
             //foreach (var (panelModel, panelView) in pairs)
             //{
-            //    panelView.OnClicked;
-            //    panelView.transform.position;
-            //    _characterController.MoveCharacter();
+            //panelView.OnClicked;
+            //panelView.transform.position;
+            //_characterController.MoveCharacter();
             //}
         }
 
