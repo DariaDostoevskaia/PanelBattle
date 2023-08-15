@@ -13,7 +13,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public GridFactory(PanelSO[] panelSettings)
         {
-            this._panelSettings = panelSettings;
+            _panelSettings = panelSettings;
         }
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)

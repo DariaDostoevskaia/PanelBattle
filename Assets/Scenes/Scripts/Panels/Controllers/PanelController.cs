@@ -1,14 +1,22 @@
+using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Panels.View;
+using LegoBattaleRoyal.ScriptableObjects;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PanelController : MonoBehaviour
+namespace LegoBattaleRoyal.Panels.Controllers
 {
-    // Start is called before the first frame update
-    private void Start()
+    public class PanelController
     {
-    }
+        private PanelView _panelView;
+        private PanelModel _panelModel;
+        private Vector3 _panelViewPosition;
 
-    // Update is called once per frame
-    private void Update()
-    {
+        public PanelController(PanelModel panelModel, PanelView panelView, Vector3 panelViewPosition)
+        {
+            _panelModel = panelModel;
+            _panelView = panelView;
+            _panelViewPosition = panelViewPosition;
+        }
     }
 }

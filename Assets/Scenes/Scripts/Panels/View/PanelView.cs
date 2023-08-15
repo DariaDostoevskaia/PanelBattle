@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Panels.View
 {
@@ -16,6 +17,8 @@ namespace LegoBattaleRoyal.Panels.View
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            //transform.position = eventData.position;
+            //GetComponent<Image>().color = Color.blue;
             OnClicked?.Invoke(this);
         }
 
@@ -26,6 +29,8 @@ namespace LegoBattaleRoyal.Panels.View
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            //transform.position = eventData.position;
+            //GetComponent<Image>().color = Color.white;
             OnPointerExited?.Invoke(this);
         }
 

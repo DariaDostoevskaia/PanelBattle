@@ -2,8 +2,12 @@ using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Panels.Controllers;
+using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.App
 {
@@ -13,6 +17,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterSO _characterSO;
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private Transform _levelContainer;
+        //[SerializeField] private PanelController _panelController;
 
         private IInputService _inputService;
         private Characters.Controllers.CharacterController _characterController;
@@ -30,13 +35,19 @@ namespace LegoBattaleRoyal.App
             var gridFactory = new GridFactory(_panelSettings);
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
-            //panel controller
-            //foreach (var (panelModel, panelView) in pairs)
-            //{
-            //panelView.OnClicked;
-            //panelView.transform.position;
-            //_characterController.MoveCharacter();
-            //}
+            foreach (var (panelModel, panelView) in pairs)
+            {
+                panelView.OnClicked += GetClick;
+                var panelViewPosition = panelView.transform.position;
+
+                _characterController.MoveCharacter(panelViewPosition);
+
+                //_panelController = new PanelController(panelModel, panelView, panelViewPosition);
+            }
+        }
+
+        private void GetClick(PanelView view)
+        {
         }
 
         private void Update()
