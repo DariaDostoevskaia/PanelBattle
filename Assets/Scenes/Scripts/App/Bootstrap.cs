@@ -48,6 +48,7 @@ namespace LegoBattaleRoyal.App
 
         private void GetClick(PanelView view)
         {
+            //view.OnPointerClick(?);
         }
 
         private void Update()
