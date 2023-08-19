@@ -6,7 +6,9 @@ using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.App
@@ -21,6 +23,8 @@ namespace LegoBattaleRoyal.App
 
         private IInputService _inputService;
         private Characters.Controllers.CharacterController _characterController;
+        private readonly PanelView _panelView;
+        private readonly PointerEventData _pointerEventData;
 
         private void Start()
         {
@@ -35,20 +39,21 @@ namespace LegoBattaleRoyal.App
             var gridFactory = new GridFactory(_panelSettings);
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
+            _panelView.OnClicked += IsClick;
+
             foreach (var (panelModel, panelView) in pairs)
             {
-                panelView.OnClicked += GetClick;
-                var panelViewPosition = panelView.transform.position;
-
-                _characterController.MoveCharacter(panelViewPosition);
-
+                //var pointerEventData = new PointerEventData();
+                panelView.OnPointerClick(_pointerEventData);
                 //_panelController = new PanelController(panelModel, panelView, panelViewPosition);
             }
         }
 
-        private void GetClick(PanelView view)
+        private void IsClick(PanelView view)
         {
-            //view.OnPointerClick(?);
+            view = _panelView;
+            var panelViewPosition = view.transform.position;
+            _characterController.MoveCharacter(panelViewPosition);
         }
 
         private void Update()
@@ -59,6 +64,7 @@ namespace LegoBattaleRoyal.App
         private void OnDestroy()
         {
             _characterController.Dispose();
+            _panelView.OnClicked -= IsClick;
         }
     }
 }

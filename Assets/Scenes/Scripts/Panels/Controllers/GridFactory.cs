@@ -8,7 +8,6 @@ namespace LegoBattaleRoyal.Panels.Controllers
 {
     public class GridFactory
     {
-        private readonly GridPanelSettingsSO _gridPanelSettings;
         private readonly PanelSO[] _panelSettings;
 
         public GridFactory(PanelSO[] panelSettings)
@@ -18,10 +17,14 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
+            var gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+            var grid = BlockMatrixGenerator
+                .GenerateGrid(gridPanelSettings.Rect);
 
             var polygon = BlockMatrixGenerator
-                .GeneratePolygon(_gridPanelSettings.StartedPosition, _gridPanelSettings.Rect, _gridPanelSettings.Spacing);
+                .GeneratePolygon(gridPanelSettings.StartedPosition,
+                gridPanelSettings.Rect,
+                gridPanelSettings.Spacing);
 
             var pairs = polygon
                 .Select((cell, i) =>
