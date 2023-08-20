@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Panels.View
 {
@@ -17,20 +16,19 @@ namespace LegoBattaleRoyal.Panels.View
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            //transform.position = eventData.position;
-            //GetComponent<Image>().color = Color.blue;
             OnClicked?.Invoke(this);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            //добавить методы для изменения view
+            //контроллер меняет вью, его изменения
+            //у вью получить компонент меш рендер, и поменять ему материал
             OnEntered?.Invoke(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            //transform.position = eventData.position;
-            //GetComponent<Image>().color = Color.white;
             OnPointerExited?.Invoke(this);
         }
 

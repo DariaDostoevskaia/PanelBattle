@@ -1,70 +1,54 @@
-using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Panels.Controllers;
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.App
 {
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] private CharacterView _characterViewPrefab;
-        [SerializeField] private CharacterSO _characterSO;
-        [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private Transform _levelContainer;
-        //[SerializeField] private PanelController _panelController;
+        [SerializeField] private GameSettingsSO _gameSettingsSO;
 
-        private IInputService _inputService;
         private Characters.Controllers.CharacterController _characterController;
-        private readonly PanelView _panelView;
-        private readonly PointerEventData _pointerEventData;
+
+        private event Action OnDisposed;
 
         private void Start()
         {
-            var characterModel = new CharacterModel(_characterSO.MoveDuration, _characterSO.JumpHeight, _characterSO.Speed);
+            var characterSO = _gameSettingsSO.CharacterSO;
+
+            var characterModel = new CharacterModel(characterSO.MoveDuration, characterSO.JumpHeight, characterSO.Speed);
 
             var characterView = Instantiate(_characterViewPrefab);
 
-            _inputService = new InputService();
+            _characterController = new Characters.Controllers.CharacterController(characterModel, characterView);
 
-            _characterController = new Characters.Controllers.CharacterController(characterModel, characterView, _inputService);
-
-            var gridFactory = new GridFactory(_panelSettings);
+            var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
-            _panelView.OnClicked += IsClick;
+            var panelController = new PanelController(pairs);
+            panelController.OnMoveSelected += _characterController.MoveCharacter;
 
-            foreach (var (panelModel, panelView) in pairs)
+            var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock
+            && pair.panelModel.IsAvailable);
+            availablePair.panelModel.BuildBase();
+            _characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
+
+            OnDisposed += () =>
             {
-                //var pointerEventData = new PointerEventData();
-                panelView.OnPointerClick(_pointerEventData);
-                //_panelController = new PanelController(panelModel, panelView, panelViewPosition);
-            }
-        }
-
-        private void IsClick(PanelView view)
-        {
-            view = _panelView;
-            var panelViewPosition = view.transform.position;
-            _characterController.MoveCharacter(panelViewPosition);
-        }
-
-        private void Update()
-        {
-            _inputService.Update();
+                panelController.OnMoveSelected -= _characterController.MoveCharacter;
+            };
         }
 
         private void OnDestroy()
         {
-            _characterController.Dispose();
-            _panelView.OnClicked -= IsClick;
+            OnDisposed?.Invoke();
+            OnDisposed = null;
         }
     }
 }

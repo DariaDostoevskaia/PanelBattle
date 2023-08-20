@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 384e1b6869d2fef42ae5939e30018d03, type: 3}
-  m_Name: YellowGridPanelSettingsSO 2
+  m_Name: GridPanelSettingsSO
   m_EditorClassIdentifier: 
-  _panelViewPrefab: {fileID: 851972335476917206, guid: ad8b49dd0ef7fd04e94c0bd9b09a80fa,
+  _panelViewPrefab: {fileID: 7659229185233088805, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
     type: 3}
   _rect: 0800000008000000
   _startedPosition:

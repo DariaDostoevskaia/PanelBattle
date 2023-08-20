@@ -1,22 +1,46 @@
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
-using LegoBattaleRoyal.ScriptableObjects;
+using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.Panels.Controllers
 {
-    public class PanelController
+    public class PanelController : IDisposable
     {
-        private PanelView _panelView;
-        private PanelModel _panelModel;
-        private Vector3 _panelViewPosition;
+        public event Action<Vector3> OnMoveSelected;
 
-        public PanelController(PanelModel panelModel, PanelView panelView, Vector3 panelViewPosition)
+        private (PanelModel panelModel, PanelView panelView)[] _pairs;
+
+        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs)
         {
-            _panelModel = panelModel;
-            _panelView = panelView;
-            _panelViewPosition = panelViewPosition;
+            _pairs = pairs;
+
+            foreach (var (panelModel, panelView) in pairs)
+            {
+                panelView.OnClicked += OnPanelClicked;
+            }
+        }
+
+        private void OnPanelClicked(PanelView view)
+        {
+            var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
+
+            if (!panelModel.IsJumpBlock
+                || !panelModel.IsAvailable)
+                return;
+
+            var panelViewPosition = view.transform.position;
+            OnMoveSelected?.Invoke(panelViewPosition);
+        }
+
+        public void Dispose()
+        {
+            foreach (var (panelModel, panelView) in _pairs)
+            {
+                panelView.OnClicked -= OnPanelClicked;
+            }
+            OnMoveSelected = null;
         }
     }
 }

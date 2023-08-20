@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 384e1b6869d2fef42ae5939e30018d03, type: 3}
-  m_Name: GreenGridPanelSettingsSO
+  m_Script: {fileID: 11500000, guid: 37b539f20b6f61d4291a44e8de775a4f, type: 3}
+  m_Name: DecorationPanelSO
   m_EditorClassIdentifier: 
-  _panelViewPrefab: {fileID: 7659229185233088805, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+  _panelViewPrefab: {fileID: 5142802704071248584, guid: 9d781690ee3cddc49a186b8bd3bb255e,
     type: 3}
-  _rect: 0800000008000000
-  _startedPosition:
-  - 0
-  - 0
-  _spacing: 10
+  _isJumpBlock: 0

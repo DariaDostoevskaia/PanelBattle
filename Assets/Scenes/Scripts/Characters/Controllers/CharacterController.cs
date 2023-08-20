@@ -6,20 +6,16 @@ using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
 {
-    public class CharacterController : IDisposable
+    public class CharacterController
     {
         private readonly CharacterModel _characterModel;
         private readonly CharacterView _characterView;
-        private readonly IInputService _inputService;
 
         public CharacterController(CharacterModel characterModel,
-            CharacterView characterView,
-            IInputService inputService)
+            CharacterView characterView)
         {
             _characterModel = characterModel;
             _characterView = characterView;
-            _inputService = inputService;
-            _inputService.OnClicked += MoveCharacter;
         }
 
         public void MoveCharacter(Vector3 hitPoint)
@@ -27,9 +23,9 @@ namespace LegoBattaleRoyal.Characters.Controllers
             _characterView.JumpTo(_characterModel.MoveDuration, _characterModel.JumpHeight, hitPoint);
         }
 
-        public void Dispose()
+        public void ForceMoveCharacter(Vector3 position)
         {
-            _inputService.OnClicked -= MoveCharacter;
+            _characterView.SetPosition(position);
         }
     }
 }

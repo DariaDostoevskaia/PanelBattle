@@ -44,7 +44,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             var panelSetting = _panelSettings[random];
 
-            var panelModel = new PanelModel();
+            var panelModel = new PanelModel(panelSetting.IsJumpBlock);
 
             panelModel.SetAvailable();
 
