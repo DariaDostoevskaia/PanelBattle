@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
-using LegoBattaleRoyal.Characters.Interfaces;
-using LegoBattaleRoyal.ScriptableObjects;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +8,7 @@ namespace LegoBattaleRoyal.Characters.View
     [RequireComponent(typeof(Rigidbody))]
     public class CharacterView : MonoBehaviour
     {
+        private static readonly float MinimumPositionY = 1f;
         private Rigidbody _rigidbody;
         private Tween _move;
 
@@ -24,8 +24,13 @@ namespace LegoBattaleRoyal.Characters.View
 
             _move?.Kill();
 
-            var movePoint = new Vector3(endValue.x, _rigidbody.position.y, endValue.z);
+            var movePoint = new Vector3(endValue.x, MinimumPositionY, endValue.z);
             _move = _rigidbody.DOJump(movePoint, jumpHeight, 1, moveDuration);
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            transform.position = new Vector3(position.x, MinimumPositionY, position.z);
         }
     }
 }

@@ -1,37 +1,31 @@
 using LegoBattaleRoyal.Characters.Interfaces;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
-using LegoBattaleRoyal.ScriptableObjects;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
 {
-    public class CharacterController : IDisposable
+    public class CharacterController
     {
         private readonly CharacterModel _characterModel;
         private readonly CharacterView _characterView;
-        private readonly IInputService _inputService;
 
         public CharacterController(CharacterModel characterModel,
-            CharacterView characterView,
-            IInputService inputService)
+            CharacterView characterView)
         {
             _characterModel = characterModel;
             _characterView = characterView;
-            _inputService = inputService;
-            _inputService.OnClicked += MoveCharacter;
         }
 
-        private void MoveCharacter(Vector3 hitPoint)
+        public void MoveCharacter(Vector3 hitPoint)
         {
             _characterView.JumpTo(_characterModel.MoveDuration, _characterModel.JumpHeight, hitPoint);
         }
 
-        public void Dispose()
+        public void ForceMoveCharacter(Vector3 position)
         {
-            _inputService.OnClicked -= MoveCharacter;
+            _characterView.SetPosition(position);
         }
     }
 }

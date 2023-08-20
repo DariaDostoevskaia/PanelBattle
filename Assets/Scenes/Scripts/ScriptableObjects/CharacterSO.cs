@@ -5,9 +5,9 @@ namespace LegoBattaleRoyal.ScriptableObjects
     [CreateAssetMenu(fileName = nameof(CharacterSO), menuName = "Config/Character SO")]
     public class CharacterSO : ScriptableObject
     {
-        [SerializeField] private float _moveDuration = 3f;
+        [SerializeField] private float _moveDuration = 0.5f;
         [SerializeField] private float _jumpHeight = 5f;
-        [SerializeField] private float _speed = 7f;
+        [SerializeField] private float _speed = 3f;
 
         public float MoveDuration => _moveDuration;
 
