@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 1160906271520517804, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Name
-      value: YellowPanelView Variant
+      value: YellowPanelView
       objectReference: {fileID: 0}
     - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
@@ -65,9 +65,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8596067461244923263, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596067461244923263, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 20a3cb12f8bf9a64bae2650ec5310505, type: 2}
+      objectReference: {fileID: 2100000, guid: db08d137650e872468dddb5e9c872057, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
