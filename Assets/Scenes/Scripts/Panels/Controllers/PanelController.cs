@@ -10,7 +10,12 @@ namespace LegoBattaleRoyal.Panels.Controllers
     {
         public event Action<Vector3> OnMoveSelected;
 
+        public event Action<Vector3, Material> OnHoverSelected;
+
+        public event Action<Vector3, Material> UnSelected;
+
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
+        private MeshRenderer _meshRenderer;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs)
         {
@@ -19,6 +24,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
             foreach (var (panelModel, panelView) in pairs)
             {
                 panelView.OnClicked += OnPanelClicked;
+                panelView.OnEntered += OnPanelHover;
+                panelView.OnDestoyed += OnPanelExit;
             }
         }
 
@@ -34,13 +41,44 @@ namespace LegoBattaleRoyal.Panels.Controllers
             OnMoveSelected?.Invoke(panelViewPosition);
         }
 
+        private void OnPanelHover(PanelView view)
+        {
+            var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
+            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
+
+            var panelViewPosition = panelView.transform.position;
+
+            if (!panelModel.IsJumpBlock
+                || !panelModel.IsAvailable)
+            {
+                _meshRenderer.material.color = Color.red;
+            }
+            else
+            {
+                _meshRenderer.material.color = Color.green;
+            }
+
+            OnHoverSelected?.Invoke(panelViewPosition, _meshRenderer.material);
+        }
+
+        private void OnPanelExit(PanelView view)
+        {
+            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
+            var panelViewPosition = panelView.transform.position;
+            UnSelected?.Invoke(panelViewPosition, _meshRenderer.material);
+        }
+
         public void Dispose()
         {
             foreach (var (panelModel, panelView) in _pairs)
             {
                 panelView.OnClicked -= OnPanelClicked;
+                panelView.OnEntered -= OnPanelHover;
+                panelView.OnDestoyed -= OnPanelExit;
             }
             OnMoveSelected = null;
+            OnHoverSelected = null;
+            UnSelected = null;
         }
     }
 }

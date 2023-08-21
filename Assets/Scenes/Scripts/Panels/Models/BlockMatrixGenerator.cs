@@ -33,8 +33,6 @@ namespace LegoBattaleRoyal.Panels.Models
 
             for (int col = 0; col < width; col++)
             {
-                //проверить на правильность  - +
-                // позиции должны быть от 0 до бесконечности - не в минус
                 var z = startedZ + (col * (1 + spacing));
                 for (int row = 0; row < height; row++)
                 {
