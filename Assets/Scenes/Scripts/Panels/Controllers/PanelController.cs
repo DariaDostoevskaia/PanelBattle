@@ -10,9 +10,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
     {
         public event Action<Vector3> OnMoveSelected;
 
-        public event Action<Vector3, Material> OnHoverSelected;
+        public event Action<Material> OnHoverSelected;
 
-        public event Action<Vector3, Material> UnSelected;
+        public event Action<Material> UnSelected;
 
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
         private MeshRenderer _meshRenderer;
@@ -44,28 +44,28 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private void OnPanelHover(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
-            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
+            //var panelView = _pairs.First(pair => pair.panelView == view).panelView;
 
-            var panelViewPosition = panelView.transform.position;
+            //var panelViewPosition = panelView.transform.position;
 
             if (!panelModel.IsJumpBlock
                 || !panelModel.IsAvailable)
-            {
                 _meshRenderer.material.color = Color.red;
-            }
+            //{
+            //}
             else
-            {
                 _meshRenderer.material.color = Color.green;
-            }
-
-            OnHoverSelected?.Invoke(panelViewPosition, _meshRenderer.material);
+            //{
+            //    var materialColor = _meshRenderer.material.color = Color.green;
+            //}
+            OnHoverSelected?.Invoke(_meshRenderer.material);
         }
 
         private void OnPanelExit(PanelView view)
         {
-            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
-            var panelViewPosition = panelView.transform.position;
-            UnSelected?.Invoke(panelViewPosition, _meshRenderer.material);
+            //var panelView = _pairs.First(pair => pair.panelView == view).panelView;
+            //var panelViewPosition = panelView.transform.position;
+            UnSelected?.Invoke(_meshRenderer.material);
         }
 
         public void Dispose()
