@@ -55,15 +55,14 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelViewPosition = view.transform.position;
             var color = _renderer.material.color;
 
-            if (!panelModel.IsJumpBlock)
-            {
-                color = _startRenderer.material.color;
-            }
-
             if (!panelModel.IsAvailable)
             {
                 color = _renderer.material.color;
                 color = Color.red;
+            }
+            if (!panelModel.IsJumpBlock)
+            {
+                color = _startRenderer.material.color;
             }
             else
             {

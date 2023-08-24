@@ -46,6 +46,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 panelController.OnMoveSelected -= _characterController.MoveCharacter;
+                panelController.Dispose();
             };
         }
 
