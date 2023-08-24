@@ -1,8 +1,11 @@
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace LegoBattaleRoyal.Panels.Controllers
 {
@@ -40,16 +43,24 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent)
         {
-            var random = Random.Range(0, _panelSettings.Length);
+            var lenght = _panelSettings.Length;
+            var notJumpNumber = lenght;
+            notJumpNumber = lenght * 30 / 100;
 
-            var panelSetting = _panelSettings[random];
+            var random = Random.Range(0, lenght);
+
+            var panelSettings = _panelSettings;
+            var panelSetting = panelSettings[random - notJumpNumber];
+            var panelSettingNotJump = panelSettings[notJumpNumber];
 
             var panelModel = new PanelModel(panelSetting.IsJumpBlock);
-
             panelModel.SetAvailable();
 
+            var panelModelNotJump = new PanelModel(panelSettingNotJump.IsJumpBlock);
+            panelModelNotJump.SetUnavailable();
+
             var panelView = Object
-                .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]), Quaternion.identity, parent);
+                .Instantiate(panelSettings[lenght].PanelView, new Vector3(cell[0], parent.position.y, cell[1]), Quaternion.identity, parent);
 
             return (panelModel, panelView);
         }
