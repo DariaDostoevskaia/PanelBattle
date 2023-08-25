@@ -1,7 +1,6 @@
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
-using System;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -44,23 +43,35 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent)
         {
             var lenght = _panelSettings.Length;
-            var notJumpNumber = lenght;
-            notJumpNumber = lenght * 30 / 100;
+            var notJumpCountPairs = lenght * 30 / 100;
 
-            var random = Random.Range(0, lenght);
+            var randomIsJump = Random.Range(0, lenght - notJumpCountPairs);
+            var randomNotJump = Random.Range(0, notJumpCountPairs);
 
-            var panelSettings = _panelSettings;
-            var panelSetting = panelSettings[random - notJumpNumber];
-            var panelSettingNotJump = panelSettings[notJumpNumber];
+            var panelSetting = _panelSettings[lenght];
+
+            var panelSettingIsJump = _panelSettings[randomIsJump];
+            var panelSettingNotJump = _panelSettings[randomNotJump];
 
             var panelModel = new PanelModel(panelSetting.IsJumpBlock);
-            panelModel.SetAvailable();
 
+            var panelModelIsJump = new PanelModel(panelSettingIsJump.IsJumpBlock);
             var panelModelNotJump = new PanelModel(panelSettingNotJump.IsJumpBlock);
+
+            panelModelIsJump.SetAvailable();
             panelModelNotJump.SetUnavailable();
 
+            //var panelViewIsJump = Object
+            //    .Instantiate(panelSettingIsJump.PanelView,
+            //    new Vector3(cell[0], parent.position.y, cell[1]),
+            //    Quaternion.identity, parent);
+
+            //var panelViewNotJump = Object
+            //    .Instantiate(panelSettingNotJump.PanelView,
+            //    new Vector3(cell[0], parent.position.y, cell[1]),
+            //    Quaternion.identity, parent);
             var panelView = Object
-                .Instantiate(panelSettings[lenght].PanelView, new Vector3(cell[0], parent.position.y, cell[1]), Quaternion.identity, parent);
+               .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]), Quaternion.identity, parent);
 
             return (panelModel, panelView);
         }
