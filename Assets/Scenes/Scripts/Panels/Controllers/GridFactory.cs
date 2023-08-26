@@ -3,6 +3,7 @@ using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
+        private int _count = 0;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -36,6 +38,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
                     return pair;
                 })
                 .ToArray();
+
+            //_count = pairs.Length * 30 / 100;
+            //var random = Random.Range(0, _count);
 
             return pairs;
         }
