@@ -31,8 +31,14 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
 
             if (!panelModel.IsJumpBlock
-                || !panelModel.IsAvailable)
+                || !panelModel.IsAvailable
+                || panelModel.IsVisiting)
                 return;
+
+            var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting).panelModel;
+            oldPanel.Remove();
+
+            panelModel.Add();
 
             var panelViewPosition = view.transform.position;
             OnMoveSelected?.Invoke(panelViewPosition);
@@ -41,6 +47,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private void OnPanelHover(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
+
+            if (!panelModel.IsJumpBlock
+                || panelModel.IsVisiting)
+                return;
 
             if (!panelModel.IsAvailable)
             {
