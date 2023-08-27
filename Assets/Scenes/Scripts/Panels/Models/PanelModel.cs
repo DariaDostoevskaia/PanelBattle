@@ -1,3 +1,5 @@
+using System;
+
 namespace LegoBattaleRoyal.Panels.Models
 {
     public class PanelModel

@@ -3,12 +3,16 @@ using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace LegoBattaleRoyal.Panels.Controllers
 {
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
+        private int _count = 0;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -35,23 +39,50 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 })
                 .ToArray();
 
+            //_count = pairs.Length * 30 / 100;
+            //var random = Random.Range(0, _count);
+
             return pairs;
         }
 
         private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent)
         {
-            var random = Random.Range(0, _panelSettings.Length);
+            //var lenght = _panelSettings.Length;
+            //var notJumpCountPairs = lenght * 30 / 100;
 
-            var panelSetting = _panelSettings[random];
+            //var randomNotJump = Random.Range(0, notJumpCountPairs);
 
-            var panelModel = new PanelModel(panelSetting.IsJumpBlock);
+            var panelSettings = _panelSettings.Length;
 
-            panelModel.SetAvailable();
+            var randomIsJump = Random.Range(0, panelSettings);
+
+            var panelSettingIsJump = _panelSettings[randomIsJump];
+            //var panelSettingNotJump = _panelSettings[randomNotJump];
+
+            //var panelModel = new PanelModel(panelSetting.IsJumpBlock);
+
+            var panelModelIsJump = new PanelModel(panelSettingIsJump.IsJumpBlock);
+
+            panelModelIsJump.SetAvailable();
+            //panelModelNotJump.SetUnavailable();
+
+            //var panelViewIsJump = Object
+            //    .Instantiate(panelSettingIsJump.PanelView,
+            //    new Vector3(cell[0], parent.position.y, cell[1]),
+            //    Quaternion.identity, parent);
+
+            //var panelViewNotJump = Object
+            //    .Instantiate(panelSettingNotJump.PanelView,
+            //    new Vector3(cell[0], parent.position.y, cell[1]),
+            //    Quaternion.identity, parent);
 
             var panelView = Object
-                .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]), Quaternion.identity, parent);
+               .Instantiate(panelSettingIsJump.PanelView,
+               new Vector3(cell[0], parent.position.y, cell[1]),
+               Quaternion.identity,
+               parent);
 
-            return (panelModel, panelView);
+            return (panelModelIsJump, panelView);
         }
     }
 }
