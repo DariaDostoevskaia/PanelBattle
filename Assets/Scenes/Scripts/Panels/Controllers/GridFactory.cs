@@ -49,8 +49,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             var panelModel = new PanelModel(panelSetting.IsJumpBlock);
 
-            var availableRandom = Random.Range(0, 100);
-            if (availableRandom > 30 && panelModel.IsJumpBlock)
+            //var availableRandom = Random.Range(0, 100);
+            if (/*availableRandom > 30 &&*/ panelModel.IsJumpBlock)
                 panelModel.SetAvailable();
 
             var panelView = Object
