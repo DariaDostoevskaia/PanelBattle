@@ -11,8 +11,13 @@ PrefabInstance:
     - target: {fileID: 1160906271520517804, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Name
-      value: RedPanelView
+      value: PinkPanelView
       objectReference: {fileID: 0}
+    - target: {fileID: 3903757432914331625, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 734fd4ccd287fdf48820a836a885b675, type: 2}
     - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -14,6 +14,39 @@ namespace LegoBattaleRoyal.Panels.View
 
         public event Action<PanelView> OnDestoyed;
 
+        [SerializeField] private MeshRenderer _hoverRenderer;
+        private MeshRenderer _renderer;
+
+        private Color _defaultColor;
+
+        private void Start()
+        {
+            _renderer = GetComponent<MeshRenderer>();
+            _defaultColor = _renderer.material.color;
+            CancelHighlight();
+        }
+
+        public void SetColor(Color color)
+        {
+            _renderer.material.color = color;
+        }
+
+        public void ResetColor()
+        {
+            _renderer.material.color = _defaultColor;
+        }
+
+        public void Highlight(Color color)
+        {
+            _hoverRenderer.material.color = color;
+            _hoverRenderer.gameObject.SetActive(true);
+        }
+
+        public void CancelHighlight()
+        {
+            _hoverRenderer.gameObject.SetActive(false);
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
             OnClicked?.Invoke(this);
@@ -21,9 +54,6 @@ namespace LegoBattaleRoyal.Panels.View
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //добавить методы для изменения view
-            //контроллер меняет вью, его изменения
-            //у вью получить компонент меш рендер, и поменять ему материал
             OnEntered?.Invoke(this);
         }
 

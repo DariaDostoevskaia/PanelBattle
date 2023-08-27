@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b539f20b6f61d4291a44e8de775a4f, type: 3}
   m_Name: DecorationPanelSO
   m_EditorClassIdentifier: 
-  _panelViewPrefab: {fileID: 5142802704071248584, guid: 9d781690ee3cddc49a186b8bd3bb255e,
+  _panelViewPrefab: {fileID: 6972140526573049849, guid: 9d781690ee3cddc49a186b8bd3bb255e,
     type: 3}
   _isJumpBlock: 0

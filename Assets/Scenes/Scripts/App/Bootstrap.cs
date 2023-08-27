@@ -29,19 +29,24 @@ namespace LegoBattaleRoyal.App
             _characterController = new Characters.Controllers.CharacterController(characterModel, characterView);
 
             var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
+
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             var panelController = new PanelController(pairs);
+
             panelController.OnMoveSelected += _characterController.MoveCharacter;
 
             var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock
             && pair.panelModel.IsAvailable);
+
             availablePair.panelModel.BuildBase();
+
             _characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
 
             OnDisposed += () =>
             {
                 panelController.OnMoveSelected -= _characterController.MoveCharacter;
+                panelController.Dispose();
             };
         }
 
