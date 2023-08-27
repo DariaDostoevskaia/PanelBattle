@@ -12,13 +12,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
     {
         public event Action<Vector3> OnMoveSelected;
 
-        public event Action<Vector3, Color> OnHoverSelected;
-
-        public event Action<Vector3, Color> UnSelected;
-
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
-        private MeshRenderer _renderer;
-        private MeshRenderer _startRenderer;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs)
         {
@@ -28,7 +22,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
             {
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
-                panelView.OnDestoyed += OnPanelExit;
+                panelView.OnPointerExited += OnPanelExit;
             }
         }
 
@@ -47,41 +41,20 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private void OnPanelHover(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
-            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
-
-            _renderer = panelView.GetComponent<MeshRenderer>();
-            _startRenderer = panelView.GetComponent<MeshRenderer>();
-
-            var panelViewPosition = view.transform.position;
-            var color = _renderer.material.color;
 
             if (!panelModel.IsAvailable)
             {
-                color = _renderer.material.color;
-                color = Color.red;
-            }
-            if (!panelModel.IsJumpBlock)
-            {
-                color = _startRenderer.material.color;
+                view.Highlight(Color.red);
             }
             else
             {
-                color = _renderer.material.color;
-                color = Color.green;
+                view.Highlight(Color.green);
             }
-            OnHoverSelected?.Invoke(panelViewPosition, color);
         }
 
         private void OnPanelExit(PanelView view)
         {
-            var panelView = _pairs.First(pair => pair.panelView == view).panelView;
-            _startRenderer = panelView.GetComponent<MeshRenderer>();
-
-            var startColor = _startRenderer.material.color;
-
-            var panelViewPosition = view.transform.position;
-
-            UnSelected?.Invoke(panelViewPosition, startColor);
+            view.CancelHighlight();
         }
 
         public void Dispose()
@@ -90,11 +63,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
             {
                 panelView.OnClicked -= OnPanelClicked;
                 panelView.OnEntered -= OnPanelHover;
-                panelView.OnDestoyed -= OnPanelExit;
+                panelView.OnPointerExited -= OnPanelExit;
             }
             OnMoveSelected = null;
-            OnHoverSelected = null;
-            UnSelected = null;
         }
     }
 }
