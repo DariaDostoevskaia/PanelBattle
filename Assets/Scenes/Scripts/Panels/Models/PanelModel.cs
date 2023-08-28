@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
@@ -7,9 +6,12 @@ namespace LegoBattaleRoyal.Panels.Models
     {
         private readonly State _state;
 
+        public int[] GridPosition { get; private set; }
+
         public bool IsJumpBlock { get; }
 
         public bool IsAvailable => _state.IsAvailable;
+
         public bool IsVisiting => _state.IsVisiting;
 
         public PanelModel(bool isJumpBlock)
@@ -22,6 +24,11 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             Add();
             _state.BuildBase();
+        }
+
+        public void GetGridPosition(int[] gridPosition)
+        {
+            GridPosition = gridPosition;
         }
 
         public void SetAvailable()

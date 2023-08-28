@@ -12,6 +12,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
+        private PanelModel _panelModel;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -21,11 +22,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
             var gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
-            var grid = BlockMatrixGenerator
-                .GenerateGrid(gridPanelSettings.Rect);
+            var grid = BlockMatrixGenerator.GenerateGrid(gridPanelSettings.Rect);
 
-            var polygon = BlockMatrixGenerator
-                .GeneratePolygon(gridPanelSettings.StartedPosition,
+            var polygon = BlockMatrixGenerator.GeneratePolygon(gridPanelSettings.StartedPosition,
                 gridPanelSettings.Rect,
                 gridPanelSettings.Spacing);
 
@@ -33,6 +32,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
+                    _panelModel.GetGridPosition(gridCell);
+
                     var pair = CreatePair(cell, parent);
                     return pair;
                 })
@@ -47,11 +48,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var random = Random.Range(0, lenght);
             var panelSetting = _panelSettings[random];
 
-            var panelModel = new PanelModel(panelSetting.IsJumpBlock);
+            _panelModel = new PanelModel(panelSetting.IsJumpBlock);
 
-            //var availableRandom = Random.Range(0, 100);
-            if (/*availableRandom > 30 &&*/ panelModel.IsJumpBlock)
-                panelModel.SetAvailable();
+            if (_panelModel.IsJumpBlock)
+                _panelModel.SetAvailable();
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,
@@ -59,7 +59,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
                Quaternion.identity,
                parent);
 
-            return (panelModel, panelView);
+            return (_panelModel, panelView);
         }
     }
 }

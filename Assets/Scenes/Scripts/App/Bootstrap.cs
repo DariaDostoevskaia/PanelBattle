@@ -21,8 +21,7 @@ namespace LegoBattaleRoyal.App
         private void Start()
         {
             var characterSO = _gameSettingsSO.CharacterSO;
-
-            var characterModel = new CharacterModel(characterSO.MoveDuration, characterSO.JumpHeight, characterSO.Speed);
+            var characterModel = new CharacterModel(characterSO.MoveDuration, characterSO.JumpHeight);
 
             var characterView = Instantiate(_characterViewPrefab);
 
@@ -33,7 +32,6 @@ namespace LegoBattaleRoyal.App
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             var panelController = new PanelController(pairs);
-
             panelController.OnMoveSelected += _characterController.MoveCharacter;
 
             var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock

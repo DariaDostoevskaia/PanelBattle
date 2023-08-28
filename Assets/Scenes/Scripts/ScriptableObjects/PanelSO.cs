@@ -8,9 +8,12 @@ namespace LegoBattaleRoyal.ScriptableObjects
     {
         [SerializeField] private PanelView _panelViewPrefab;
         [SerializeField] private bool _isJumpBlock = true;
+        [SerializeField] private int _jumpLenght = 1;
 
         public PanelView PanelView => _panelViewPrefab;
 
         public bool IsJumpBlock => _isJumpBlock;
+
+        public int JumpLenght => _jumpLenght;
     }
 }
