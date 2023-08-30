@@ -26,9 +26,10 @@ namespace LegoBattaleRoyal.Panels.Models
             _state.BuildBase();
         }
 
-        public void GetGridPosition(int[] gridPosition)
+        public int[] GetGridPosition(int[] gridPosition)
         {
             GridPosition = gridPosition;
+            return gridPosition;
         }
 
         public void SetAvailable()

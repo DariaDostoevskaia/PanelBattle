@@ -32,7 +32,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
-                    _panelModel.GetGridPosition(gridCell);
+
+                    //var position = _panelModel.GetGridPosition(gridCell);
+                    //position = _panelModel.GridPosition;
 
                     var pair = CreatePair(cell, parent);
                     return pair;

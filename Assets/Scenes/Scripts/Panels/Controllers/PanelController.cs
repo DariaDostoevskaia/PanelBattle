@@ -34,7 +34,11 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 || !panelModel.IsAvailable
                 || panelModel.IsVisiting)
                 return;
+            //var x = view.transform.position.x;
 
+            //var position = panelModel.GetGridPosition()
+            //if (panelModel.GetGridPosition() == position)
+            //{ }
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting).panelModel;
             oldPanel.Remove();
 
