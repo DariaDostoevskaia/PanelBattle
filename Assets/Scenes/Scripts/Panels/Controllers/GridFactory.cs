@@ -56,7 +56,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             //if (_panelModel.IsJumpBlock)
             //    _panelModel.SetAvailable();
-            _panelController.MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
+            //_panelController.MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,
