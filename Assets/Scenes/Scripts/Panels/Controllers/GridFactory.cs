@@ -13,6 +13,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
     {
         private readonly PanelSO[] _panelSettings;
         private PanelModel _panelModel;
+        private PanelController _panelController;
+
+        private GridPanelSettingsSO gridPanelSettings;
+        private int[] _gridPosition;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -21,7 +25,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            var gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+            gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
             var grid = BlockMatrixGenerator.GenerateGrid(gridPanelSettings.Rect);
 
             var polygon = BlockMatrixGenerator.GeneratePolygon(gridPanelSettings.StartedPosition,
@@ -32,9 +36,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
-
-                    //var position = _panelModel.GetGridPosition(gridCell);
-                    //position = _panelModel.GridPosition;
+                    //_gridPosition = new PanelController.GridPosition(gridCell[0], gridCell[2]);
 
                     var pair = CreatePair(cell, parent);
                     return pair;
@@ -52,8 +54,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             _panelModel = new PanelModel(panelSetting.IsJumpBlock);
 
-            if (_panelModel.IsJumpBlock)
-                _panelModel.SetAvailable();
+            //if (_panelModel.IsJumpBlock)
+            //    _panelModel.SetAvailable();
+            _panelController.MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,

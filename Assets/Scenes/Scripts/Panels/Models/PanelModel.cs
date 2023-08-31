@@ -6,13 +6,13 @@ namespace LegoBattaleRoyal.Panels.Models
     {
         private readonly State _state;
 
-        public int[] GridPosition { get; private set; }
-
         public bool IsJumpBlock { get; }
 
         public bool IsAvailable => _state.IsAvailable;
 
         public bool IsVisiting => _state.IsVisiting;
+
+        public int[] GridPosition { get; set; }
 
         public PanelModel(bool isJumpBlock)
         {
@@ -26,11 +26,11 @@ namespace LegoBattaleRoyal.Panels.Models
             _state.BuildBase();
         }
 
-        public int[] GetGridPosition(int[] gridPosition)
-        {
-            GridPosition = gridPosition;
-            return gridPosition;
-        }
+        //public int[] GetGridPosition(int[] gridPosition)
+        //{
+        //    GridPosition = gridPosition;
+        //    return gridPosition;
+        //}
 
         public void SetAvailable()
         {
