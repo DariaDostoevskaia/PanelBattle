@@ -109,20 +109,5 @@ namespace LegoBattaleRoyal.Panels.Controllers
             }
             OnMoveSelected = null;
         }
-
-        public class GridPosition
-        {
-            private int _neighborRow;
-            private int _neighborColumn;
-
-            public GridPosition(int neighborRow, int neighborColumn)
-            {
-                _neighborRow = neighborRow;
-                _neighborColumn = neighborColumn;
-            }
-
-            public int Row { get; set; }
-            public int Column { get; set; }
-        }
     }
 }

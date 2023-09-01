@@ -4,6 +4,7 @@ using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static LegoBattaleRoyal.Panels.Controllers.PanelController;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -36,7 +37,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
-                    //_gridPosition = new PanelController.GridPosition(gridCell[0], gridCell[2]);
+                    //_gridPosition = new GridPosition(gridCell[0], gridCell[1]);
 
                     var pair = CreatePair(cell, parent);
                     return pair;
@@ -56,7 +57,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             //if (_panelModel.IsJumpBlock)
             //    _panelModel.SetAvailable();
-            //_panelController.MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
+            //var available = MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,
