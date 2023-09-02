@@ -16,8 +16,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public event Action<Vector3> OnMoveSelected;
 
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
-
-        private int _mainCharacterId { get; set; }
+        public (PanelModel panelModel, PanelView panelView)[] Pairs => _pairs;
+        //private int _mainCharacterId { get; set; }
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs)
         {
@@ -31,32 +31,33 @@ namespace LegoBattaleRoyal.Panels.Controllers
             }
         }
 
-        public bool MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
-        {
-            for (var rowOffset = -movementRadius; rowOffset <= movementRadius; rowOffset++)
-            {
-                var neighborRow = gridPosition.Row + rowOffset;
-                if (neighborRow < 0)
-                    continue;
+        //public bool MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
+        //{
+        //    for (var rowOffset = -movementRadius; rowOffset <= movementRadius; rowOffset++)
+        //    {
+        //        var neighborRow = gridPosition.Row + rowOffset;
+        //        if (neighborRow < 0)
+        //            continue;
 
-                for (var columnOffset = -movementRadius; columnOffset <= movementRadius; columnOffset++)
-                {
-                    if (rowOffset == 0 && columnOffset == 0)
-                        continue;
+        //        for (var columnOffset = -movementRadius; columnOffset <= movementRadius; columnOffset++)
+        //        {
+        //            if (rowOffset == 0 && columnOffset == 0)
+        //                continue;
 
-                    var neighborColumn = gridPosition.Column + columnOffset;
-                    if (neighborColumn < 0)
-                        continue;
+        //            var neighborColumn = gridPosition.Column + columnOffset;
+        //            if (neighborColumn < 0)
+        //                continue;
 
-                    var neighborGridPosition = new GridPosition(neighborRow, neighborColumn);
-                    var (neighborPanelModel, _) = _pairs.FirstOrDefault(pair => pair.panelModel.GridPosition
-                    .Equals(neighborGridPosition));
-                    neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
-                }
-            }
+        //            var neighborGridPosition = new GridPosition(neighborRow, neighborColumn);
+        //            var (neighborPanelModel, _) = _pairs.FirstOrDefault(pair => pair.panelModel.GridPosition
+        //            .Equals(neighborGridPosition));
 
-            return false;
-        }
+        //            neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
+        //        }
+        //    }
+
+        //    return false;
+        //}
 
         private void OnPanelClicked(PanelView view)
         {

@@ -13,11 +13,9 @@ namespace LegoBattaleRoyal.Panels.Controllers
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
-        private PanelModel _panelModel;
+        private GridPanelSettingsSO _gridPanelSettings;
+        private GridPosition _gridPosition;
         private PanelController _panelController;
-
-        private GridPanelSettingsSO gridPanelSettings;
-        private int[] _gridPosition;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -26,18 +24,22 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
-            var grid = BlockMatrixGenerator.GenerateGrid(gridPanelSettings.Rect);
+            _gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+            var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
 
-            var polygon = BlockMatrixGenerator.GeneratePolygon(gridPanelSettings.StartedPosition,
-                gridPanelSettings.Rect,
-                gridPanelSettings.Spacing);
+            var polygon = BlockMatrixGenerator.GeneratePolygon(_gridPanelSettings.StartedPosition,
+                _gridPanelSettings.Rect,
+                _gridPanelSettings.Spacing);
 
             var pairs = polygon
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
-                    //_gridPosition = new GridPosition(gridCell[0], gridCell[1]);
+
+                    var row = gridCell[0];
+                    var column = gridCell[1];
+
+                    _gridPosition = new GridPosition(row, column);
 
                     var pair = CreatePair(cell, parent);
                     return pair;
@@ -53,11 +55,15 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var random = Random.Range(0, lenght);
             var panelSetting = _panelSettings[random];
 
-            _panelModel = new PanelModel(panelSetting.IsJumpBlock);
+            var panelModel = new PanelModel(panelSetting.IsJumpBlock);
 
-            //if (_panelModel.IsJumpBlock)
-            //    _panelModel.SetAvailable();
-            //var available = MarkToAvailableNeighborPanels(_gridPosition, gridPanelSettings.JumpLenght);
+            var available = /*_panelController.*/MarkToAvailableNeighborPanels(_gridPosition, _gridPanelSettings.JumpLenght);
+
+            if (panelModel.IsJumpBlock
+                && available == true)
+                panelModel.SetAvailable();
+            else
+                panelModel.SetUnavailable();
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,
@@ -65,7 +71,36 @@ namespace LegoBattaleRoyal.Panels.Controllers
                Quaternion.identity,
                parent);
 
-            return (_panelModel, panelView);
+            return (panelModel, panelView);
+        }
+
+        public bool MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
+        {
+            var panelController = _panelController;
+            for (var rowOffset = -movementRadius; rowOffset <= movementRadius; rowOffset++)
+            {
+                var neighborRow = gridPosition.Row + rowOffset;
+                if (neighborRow < 0)
+                    continue;
+
+                for (var columnOffset = -movementRadius; columnOffset <= movementRadius; columnOffset++)
+                {
+                    if (rowOffset == 0 && columnOffset == 0)
+                        continue;
+
+                    var neighborColumn = gridPosition.Column + columnOffset;
+                    if (neighborColumn < 0)
+                        continue;
+
+                    var neighborGridPosition = new GridPosition(neighborRow, neighborColumn);
+                    var (neighborPanelModel, _) = panelController.Pairs.FirstOrDefault(pair => pair.panelModel.GridPosition
+                    .Equals(neighborGridPosition));
+
+                    neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -4,8 +4,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
     {
         private int _neighborRow;
         private int _neighborColumn;
-        public int Row { get; set; }
-        public int Column { get; set; }
+
+        public int Row => _neighborRow;
+
+        public int Column => _neighborColumn;
 
         public GridPosition(int neighborRow, int neighborColumn)
         {
