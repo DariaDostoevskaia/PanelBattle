@@ -18,11 +18,16 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
         private CharacterModel _characterModel;
+        //private (Characters.Controllers.CharacterController, PanelController) _charactersId;
+        //private CharacterRepository _characterRepository;
 
-        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs, CharacterModel characterModel)
+        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
+            CharacterModel characterModel,
+            //(Characters.Controllers.CharacterController, PanelController) charactersId)
         {
             _pairs = pairs;
             _characterModel = characterModel;
+            //_charactersId = charactersId;
 
             foreach (var (panelModel, panelView) in pairs)
             {

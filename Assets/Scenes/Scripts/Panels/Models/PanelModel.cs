@@ -10,14 +10,19 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public bool IsJumpBlock { get; }
 
-        //public bool IsVisiting => _state.IsVisiting;
-
         public GridPosition GridPosition { get; }
 
         public PanelModel(bool isJumpBlock, GridPosition gridPosition)
         {
             IsJumpBlock = isJumpBlock;
             GridPosition = gridPosition;
+        }
+
+        public bool IsVisiting(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            return state.IsVisiting;
         }
 
         public bool IsAvailable(Guid characterId)
@@ -31,38 +36,50 @@ namespace LegoBattaleRoyal.Panels.Models
             return state.IsAvailable;
         }
 
-        public void BuildBase()
+        public void BuildBase(Guid characterId)
         {
-            Add();
-            _state.BuildBase();
+            Add(characterId);
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            state.BuildBase();
         }
 
-        public void SetAvailable()
+        public void SetAvailable(Guid characterId)
         {
             if (!IsJumpBlock)
                 throw new Exception("Block is not available for jump.");
-            _state.SetAvailable(true);
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            state.SetAvailable(true);
         }
 
-        public void SetUnavailable()
+        public void SetUnavailable(Guid characterId)
         {
-            _state.SetAvailable(false);
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            state.SetAvailable(false);
         }
 
-        public void Add()
+        public void Add(Guid characterId)
         {
-            if (_state.IsVisiting)
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            if (state.IsVisiting)
                 throw new Exception("Block has player already.");
 
-            _state.AddVisitor();
+            state.AddVisitor();
         }
 
-        public void Remove()
+        public void Remove(Guid characterId)
         {
-            if (!_state.IsVisiting)
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            if (!state.IsVisiting)
                 throw new Exception("Block has not player yet.");
 
-            _state.RemoveVisitor();
+            state.RemoveVisitor();
         }
     }
 }

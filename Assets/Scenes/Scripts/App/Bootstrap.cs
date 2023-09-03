@@ -28,12 +28,13 @@ namespace LegoBattaleRoyal.App
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             var characterRepository = new CharacterRepository();
+            var roundController = new RoundController();
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
-                CreatePlayer(characterSO, characterRepository, pairs, true);
+                CreatePlayer(characterSO, characterRepository, pairs, true, roundController);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, false);
+            CreatePlayer(characterSO, characterRepository, pairs, false, roundController);
 
             characterRepository
                 .GetAll()
@@ -41,7 +42,7 @@ namespace LegoBattaleRoyal.App
                 .ForEach(character =>
                 {
                     var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
-                    availablePair.panelModel.BuildBase();
+                    availablePair.panelModel.BuildBase(character.Id);
 
                     var (characterController, panelController) = _players[character.Id];
 
@@ -69,7 +70,7 @@ namespace LegoBattaleRoyal.App
 
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
 
-            var panelController = new PanelController(pairs, characterModel);
+            var panelController = new PanelController(pairs, characterModel, _players[characterModel.Id]);
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
