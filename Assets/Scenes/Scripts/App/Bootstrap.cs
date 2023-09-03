@@ -1,10 +1,13 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace LegoBattaleRoyal.App
 {
@@ -13,39 +16,77 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterView _characterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-
-        private Characters.Controllers.CharacterController _characterController;
+        private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
 
         private event Action OnDisposed;
 
         private void Start()
         {
             var characterSO = _gameSettingsSO.CharacterSO;
-            var characterModel = new CharacterModel(characterSO.JumpLenght);
-
-            var characterView = Instantiate(_characterViewPrefab);
-            characterView.SetJumpHeight(characterSO.JumpHeight);
-            characterView.SetMoveDuration(characterSO.MoveDuration);
-
-            _characterController = new Characters.Controllers.CharacterController(characterModel, characterView);
-
             var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
+            var characterRepository = new CharacterRepository();
+
+            for (int i = 0; i < _gameSettingsSO.BotCount; i++)
+            {
+                CreatePlayer(characterSO, characterRepository, pairs, true);
+            }
+            CreatePlayer(characterSO, characterRepository, pairs, false);
+
+            characterRepository
+                .GetAll()
+                .ToList()
+                .ForEach(character =>
+                {
+                    var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
+                    availablePair.panelModel.BuildBase();
+
+                    var (characterController, panelController) = _players[character.Id];
+
+                    characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
+                    panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, character.JumpLenght);
+                });
+        }
+
+        private void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
+            (Panels.Models.PanelModel panelModel, Panels.View.PanelView panelView)[] pairs, bool isAi,
+            RoundController roundController)
+        {
+            var characterModel = isAi
+                ? new AICharacterModel(characterSO.JumpLenght)
+                : new CharacterModel(characterSO.JumpLenght);
+
+            characterRepository.Add(characterModel);
+
+            var characterView = Instantiate(_characterViewPrefab);
+            var playerColor = characterModel.Id.ToColor();
+            characterView.SetColor(playerColor);
+
+            characterView.SetJumpHeight(characterSO.JumpHeight);
+            characterView.SetMoveDuration(characterSO.MoveDuration);
+
+            var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
+
             var panelController = new PanelController(pairs, characterModel);
-            panelController.OnMoveSelected += _characterController.MoveCharacter;
+            panelController.OnMoveSelected += characterController.MoveCharacter;
 
-            var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
-
-            availablePair.panelModel.BuildBase();
-
-            _characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
-            panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, characterModel.JumpLenght);
+            if (characterModel is AICharacterModel)
+            {
+                var aiController = new AIController();
+                roundController.OnRoundChanged += aiController.ProcessRoundState; //disposed
+            }
+            else
+            {
+                //characterController.OnMoved
+                //создать метолд он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
+            }
+            _players[characterModel.Id] = (characterController, panelController);
 
             OnDisposed += () =>
             {
-                panelController.OnMoveSelected -= _characterController.MoveCharacter;
+                panelController.OnMoveSelected -= characterController.MoveCharacter;
                 panelController.Dispose();
             };
         }

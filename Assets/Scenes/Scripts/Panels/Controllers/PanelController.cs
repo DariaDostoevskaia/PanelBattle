@@ -26,6 +26,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             foreach (var (panelModel, panelView) in pairs)
             {
+                //subscrideOnInput
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
@@ -67,6 +68,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private void OnPanelClicked(PanelView view)
         {
+            //var randomPairs = _pairs.OrderBy(pair => Guid.NewGuid());
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
 
             if (!panelModel.IsJumpBlock

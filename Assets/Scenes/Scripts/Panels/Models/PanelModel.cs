@@ -1,17 +1,16 @@
 using LegoBattaleRoyal.Panels.Controllers;
 using System;
+using System.Collections.Generic;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
     public class PanelModel
     {
-        private readonly State _state;
+        private readonly Dictionary<Guid, State> _stateForCharacters = new();
 
         public bool IsJumpBlock { get; }
 
-        public bool IsAvailable => _state.IsAvailable;
-
-        public bool IsVisiting => _state.IsVisiting;
+        //public bool IsVisiting => _state.IsVisiting;
 
         public GridPosition GridPosition { get; }
 
@@ -19,7 +18,17 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             IsJumpBlock = isJumpBlock;
             GridPosition = gridPosition;
-            _state = new State();
+        }
+
+        public bool IsAvailable(Guid characterId)
+        {
+            if (!IsJumpBlock)
+                return false;
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsAvailable;
         }
 
         public void BuildBase()

@@ -12,7 +12,8 @@ namespace LegoBattaleRoyal.Characters.Controllers
         private readonly CharacterView _characterView;
 
         public CharacterController(CharacterModel characterModel,
-            CharacterView characterView)
+            CharacterView characterView,
+            CharacterRepository characterRepository)
         {
             _characterModel = characterModel;
             _characterView = characterView;

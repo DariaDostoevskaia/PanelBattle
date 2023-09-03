@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.View
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
     public class CharacterView : MonoBehaviour
     {
         private static readonly float MinimumPositionY = 1f;
@@ -13,10 +13,12 @@ namespace LegoBattaleRoyal.Characters.View
         private Tween _move;
         private float _moveDuration;
         private float _jumpHeight;
+        private MeshRenderer _meshRenderer;
 
-        private void Start()
+        private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _meshRenderer = GetComponent<MeshRenderer>();
         }
 
         public void JumpTo(Vector3 endValue)
@@ -43,6 +45,11 @@ namespace LegoBattaleRoyal.Characters.View
         public void SetMoveDuration(float moveDuration)
         {
             _moveDuration = moveDuration;
+        }
+
+        public void SetColor(Color newColor)
+        {
+            _meshRenderer.material.color = newColor;
         }
     }
 }
