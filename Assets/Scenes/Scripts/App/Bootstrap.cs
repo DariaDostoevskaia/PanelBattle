@@ -33,7 +33,7 @@ namespace LegoBattaleRoyal.App
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
-            var panelController = new PanelController(pairs);
+            var panelController = new PanelController(pairs, characterModel);
             panelController.OnMoveSelected += _characterController.MoveCharacter;
 
             var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);

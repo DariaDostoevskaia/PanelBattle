@@ -20,7 +20,7 @@ namespace LegoBattaleRoyal.Characters.Controllers
 
         public void MoveCharacter(Vector3 hitPoint)
         {
-            _characterView.JumpTo(_characterModel.MoveDuration, _characterModel.JumpHeight, hitPoint);
+            _characterView.JumpTo(hitPoint);
         }
 
         public void ForceMoveCharacter(Vector3 position)
