@@ -4,6 +4,7 @@ using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static LegoBattaleRoyal.Panels.Controllers.PanelController;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
+        private GridPanelSettingsSO _gridPanelSettings;
 
         public GridFactory(PanelSO[] panelSettings)
         {
@@ -20,20 +22,24 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            var gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
-            var grid = BlockMatrixGenerator
-                .GenerateGrid(gridPanelSettings.Rect);
+            _gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+            var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
 
-            var polygon = BlockMatrixGenerator
-                .GeneratePolygon(gridPanelSettings.StartedPosition,
-                gridPanelSettings.Rect,
-                gridPanelSettings.Spacing);
+            var polygon = BlockMatrixGenerator.GeneratePolygon(_gridPanelSettings.StartedPosition,
+                _gridPanelSettings.Rect,
+                _gridPanelSettings.Spacing);
 
             var pairs = polygon
                 .Select((cell, i) =>
                 {
                     var gridCell = grid[i];
-                    var pair = CreatePair(cell, parent);
+
+                    var row = gridCell[0];
+                    var column = gridCell[1];
+
+                    var gridPosition = new GridPosition(row, column);
+
+                    var pair = CreatePair(cell, parent, gridPosition);
                     return pair;
                 })
                 .ToArray();
@@ -41,17 +47,13 @@ namespace LegoBattaleRoyal.Panels.Controllers
             return pairs;
         }
 
-        private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent)
+        private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent, GridPosition gridPosition)
         {
             var lenght = _panelSettings.Length;
             var random = Random.Range(0, lenght);
             var panelSetting = _panelSettings[random];
 
-            var panelModel = new PanelModel(panelSetting.IsJumpBlock);
-
-            //var availableRandom = Random.Range(0, 100);
-            if (/*availableRandom > 30 &&*/ panelModel.IsJumpBlock)
-                panelModel.SetAvailable();
+            var panelModel = new PanelModel(panelSetting.IsJumpBlock, gridPosition);
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView,

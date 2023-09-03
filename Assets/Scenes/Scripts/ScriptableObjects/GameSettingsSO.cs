@@ -10,7 +10,9 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private GridPanelSettingsSO _gridPanelSettings;
 
         public CharacterSO CharacterSO => _characterSO;
+
         public PanelSO[] PanelSettings => _panelSettings;
+
         public GridPanelSettingsSO GridPanelSettings => _gridPanelSettings;
     }
 }

@@ -1,6 +1,10 @@
+using LegoBattaleRoyal.Characters.Models;
+using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using UnityEngine;
@@ -13,16 +17,51 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public event Action<Vector3> OnMoveSelected;
 
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
+        private CharacterModel _characterModel;
 
-        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs)
+        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs, CharacterModel characterModel)
         {
             _pairs = pairs;
+            _characterModel = characterModel;
 
             foreach (var (panelModel, panelView) in pairs)
             {
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
+            }
+        }
+
+        public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
+        {
+            for (var rowOffset = -movementRadius; rowOffset <= movementRadius; rowOffset++)
+            {
+                var neighborRow = gridPosition.Row + rowOffset;
+                if (neighborRow < 0)
+                    continue;
+
+                for (var columnOffset = -movementRadius; columnOffset <= movementRadius; columnOffset++)
+                {
+                    if (rowOffset == 0 && columnOffset == 0)
+                        continue;
+
+                    var neighborColumn = gridPosition.Column + columnOffset;
+                    if (neighborColumn < 0)
+                        continue;
+
+                    var neighborGridPosition = new GridPosition(neighborRow, neighborColumn);
+
+                    var (neighborPanelModel, _) = _pairs.FirstOrDefault(pair =>
+                    {
+                        var model = pair.panelModel;
+                        if (!model.IsJumpBlock)
+                            return false;
+
+                        return pair.panelModel.GridPosition.Equals(neighborGridPosition);
+                    });
+
+                    neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
+                }
             }
         }
 
@@ -41,6 +80,13 @@ namespace LegoBattaleRoyal.Panels.Controllers
             panelModel.Add();
 
             var panelViewPosition = view.transform.position;
+
+            foreach (var (panel, _) in _pairs)
+            {
+                panel.SetUnavailable();
+            }
+            MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
+
             OnMoveSelected?.Invoke(panelViewPosition);
         }
 

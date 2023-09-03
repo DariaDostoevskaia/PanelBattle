@@ -21,10 +21,11 @@ namespace LegoBattaleRoyal.App
         private void Start()
         {
             var characterSO = _gameSettingsSO.CharacterSO;
-
-            var characterModel = new CharacterModel(characterSO.MoveDuration, characterSO.JumpHeight, characterSO.Speed);
+            var characterModel = new CharacterModel(characterSO.JumpLenght);
 
             var characterView = Instantiate(_characterViewPrefab);
+            characterView.SetJumpHeight(characterSO.JumpHeight);
+            characterView.SetMoveDuration(characterSO.MoveDuration);
 
             _characterController = new Characters.Controllers.CharacterController(characterModel, characterView);
 
@@ -32,16 +33,15 @@ namespace LegoBattaleRoyal.App
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
-            var panelController = new PanelController(pairs);
-
+            var panelController = new PanelController(pairs, characterModel);
             panelController.OnMoveSelected += _characterController.MoveCharacter;
 
-            var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock
-            && pair.panelModel.IsAvailable);
+            var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
 
             availablePair.panelModel.BuildBase();
 
             _characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
+            panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, characterModel.JumpLenght);
 
             OnDisposed += () =>
             {
