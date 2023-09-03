@@ -15,7 +15,7 @@
 
         public void SetAvailable(bool value)
         {
-            IsAvailable |= value;
+            IsAvailable = value;
         }
 
         public void AddVisitor()

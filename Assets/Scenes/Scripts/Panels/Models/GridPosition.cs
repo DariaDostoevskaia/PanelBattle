@@ -1,18 +1,24 @@
+using System;
+
 namespace LegoBattaleRoyal.Panels.Models
 {
-    public class GridPosition
+    public class GridPosition : IEquatable<GridPosition>
     {
-        private int _neighborRow;
-        private int _neighborColumn;
+        public int Row { get; private set; }
 
-        public int Row => _neighborRow;
+        public int Column { get; private set; }
 
-        public int Column => _neighborColumn;
-
-        public GridPosition(int neighborRow, int neighborColumn)
+        public GridPosition(int row, int column)
         {
-            _neighborRow = neighborRow;
-            _neighborColumn = neighborColumn;
+            Row = row;
+            Column = column;
+        }
+
+        public bool Equals(GridPosition other)
+        {
+            return other != null
+                && Row == other.Row
+                && Column == other.Column;
         }
     }
 }

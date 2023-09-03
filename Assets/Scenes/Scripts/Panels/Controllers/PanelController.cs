@@ -50,8 +50,15 @@ namespace LegoBattaleRoyal.Panels.Controllers
                         continue;
 
                     var neighborGridPosition = new GridPosition(neighborRow, neighborColumn);
-                    var (neighborPanelModel, _) = _pairs.FirstOrDefault(pair => pair.panelModel.GridPosition
-                    .Equals(neighborGridPosition));
+
+                    var (neighborPanelModel, _) = _pairs.FirstOrDefault(pair =>
+                    {
+                        var model = pair.panelModel;
+                        if (!model.IsJumpBlock)
+                            return false;
+
+                        return pair.panelModel.GridPosition.Equals(neighborGridPosition);
+                    });
 
                     neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
                 }
