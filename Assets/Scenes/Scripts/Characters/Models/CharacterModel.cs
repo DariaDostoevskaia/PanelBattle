@@ -2,14 +2,11 @@
 {
     public class CharacterModel
     {
-        public float MoveDuration { get; }
+        public int JumpLenght { get; }
 
-        public float JumpHeight { get; }
-
-        public CharacterModel(float moveDuration, float jumpHeight)
+        public CharacterModel(int jumpLenght)
         {
-            MoveDuration = moveDuration;
-            JumpHeight = jumpHeight;
+            JumpLenght = jumpLenght;
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace LegoBattaleRoyal.Panels.Controllers
+namespace LegoBattaleRoyal.Panels.Models
 {
     public class GridPosition
     {

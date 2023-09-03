@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Panels.Controllers;
 using System;
 
 namespace LegoBattaleRoyal.Panels.Models
@@ -12,11 +13,12 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public bool IsVisiting => _state.IsVisiting;
 
-        public int[] GridPosition { get; set; }
+        public GridPosition GridPosition { get; }
 
-        public PanelModel(bool isJumpBlock)
+        public PanelModel(bool isJumpBlock, GridPosition gridPosition)
         {
             IsJumpBlock = isJumpBlock;
+            GridPosition = gridPosition;
             _state = new State();
         }
 
@@ -25,12 +27,6 @@ namespace LegoBattaleRoyal.Panels.Models
             Add();
             _state.BuildBase();
         }
-
-        //public int[] GetGridPosition(int[] gridPosition)
-        //{
-        //    GridPosition = gridPosition;
-        //    return gridPosition;
-        //}
 
         public void SetAvailable()
         {
