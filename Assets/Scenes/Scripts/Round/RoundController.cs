@@ -1,15 +1,23 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class RoundController
+namespace LegoBattaleRoyal.Round
 {
-    public event Action OnRoundChanged;
-
-    public void ChangeRound()
+    public class RoundController : IDisposable
     {
-        OnRoundChanged?.Invoke();
-        //dispose
+        public event Action OnRoundChanged;
+
+        public void ChangeRound()
+        {
+            OnRoundChanged?.Invoke();
+        }
+
+        public void RoundTransition()
+        {
+        }
+
+        public void Dispose()
+        {
+            OnRoundChanged = null;
+        }
     }
 }

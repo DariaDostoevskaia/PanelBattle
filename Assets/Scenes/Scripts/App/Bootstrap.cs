@@ -1,7 +1,10 @@
+using LegoBattaleRoyal.AI;
+using LegoBattaleRoyal.Characters.Controllers;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
+using LegoBattaleRoyal.Round;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Collections.Generic;
@@ -27,7 +30,9 @@ namespace LegoBattaleRoyal.App
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             var characterRepository = new CharacterRepository();
+
             var roundController = new RoundController();
+            roundController.OnRoundChanged += roundController.RoundTransition;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
@@ -54,8 +59,10 @@ namespace LegoBattaleRoyal.App
             (Panels.Models.PanelModel panelModel, Panels.View.PanelView panelView)[] pairs, bool isAi,
             RoundController roundController)
         {
+            var aicharacterSO = new AICharacterSO();
+
             var characterModel = isAi
-                ? new AICharacterModel(characterSO.JumpLenght)
+                ? new AICharacterModel(aicharacterSO.JumpLenght)
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);
@@ -74,7 +81,7 @@ namespace LegoBattaleRoyal.App
 
             if (characterModel is AICharacterModel)
             {
-                var aiController = new AIController();
+                var aiController = new AIController((AICharacterModel)characterModel, characterView, characterRepository);
                 roundController.OnRoundChanged += aiController.ProcessRoundState; //disposed
             }
             else
@@ -86,6 +93,7 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
+                //roundController.OnRoundChanged -= aiController.ProcessRoundState;
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
                 panelController.Dispose();
             };
@@ -93,6 +101,7 @@ namespace LegoBattaleRoyal.App
 
         private void OnDestroy()
         {
+            //roundController.OnRoundChanged -= roundController.RoundTransition;
             OnDisposed?.Invoke();
             OnDisposed = null;
         }

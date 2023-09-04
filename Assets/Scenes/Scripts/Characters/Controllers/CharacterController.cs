@@ -8,17 +8,13 @@ namespace LegoBattaleRoyal.Characters.Controllers
 {
     public class CharacterController
     {
-        private readonly CharacterModel _characterModel;
         private readonly CharacterView _characterView;
-        private readonly CharacterRepository _characterRepository;
 
         public CharacterController(CharacterModel characterModel,
             CharacterView characterView,
             CharacterRepository characterRepository)
         {
-            _characterModel = characterModel;
             _characterView = characterView;
-            _characterRepository = characterRepository;
         }
 
         public void MoveCharacter(Vector3 hitPoint)

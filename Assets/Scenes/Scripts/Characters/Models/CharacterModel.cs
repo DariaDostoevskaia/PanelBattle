@@ -5,6 +5,7 @@ namespace LegoBattaleRoyal.Characters.Models
     public class CharacterModel
     {
         public int JumpLenght { get; }
+
         public Guid Id { get; }
 
         public CharacterModel(int jumpLenght)
