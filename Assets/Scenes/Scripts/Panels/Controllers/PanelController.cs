@@ -1,11 +1,7 @@
 using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -18,16 +14,12 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private (PanelModel panelModel, PanelView panelView)[] _pairs;
         private CharacterModel _characterModel;
-        //private (Characters.Controllers.CharacterController, PanelController) _charactersId;
-        //private CharacterRepository _characterRepository;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel,
-            //(Characters.Controllers.CharacterController, PanelController) charactersId)
+            CharacterModel characterModel)
         {
             _pairs = pairs;
             _characterModel = characterModel;
-            //_charactersId = charactersId;
 
             foreach (var (panelModel, panelView) in pairs)
             {
@@ -66,7 +58,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
                         return pair.panelModel.GridPosition.Equals(neighborGridPosition);
                     });
 
-                    neighborPanelModel?.SetAvailable(/*_mainCharacterId*/);
+                    neighborPanelModel?.SetAvailable(_characterModel.Id);
                 }
             }
         }
@@ -77,20 +69,20 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
 
             if (!panelModel.IsJumpBlock
-                || !panelModel.IsAvailable
-                || panelModel.IsVisiting)
+                || !panelModel.IsAvailable(_characterModel.Id)
+                || panelModel.IsVisiting(_characterModel.Id))
                 return;
 
-            var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting).panelModel;
-            oldPanel.Remove();
+            var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
+            oldPanel.Remove((_characterModel.Id));
 
-            panelModel.Add();
+            panelModel.Add((_characterModel.Id));
 
             var panelViewPosition = view.transform.position;
 
             foreach (var (panel, _) in _pairs)
             {
-                panel.SetUnavailable();
+                panel.SetUnavailable((_characterModel.Id));
             }
             MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
 
@@ -102,10 +94,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
 
             if (!panelModel.IsJumpBlock
-                || panelModel.IsVisiting)
+                || panelModel.IsVisiting(_characterModel.Id))
                 return;
 
-            if (!panelModel.IsAvailable)
+            if (!panelModel.IsAvailable(_characterModel.Id))
             {
                 view.Highlight(Color.red);
             }

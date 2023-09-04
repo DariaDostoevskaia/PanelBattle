@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace LegoBattaleRoyal.App
 {
@@ -70,7 +69,7 @@ namespace LegoBattaleRoyal.App
 
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
 
-            var panelController = new PanelController(pairs, characterModel, _players[characterModel.Id]);
+            var panelController = new PanelController(pairs, characterModel);
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
