@@ -18,6 +18,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterView _characterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
+        private RoundController _roundController;
         private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
 
         private event Action OnDisposed;
@@ -31,14 +32,14 @@ namespace LegoBattaleRoyal.App
 
             var characterRepository = new CharacterRepository();
 
-            var roundController = new RoundController();
-            roundController.OnRoundChanged += roundController.RoundTransition;
+            _roundController = new RoundController();
+            _roundController.OnRoundChanged += _roundController.ChangeRound;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
-                CreatePlayer(characterSO, characterRepository, pairs, true, roundController);
+                CreatePlayer(characterSO, characterRepository, pairs, true, _roundController);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, false, roundController);
+            CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
             characterRepository
                 .GetAll()
@@ -75,33 +76,39 @@ namespace LegoBattaleRoyal.App
             characterView.SetMoveDuration(characterSO.MoveDuration);
 
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
+            var aicharacterController = new AIController((AICharacterModel)characterModel, characterView, characterRepository);
 
             var panelController = new PanelController(pairs, characterModel);
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
             {
-                var aiController = new AIController((AICharacterModel)characterModel, characterView, characterRepository);
-                roundController.OnRoundChanged += aiController.ProcessRoundState; //disposed
+                roundController.OnRoundChanged += aicharacterController.ProcessRoundState;
             }
             else
             {
+                roundController.OnRoundChanged += characterController.OnMoved;
+
                 //characterController.OnMoved
-                //создать метолд он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
+                //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
             }
             _players[characterModel.Id] = (characterController, panelController);
+            //_players[characterModel.Id] = (aicharacterController, panelController);
 
             OnDisposed += () =>
             {
-                //roundController.OnRoundChanged -= aiController.ProcessRoundState;
+                roundController.OnRoundChanged -= aicharacterController.ProcessRoundState;
+                roundController.OnRoundChanged -= characterController.OnMoved;
+
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
+
                 panelController.Dispose();
             };
         }
 
         private void OnDestroy()
         {
-            //roundController.OnRoundChanged -= roundController.RoundTransition;
+            _roundController.OnRoundChanged -= _roundController.ChangeRound;
             OnDisposed?.Invoke();
             OnDisposed = null;
         }

@@ -26,5 +26,10 @@ namespace LegoBattaleRoyal.Characters.Controllers
         {
             _characterView.SetPosition(position);
         }
+
+        public void OnMoved()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
