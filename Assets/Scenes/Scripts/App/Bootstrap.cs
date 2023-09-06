@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.AI;
-using LegoBattaleRoyal.Characters.Controllers;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Extensions;
@@ -18,8 +17,11 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterView _characterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-        private RoundController _roundController;
+
         private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
+
+        private Collider _collider;
+        private RoundController _roundController;
 
         private event Action OnDisposed;
 
@@ -75,8 +77,9 @@ namespace LegoBattaleRoyal.App
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
 
-            var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
             var aicharacterController = new AIController((AICharacterModel)characterModel, characterView, characterRepository);
+
+            var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
 
             var panelController = new PanelController(pairs, characterModel);
             panelController.OnMoveSelected += characterController.MoveCharacter;
@@ -84,12 +87,16 @@ namespace LegoBattaleRoyal.App
             if (characterModel is AICharacterModel)
             {
                 roundController.OnRoundChanged += aicharacterController.ProcessRoundState;
+
+                aicharacterController.OnTriggerEnter(_collider);
+                characterController.OnTriggerExit(_collider);
             }
             else
             {
                 roundController.OnRoundChanged += characterController.OnMoved;
 
-                //characterController.OnMoved
+                aicharacterController.OnTriggerExit(_collider);
+                characterController.OnTriggerEnter(_collider);
                 //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
             }
             _players[characterModel.Id] = (characterController, panelController);
@@ -103,6 +110,7 @@ namespace LegoBattaleRoyal.App
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
 
                 panelController.Dispose();
+                roundController.Dispose();
             };
         }
 
