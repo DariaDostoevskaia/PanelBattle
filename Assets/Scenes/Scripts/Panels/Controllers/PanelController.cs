@@ -18,12 +18,26 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
             CharacterModel characterModel)
         {
-            _pairs = pairs;
             _characterModel = characterModel;
+            _pairs = pairs;
 
             foreach (var (panelModel, panelView) in pairs)
             {
                 //subscrideOnInput
+                panelView.OnClicked += OnPanelClicked;
+                panelView.OnEntered += OnPanelHover;
+                panelView.OnPointerExited += OnPanelExit;
+            }
+        }
+
+        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
+          AICharacterModel aicharacterModel)
+        {
+            _characterModel = aicharacterModel;
+            _pairs = pairs;
+
+            foreach (var (panelModel, panelView) in pairs)
+            {
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
@@ -65,7 +79,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private void OnPanelClicked(PanelView view)
         {
-            //var randomPairs = _pairs.OrderBy(pair => Guid.NewGuid());
+            //var randomPair = _pairs.OrderBy(pair => Guid.NewGuid());
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
 
             if (!panelModel.IsJumpBlock
@@ -74,17 +88,17 @@ namespace LegoBattaleRoyal.Panels.Controllers
                 return;
 
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
-            oldPanel.Remove((_characterModel.Id));
+            oldPanel.Remove(_characterModel.Id);
 
-            panelModel.Add((_characterModel.Id));
-
-            var panelViewPosition = view.transform.position;
+            panelModel.Add(_characterModel.Id);
 
             foreach (var (panel, _) in _pairs)
             {
-                panel.SetUnavailable((_characterModel.Id));
+                panel.SetUnavailable(_characterModel.Id);
             }
             MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
+
+            var panelViewPosition = view.transform.position;
 
             OnMoveSelected?.Invoke(panelViewPosition);
         }

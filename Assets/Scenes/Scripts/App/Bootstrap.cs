@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace LegoBattaleRoyal.App
 {
@@ -20,7 +21,6 @@ namespace LegoBattaleRoyal.App
 
         private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
 
-        private Collider _collider;
         private RoundController _roundController;
 
         private event Action OnDisposed;
@@ -62,7 +62,7 @@ namespace LegoBattaleRoyal.App
             (Panels.Models.PanelModel panelModel, Panels.View.PanelView panelView)[] pairs, bool isAi,
             RoundController roundController)
         {
-            var aicharacterSO = new AICharacterSO();
+            var aicharacterSO = _gameSettingsSO.AIcharacterSO;
 
             var characterModel = isAi
                 ? new AICharacterModel(aicharacterSO.JumpLenght)
@@ -71,40 +71,35 @@ namespace LegoBattaleRoyal.App
             characterRepository.Add(characterModel);
 
             var characterView = Instantiate(_characterViewPrefab);
+
             var playerColor = characterModel.Id.ToColor();
             characterView.SetColor(playerColor);
 
             characterView.SetJumpHeight(characterSO.JumpHeight);
-            characterView.SetMoveDuration(characterSO.MoveDuration);
+            characterView.SetJumpHeight(aicharacterSO.JumpHeight);
 
-            var aicharacterController = new AIController((AICharacterModel)characterModel, characterView, characterRepository);
+            characterView.SetMoveDuration(characterSO.MoveDuration);
+            characterView.SetMoveDuration(aicharacterSO.MoveDuration);
 
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
-
             var panelController = new PanelController(pairs, characterModel);
-            panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
             {
-                roundController.OnRoundChanged += aicharacterController.ProcessRoundState;
-
-                aicharacterController.OnTriggerEnter(_collider);
-                characterController.OnTriggerExit(_collider);
+                characterController = new Characters.Controllers.CharacterController((AICharacterModel)characterModel, characterView, characterRepository);
+                panelController = new PanelController(pairs, (AICharacterModel)characterModel);
+                roundController.OnRoundChanged += characterController.OnMoved;
             }
             else
             {
-                roundController.OnRoundChanged += characterController.OnMoved;
-
-                aicharacterController.OnTriggerExit(_collider);
-                characterController.OnTriggerEnter(_collider);
+                panelController.OnMoveSelected += characterController.MoveCharacter;
                 //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
             }
+
             _players[characterModel.Id] = (characterController, panelController);
-            //_players[characterModel.Id] = (aicharacterController, panelController);
 
             OnDisposed += () =>
             {
-                roundController.OnRoundChanged -= aicharacterController.ProcessRoundState;
                 roundController.OnRoundChanged -= characterController.OnMoved;
 
                 panelController.OnMoveSelected -= characterController.MoveCharacter;

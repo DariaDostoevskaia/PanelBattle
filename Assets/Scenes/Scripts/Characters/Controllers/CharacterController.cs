@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
+using LegoBattaleRoyal.Panels.Controllers;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Characters.Controllers
@@ -8,8 +9,9 @@ namespace LegoBattaleRoyal.Characters.Controllers
     {
         private readonly CharacterView _characterView;
         private CharacterModel _characterModel;
-
-        private GameObject _gameObject;
+        private AICharacterModel _aicharacterModel;
+        private CharacterRepository _characterRepository;
+        private PanelController _panelController;
 
         public CharacterController(CharacterModel characterModel,
             CharacterView characterView,
@@ -17,6 +19,16 @@ namespace LegoBattaleRoyal.Characters.Controllers
         {
             _characterView = characterView;
             _characterModel = characterModel;
+            _characterRepository = characterRepository;
+        }
+
+        public CharacterController(AICharacterModel aicharacterModel,
+          CharacterView characterView,
+          CharacterRepository characterRepository)
+        {
+            _characterView = characterView;
+            _aicharacterModel = aicharacterModel;
+            _characterRepository = characterRepository;
         }
 
         public void MoveCharacter(Vector3 hitPoint)
@@ -31,21 +43,9 @@ namespace LegoBattaleRoyal.Characters.Controllers
 
         public void OnMoved()
         {
-            //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
-        }
-
-        public void OnTriggerEnter(Collider collider)
-        {
-            {
-                if (collider.gameObject.CompareTag("Player"))
-                    _gameObject.SetActive(false);
-            }
-        }
-
-        public void OnTriggerExit(Collider collider)
-        {
-            if (collider.gameObject.CompareTag("Player"))
-                _gameObject.SetActive(true);
+            // метод должен триггерить ботов ходить
+            var characterController = new CharacterController(_aicharacterModel, _characterView, _characterRepository);
+            _panelController.OnMoveSelected += characterController.MoveCharacter;
         }
     }
 }

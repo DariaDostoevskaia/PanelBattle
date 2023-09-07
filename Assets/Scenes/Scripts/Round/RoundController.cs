@@ -11,9 +11,9 @@ namespace LegoBattaleRoyal.Round
             OnRoundChanged?.Invoke();
         }
 
-        //public void RoundTransition()
-        //{
-        //}
+        public void RoundTransition()
+        {
+        }
 
         public void Dispose()
         {
