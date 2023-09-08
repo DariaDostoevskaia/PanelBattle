@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace LegoBattaleRoyal.App
 {
@@ -84,17 +83,22 @@ namespace LegoBattaleRoyal.App
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
             var panelController = new PanelController(pairs, characterModel);
 
+            var aiController = new AIController(characterModel, characterView, characterRepository);
             if (characterModel is AICharacterModel)
             {
                 characterController = new Characters.Controllers.CharacterController((AICharacterModel)characterModel, characterView, characterRepository);
                 panelController = new PanelController(pairs, (AICharacterModel)characterModel);
-                roundController.OnRoundChanged += characterController.OnMoved;
+                roundController.OnRoundChanged += characterController.Move;
+
+                //round.OnChanged += bot.Move;
             }
             else
             {
-                panelController.OnMoveSelected += characterController.MoveCharacter;
+                roundController.OnRoundChanged += characterController.OnMoved;
+                //игрок.OnMoved += round.Change
                 //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
             }
+            panelController.OnMoveSelected += characterController.MoveCharacter;
 
             _players[characterModel.Id] = (characterController, panelController);
 
