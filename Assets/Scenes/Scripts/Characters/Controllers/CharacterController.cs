@@ -50,13 +50,13 @@ namespace LegoBattaleRoyal.Characters.Controllers
         public void OnMoved()
         {
             // метод должен триггерить ботов ходить
-            var botCharacterController = new CharacterController(_aicharacterModel, _characterView, _characterRepository);
-            _panelController.OnMoveSelected += botCharacterController.MoveCharacter;
         }
 
         public void Move()
         {
             //тут ход бота
+            var botCharacterController = new CharacterController(_aicharacterModel, _characterView, _characterRepository);
+            _panelController.OnMoveSelected += botCharacterController.MoveCharacter;
         }
     }
 }

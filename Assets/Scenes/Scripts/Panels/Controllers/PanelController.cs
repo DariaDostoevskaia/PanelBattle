@@ -79,9 +79,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         private void OnPanelClicked(PanelView view)
         {
-            var randomPair = _pairs.OrderBy(pair => Guid.NewGuid());
-            var panelModel = _pairs.First(randomPair => randomPair.panelView == view).panelModel;
+            //var randomPair = _pairs.OrderBy(pair => Guid.NewGuid());
+            //var panelModel = _pairs.First(randomPair => randomPair.panelView == view).panelModel;
 
+            var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
             if (!panelModel.IsJumpBlock
                 || !panelModel.IsAvailable(_characterModel.Id)
                 || panelModel.IsVisiting(_characterModel.Id))

@@ -89,13 +89,10 @@ namespace LegoBattaleRoyal.App
                 characterController = new Characters.Controllers.CharacterController((AICharacterModel)characterModel, characterView, characterRepository);
                 panelController = new PanelController(pairs, (AICharacterModel)characterModel);
                 roundController.OnRoundChanged += characterController.Move;
-
-                //round.OnChanged += bot.Move;
             }
             else
             {
                 roundController.OnRoundChanged += characterController.OnMoved;
-                //игрок.OnMoved += round.Change
                 //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
             }
             panelController.OnMoveSelected += characterController.MoveCharacter;

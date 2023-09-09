@@ -1,15 +1,20 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Panels.Controllers;
+using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
+using System.Collections.Generic;
+using UnityEngine.TextCore.Text;
 using CharacterController = LegoBattaleRoyal.Characters.Controllers.CharacterController;
 
 namespace LegoBattaleRoyal.AI
 {
     public class AIController : CharacterController, IDisposable
     {
-        public event Action OnRound;
+        private static CharacterModel _characterModel;
+        private static AICharacterModel _aicharacterModel;
 
         private enum State
         {
@@ -18,9 +23,7 @@ namespace LegoBattaleRoyal.AI
             Bot,
         }
 
-        private State _state;
-        private static CharacterModel _characterModel;
-        private static AICharacterModel _aicharacterModel;
+        private readonly Dictionary<Guid, State> _stateForCharacters;
 
         public AIController(CharacterModel characterModel, CharacterView characterView, CharacterRepository characterRepository)
             : base(characterModel, characterView, characterRepository)
@@ -31,16 +34,13 @@ namespace LegoBattaleRoyal.AI
             _characterModel = characterModel;
         }
 
-        public void ProcessRoundState(AICharacterModel aicharacterModel)
+        public void ProcessRoundState()
         {
             // метод реализации ии с помощью панел контроллер
             // OnPanelClick должег перемещать ии
 
-            _state = State.Round;
-            _aicharacterModel = aicharacterModel;
-            //for (int i = 0; i < _gameSettingsSO.BotCount; i++)
-            //{
-            //}
+            _stateForCharacters.TryGetValue(_aicharacterModel.Id, out State state);
+            state = _stateForCharacters[_aicharacterModel.Id] = new State();
         }
 
         public void Dispose()
