@@ -34,7 +34,6 @@ namespace LegoBattaleRoyal.App
             var characterRepository = new CharacterRepository();
 
             _roundController = new RoundController();
-            _roundController.OnRoundChanged += _roundController.ChangeRound;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
@@ -47,7 +46,10 @@ namespace LegoBattaleRoyal.App
                 .ToList()
                 .ForEach(character =>
                 {
-                    var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
+                    var availablePair = pairs
+                    .OrderBy(pair => Guid.NewGuid())
+                    .First(pair => pair.panelModel.IsJumpBlock);
+
                     availablePair.panelModel.BuildBase(character.Id);
 
                     var (characterController, panelController) = _players[character.Id];
@@ -83,17 +85,16 @@ namespace LegoBattaleRoyal.App
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
             var panelController = new PanelController(pairs, characterModel);
 
-            var aiController = new AIController(characterModel, characterView, characterRepository);
             if (characterModel is AICharacterModel)
             {
-                characterController = new Characters.Controllers.CharacterController((AICharacterModel)characterModel, characterView, characterRepository);
-                panelController = new PanelController(pairs, (AICharacterModel)characterModel);
-                roundController.OnRoundChanged += characterController.Move;
+                var aiController = new AIController(panelController, pairs, characterModel);
+                roundController.OnRoundChanged += aiController.ProcessRound;
+                OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
             }
             else
             {
-                roundController.OnRoundChanged += characterController.OnMoved;
-                //создать метод он мувд который триггерит OnRoundChanged, который триггерит ботов ходить
+                panelController.OnMoveSelected += ChangeRound;
+                panelController.SubscribeOnInput();
             }
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
@@ -101,18 +102,23 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
-                roundController.OnRoundChanged -= characterController.OnMoved;
+                panelController.UnsubscribeOnInput();
 
+                panelController.OnMoveSelected -= ChangeRound;
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
 
                 panelController.Dispose();
                 roundController.Dispose();
             };
+
+            void ChangeRound(Vector3 vector)
+            {
+                roundController.ChangeRound();
+            }
         }
 
         private void OnDestroy()
         {
-            _roundController.OnRoundChanged -= _roundController.ChangeRound;
             OnDisposed?.Invoke();
             OnDisposed = null;
         }

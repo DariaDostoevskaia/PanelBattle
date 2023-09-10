@@ -20,27 +20,25 @@ namespace LegoBattaleRoyal.Panels.Controllers
         {
             _characterModel = characterModel;
             _pairs = pairs;
+        }
 
-            foreach (var (panelModel, panelView) in pairs)
+        public void SubscribeOnInput()
+        {
+            foreach (var (panelModel, panelView) in _pairs)
             {
-                //subscrideOnInput
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
             }
         }
 
-        public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-          AICharacterModel aicharacterModel)
+        public void UnsubscribeOnInput()
         {
-            _characterModel = aicharacterModel;
-            _pairs = pairs;
-
-            foreach (var (panelModel, panelView) in pairs)
+            foreach (var (panelModel, panelView) in _pairs)
             {
-                panelView.OnClicked += OnPanelClicked;
-                panelView.OnEntered += OnPanelHover;
-                panelView.OnPointerExited += OnPanelExit;
+                panelView.OnClicked -= OnPanelClicked;
+                panelView.OnEntered -= OnPanelHover;
+                panelView.OnPointerExited -= OnPanelExit;
             }
         }
 
@@ -77,11 +75,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
             }
         }
 
-        private void OnPanelClicked(PanelView view)
+        public void OnPanelClicked(PanelView view)
         {
-            //var randomPair = _pairs.OrderBy(pair => Guid.NewGuid());
-            //var panelModel = _pairs.First(randomPair => randomPair.panelView == view).panelModel;
-
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
             if (!panelModel.IsJumpBlock
                 || !panelModel.IsAvailable(_characterModel.Id)
@@ -129,12 +124,6 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
         public void Dispose()
         {
-            foreach (var (panelModel, panelView) in _pairs)
-            {
-                panelView.OnClicked -= OnPanelClicked;
-                panelView.OnEntered -= OnPanelHover;
-                panelView.OnPointerExited -= OnPanelExit;
-            }
             OnMoveSelected = null;
         }
     }
