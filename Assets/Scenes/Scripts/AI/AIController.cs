@@ -28,7 +28,8 @@ namespace LegoBattaleRoyal.AI
             var pair = _pairs
                 .OrderBy(pair => Guid.NewGuid())
                 .First(pair => pair.panelModel.IsAvailable(_aiCharacterModel.Id)
-                && !pair.panelModel.IsVisiting(_aiCharacterModel.Id));
+                && !pair.panelModel.IsVisiting(_aiCharacterModel.Id)
+                && pair.panelModel.IsJumpBlock);
 
             _panelController.OnPanelClicked(pair.panelView);
             Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {pair.panelModel.GridPosition}");
