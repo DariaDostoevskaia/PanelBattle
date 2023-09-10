@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.AI
 {
@@ -24,11 +25,13 @@ namespace LegoBattaleRoyal.AI
 
         public void ProcessRound()
         {
-            var panelView = _pairs
+            var pair = _pairs
                 .OrderBy(pair => Guid.NewGuid())
-                .First(pair => pair.panelModel.IsAvailable(_aiCharacterModel.Id)).panelView;
+                .First(pair => pair.panelModel.IsAvailable(_aiCharacterModel.Id)
+                && !pair.panelModel.IsVisiting(_aiCharacterModel.Id));
 
-            _panelController.OnPanelClicked(panelView);
+            _panelController.OnPanelClicked(pair.panelView);
+            Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {pair.panelModel.GridPosition}");
         }
     }
 }

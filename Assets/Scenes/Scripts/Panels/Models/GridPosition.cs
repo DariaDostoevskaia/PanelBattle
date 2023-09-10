@@ -20,5 +20,10 @@ namespace LegoBattaleRoyal.Panels.Models
                 && Row == other.Row
                 && Column == other.Column;
         }
+
+        public override string ToString()
+        {
+            return $"{Row}:{Column}";
+        }
     }
 }
