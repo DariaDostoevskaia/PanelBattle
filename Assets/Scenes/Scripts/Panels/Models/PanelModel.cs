@@ -65,6 +65,7 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             if (state.IsVisiting)
                 throw new Exception("Block has player already.");
 

@@ -78,10 +78,24 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public void OnPanelClicked(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
+
             if (!panelModel.IsJumpBlock
                 || !panelModel.IsAvailable(_characterModel.Id)
                 || panelModel.IsVisiting(_characterModel.Id))
+            {
+                if (_characterModel is AICharacterModel)
+                {
+                    //Debug.Log($"{view.transform.position}- pos, {view}- view");
+
+                    var pair = _pairs
+                        .OrderBy(pair => Guid.NewGuid())
+                        .First(pair => pair.panelModel.IsAvailable(_characterModel.Id)
+                        && !pair.panelModel.IsVisiting(_characterModel.Id));
+
+                    OnPanelClicked(pair.panelView);
+                }
                 return;
+            }
 
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
             oldPanel.Remove(_characterModel.Id);

@@ -84,11 +84,13 @@ namespace LegoBattaleRoyal.App
 
             var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
             var panelController = new PanelController(pairs, characterModel);
+            panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
             {
                 var aiController = new AIController(panelController, pairs, characterModel);
                 roundController.OnRoundChanged += aiController.ProcessRound;
+
                 OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
             }
             else
@@ -96,7 +98,6 @@ namespace LegoBattaleRoyal.App
                 panelController.OnMoveSelected += ChangeRound;
                 panelController.SubscribeOnInput();
             }
-            panelController.OnMoveSelected += characterController.MoveCharacter;
 
             _players[characterModel.Id] = (characterController, panelController);
 
