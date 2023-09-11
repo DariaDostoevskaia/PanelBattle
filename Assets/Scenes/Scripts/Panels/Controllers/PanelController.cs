@@ -85,8 +85,6 @@ namespace LegoBattaleRoyal.Panels.Controllers
             {
                 if (_characterModel is AICharacterModel)
                 {
-                    //Debug.Log($"{view.transform.position}- pos, {view}- view");
-
                     var pair = _pairs
                         .OrderBy(pair => Guid.NewGuid())
                         .First(pair => pair.panelModel.IsAvailable(_characterModel.Id)
