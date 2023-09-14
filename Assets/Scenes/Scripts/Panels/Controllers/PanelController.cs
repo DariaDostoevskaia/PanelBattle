@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.AI;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
@@ -82,18 +83,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
             if (!panelModel.IsJumpBlock
                 || !panelModel.IsAvailable(_characterModel.Id)
                 || panelModel.IsVisiting(_characterModel.Id))
-            {
-                if (_characterModel is AICharacterModel)
-                {
-                    var pair = _pairs
-                        .OrderBy(pair => Guid.NewGuid())
-                        .First(pair => pair.panelModel.IsAvailable(_characterModel.Id)
-                        && !pair.panelModel.IsVisiting(_characterModel.Id));
-
-                    OnPanelClicked(pair.panelView);
-                }
                 return;
-            }
 
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
             oldPanel.Remove(_characterModel.Id);

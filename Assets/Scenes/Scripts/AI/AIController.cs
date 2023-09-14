@@ -25,13 +25,29 @@ namespace LegoBattaleRoyal.AI
 
         public void ProcessRound()
         {
-            var pair = _pairs
-                .OrderBy(pair => Guid.NewGuid())
-                .First(pair => pair.panelModel.IsAvailable(_aiCharacterModel.Id)
-                && !pair.panelModel.IsVisiting(_aiCharacterModel.Id));
+            if (_aiCharacterModel is AICharacterModel)
+            {
+                (PanelModel panelModel, PanelView panelView) pair;
 
-            _panelController.OnPanelClicked(pair.panelView);
-            Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {pair.panelModel.GridPosition}");
+                GetPair();
+
+                if (!pair.panelModel.IsJumpBlock
+                    || pair.panelModel.IsVisiting(_aiCharacterModel.Id))
+                {
+                    GetPair();
+                }
+
+                _panelController.OnPanelClicked(pair.panelView);
+                Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {pair.panelModel.GridPosition}");
+
+                void GetPair()
+                {
+                    pair = _pairs
+                    .OrderBy(pair => Guid.NewGuid())
+                    .First(pair => pair.panelModel.IsJumpBlock
+                    && !pair.panelModel.IsVisiting(_aiCharacterModel.Id));
+                }
+            }
         }
     }
 }
