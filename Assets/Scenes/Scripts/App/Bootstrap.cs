@@ -63,27 +63,23 @@ namespace LegoBattaleRoyal.App
             (Panels.Models.PanelModel panelModel, Panels.View.PanelView panelView)[] pairs, bool isAi,
             RoundController roundController)
         {
-            var aicharacterSO = _gameSettingsSO.AIcharacterSO;
-
             var characterModel = isAi
-                ? new AICharacterModel(aicharacterSO.JumpLenght)
+                ? new AICharacterModel(characterSO.JumpLenght)
+
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);
-
             var characterView = Instantiate(_characterViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
+
             characterView.SetColor(playerColor);
-
             characterView.SetJumpHeight(characterSO.JumpHeight);
-            characterView.SetJumpHeight(aicharacterSO.JumpHeight);
-
             characterView.SetMoveDuration(characterSO.MoveDuration);
-            characterView.SetMoveDuration(aicharacterSO.MoveDuration);
 
-            var characterController = new Characters.Controllers.CharacterController(characterModel, characterView, characterRepository);
+            var characterController = new Characters.Controllers.CharacterController(characterView);
             var panelController = new PanelController(pairs, characterModel);
+
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
             if (characterModel is AICharacterModel)
@@ -109,7 +105,6 @@ namespace LegoBattaleRoyal.App
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
 
                 panelController.Dispose();
-                roundController.Dispose();
             };
 
             void ChangeRound(Vector3 vector)

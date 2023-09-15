@@ -2,18 +2,13 @@ using System;
 
 namespace LegoBattaleRoyal.Round
 {
-    public class RoundController : IDisposable
+    public class RoundController
     {
         public event Action OnRoundChanged;
 
         public void ChangeRound()
         {
             OnRoundChanged?.Invoke();
-        }
-
-        public void Dispose()
-        {
-            OnRoundChanged = null;
         }
     }
 }
