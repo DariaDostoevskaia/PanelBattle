@@ -65,7 +65,6 @@ namespace LegoBattaleRoyal.App
         {
             var characterModel = isAi
                 ? new AICharacterModel(characterSO.JumpLenght)
-
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);

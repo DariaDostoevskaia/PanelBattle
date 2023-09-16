@@ -3,8 +3,6 @@ using LegoBattaleRoyal.Panels.View;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static LegoBattaleRoyal.Panels.Controllers.PanelController;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.5
   _jumpHeight: 5
-  _speed: 3
+  _jumpLenght: 1

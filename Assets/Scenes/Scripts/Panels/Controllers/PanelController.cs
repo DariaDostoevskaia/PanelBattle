@@ -1,4 +1,3 @@
-using LegoBattaleRoyal.AI;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
