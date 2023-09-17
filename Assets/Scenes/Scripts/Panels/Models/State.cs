@@ -11,6 +11,7 @@
         public void BuildBase()
         {
             IsBase = true;
+            //доб первичную инициализацию, где первый блок автоматически захватан
         }
 
         public void SetAvailable(bool value)
@@ -21,6 +22,8 @@
         public void AddVisitor()
         {
             IsVisiting = true;
+            //свой блок - вызываем логику захвата
+            //чужой блок - оккупируем
         }
 
         public void RemoveVisitor()

@@ -591,6 +591,8 @@ MonoBehaviour:
     type: 3}
   _levelContainer: {fileID: 399313825}
   _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
+  _capturePathViewPrefab: {fileID: 3423781268855496717, guid: 11e6d7102cc4cc046850e843e208c8b1,
+    type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

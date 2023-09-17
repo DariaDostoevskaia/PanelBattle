@@ -4,7 +4,6 @@ using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.AI

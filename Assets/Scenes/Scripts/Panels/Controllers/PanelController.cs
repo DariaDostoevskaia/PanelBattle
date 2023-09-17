@@ -75,6 +75,13 @@ namespace LegoBattaleRoyal.Panels.Controllers
             }
         }
 
+        public bool CanJump(PanelModel panelModel)
+        {
+            return panelModel.IsJumpBlock
+               && panelModel.IsAvailable(_characterModel.Id)
+               && !panelModel.IsVisiting(_characterModel.Id);
+        }
+
         public void OnPanelClicked(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
@@ -95,13 +102,6 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelViewPosition = view.transform.position;
 
             OnMoveSelected?.Invoke(panelViewPosition);
-        }
-
-        public bool CanJump(PanelModel panelModel)
-        {
-            return panelModel.IsJumpBlock
-               && panelModel.IsAvailable(_characterModel.Id)
-               && !panelModel.IsVisiting(_characterModel.Id);
         }
 
         private void OnPanelHover(PanelView view)
@@ -130,6 +130,17 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public void Dispose()
         {
             OnMoveSelected = null;
+        }
+
+        public void ProcessCapture()
+        {
+            //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
+
+            //реализаци€ захвата
+            //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
+            //у Panel model будет метод capture, мен€ющий состо€ние
+            // у panelView мен€ем цвет - от цвета »грока-захвата
+            // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
         }
     }
 }

@@ -12,10 +12,9 @@ namespace LegoBattaleRoyal.Characters.Models
         {
             Id = Guid.NewGuid();
 
-            if (jumpLenght < 0)
+            if (jumpLenght <= 0)
             {
-                throw new ArgumentOutOfRangeException("The value of the jump length can not be negative or equal to zero. " +
-                    "Enter a jump length value greater than zero.");
+                throw new ArgumentOutOfRangeException(nameof(jumpLenght), jumpLenght,"Exepted > 0");
             }
 
             JumpLenght = jumpLenght;

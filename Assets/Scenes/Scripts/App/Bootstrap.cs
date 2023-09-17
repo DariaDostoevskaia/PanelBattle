@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.AI;
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Characters.View;
+using LegoBattaleRoyal.Controllers.CapturePath;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Round;
@@ -17,6 +18,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private CharacterView _characterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
+        [SerializeField] private CapturePathView _capturePathViewPrefab;
 
         private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
 
@@ -76,8 +78,14 @@ namespace LegoBattaleRoyal.App
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
 
-            var characterController = new Characters.Controllers.CharacterController(characterView);
             var panelController = new PanelController(pairs, characterModel);
+
+            var capturePathView = Instantiate(_capturePathViewPrefab);
+            capturePathView.SetColor(playerColor);
+
+            var capturePathController = new CapturePathController(capturePathView);
+
+            var characterController = new Characters.Controllers.CharacterController(characterView, capturePathController, panelController);
 
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
