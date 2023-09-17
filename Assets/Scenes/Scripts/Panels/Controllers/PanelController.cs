@@ -78,10 +78,7 @@ namespace LegoBattaleRoyal.Panels.Controllers
         public void OnPanelClicked(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
-
-            if (!panelModel.IsJumpBlock
-                || !panelModel.IsAvailable(_characterModel.Id)
-                || panelModel.IsVisiting(_characterModel.Id))
+            if (!CanJump(panelModel))
                 return;
 
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
@@ -98,6 +95,13 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelViewPosition = view.transform.position;
 
             OnMoveSelected?.Invoke(panelViewPosition);
+        }
+
+        public bool CanJump(PanelModel panelModel)
+        {
+            return panelModel.IsJumpBlock
+               && panelModel.IsAvailable(_characterModel.Id)
+               && !panelModel.IsVisiting(_characterModel.Id);
         }
 
         private void OnPanelHover(PanelView view)

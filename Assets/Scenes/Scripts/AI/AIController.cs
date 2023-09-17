@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Panels.View;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.AI
@@ -25,28 +26,19 @@ namespace LegoBattaleRoyal.AI
 
         public void ProcessRound()
         {
-            (PanelModel panelModel, PanelView panelView) pair;
+            var (panelModel, panelView) = GetJumpPair();
 
-            if (_aiCharacterModel is AICharacterModel)
-            {
-                GetPair();
-                while (!pair.panelModel.IsJumpBlock
-                    || pair.panelModel.IsVisiting(_aiCharacterModel.Id))
-                {
-                    GetPair();
-                }
-                _panelController.OnPanelClicked(pair.panelView);
+            _panelController.OnPanelClicked(panelView);
 
-                Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {pair.panelModel.GridPosition}");
-            }
+            Debug.Log($"{nameof(ProcessRound)}: {_aiCharacterModel.Id} move to {panelModel.GridPosition}");
+        }
 
-            void GetPair()
-            {
-                pair = _pairs
-                .OrderBy(pair => Guid.NewGuid())
-                .First(pair => pair.panelModel.IsJumpBlock
-                && !pair.panelModel.IsVisiting(_aiCharacterModel.Id));
-            }
+        private (PanelModel, PanelView) GetJumpPair()
+        {
+            var pair = _pairs
+              .OrderBy(pair => Guid.NewGuid())
+              .First(pair => _panelController.CanJump(pair.panelModel));
+            return pair;
         }
     }
 }
