@@ -1,5 +1,5 @@
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Panels.View;
+using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;

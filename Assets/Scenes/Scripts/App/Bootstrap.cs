@@ -1,10 +1,14 @@
-using LegoBattaleRoyal.AI;
 using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Characters.View;
+using LegoBattaleRoyal.Controllers.AI;
 using LegoBattaleRoyal.Controllers.CapturePath;
+using LegoBattaleRoyal.Controllers.Panel;
+using LegoBattaleRoyal.Controllers.Round;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
-using LegoBattaleRoyal.Round;
+using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Presentation.CapturePath;
+using LegoBattaleRoyal.Presentation.Character;
+using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Collections.Generic;
@@ -20,7 +24,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private CapturePathView _capturePathViewPrefab;
 
-        private readonly Dictionary<Guid, (Characters.Controllers.CharacterController, PanelController)> _players = new();
+        private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
 
         private RoundController _roundController;
 
@@ -61,62 +65,62 @@ namespace LegoBattaleRoyal.App
                 });
         }
 
-        private void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
-            (Panels.Models.PanelModel panelModel, Panels.View.PanelView panelView)[] pairs, bool isAi,
-            RoundController roundController)
+        public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
+            (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController)
         {
-            var characterModel = isAi
-                ? new AICharacterModel(characterSO.JumpLenght)
-                : new CharacterModel(characterSO.JumpLenght);
-
-            characterRepository.Add(characterModel);
-            var characterView = Instantiate(_characterViewPrefab);
-
-            var playerColor = characterModel.Id.ToColor();
-
-            characterView.SetColor(playerColor);
-            characterView.SetJumpHeight(characterSO.JumpHeight);
-            characterView.SetMoveDuration(characterSO.MoveDuration);
-
-            var panelController = new PanelController(pairs, characterModel);
-
-            var capturePathView = Instantiate(_capturePathViewPrefab);
-            capturePathView.SetColor(playerColor);
-
-            var capturePathController = new CapturePathController(capturePathView);
-
-            var characterController = new Characters.Controllers.CharacterController(characterView, capturePathController, panelController);
-
-            panelController.OnMoveSelected += characterController.MoveCharacter;
-
-            if (characterModel is AICharacterModel)
             {
-                var aiController = new AIController(panelController, pairs, characterModel);
-                roundController.OnRoundChanged += aiController.ProcessRound;
+                var characterModel = isAi
+                    ? new AICharacterModel(characterSO.JumpLenght)
+                    : new CharacterModel(characterSO.JumpLenght);
 
-                OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
-            }
-            else
-            {
-                panelController.OnMoveSelected += ChangeRound;
-                panelController.SubscribeOnInput();
-            }
+                characterRepository.Add(characterModel);
+                var characterView = Instantiate(_characterViewPrefab);
 
-            _players[characterModel.Id] = (characterController, panelController);
+                var playerColor = characterModel.Id.ToColor();
 
-            OnDisposed += () =>
-            {
-                panelController.UnsubscribeOnInput();
+                characterView.SetColor(playerColor);
+                characterView.SetJumpHeight(characterSO.JumpHeight);
+                characterView.SetMoveDuration(characterSO.MoveDuration);
+                var panelController = new PanelController(pairs, characterModel);
 
-                panelController.OnMoveSelected -= ChangeRound;
-                panelController.OnMoveSelected -= characterController.MoveCharacter;
+                var capturePathView = Instantiate(_capturePathViewPrefab);
+                capturePathView.SetColor(playerColor);
 
-                panelController.Dispose();
-            };
+                var capturePathController = new CapturePathController(capturePathView);
 
-            void ChangeRound(Vector3 vector)
-            {
-                roundController.ChangeRound();
+                var characterController = new Controllers.Character.CharacterController(characterView, capturePathController, panelController);
+
+                panelController.OnMoveSelected += characterController.MoveCharacter;
+
+                if (characterModel is AICharacterModel)
+                {
+                    var aiController = new AIController(panelController, pairs, characterModel);
+                    roundController.OnRoundChanged += aiController.ProcessRound;
+
+                    OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
+                }
+                else
+                {
+                    panelController.OnMoveSelected += ChangeRound;
+                    panelController.SubscribeOnInput();
+                }
+
+                _players[characterModel.Id] = (characterController, panelController);
+
+                OnDisposed += () =>
+                {
+                    panelController.UnsubscribeOnInput();
+
+                    panelController.OnMoveSelected -= ChangeRound;
+                    panelController.OnMoveSelected -= characterController.MoveCharacter;
+
+                    panelController.Dispose();
+                };
+
+                void ChangeRound(Vector3 vector)
+                {
+                    roundController.ChangeRound();
+                }
             }
         }
 

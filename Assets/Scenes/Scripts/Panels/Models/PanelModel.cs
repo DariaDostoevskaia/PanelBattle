@@ -17,6 +17,13 @@ namespace LegoBattaleRoyal.Panels.Models
             GridPosition = gridPosition;
         }
 
+        public bool Capture(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+            return state.Capture;
+        }
+
         public bool IsVisiting(Guid characterId)
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
@@ -41,6 +48,7 @@ namespace LegoBattaleRoyal.Panels.Models
 
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+            //state.Occupate = true; ??
             state.BuildBase();
         }
 

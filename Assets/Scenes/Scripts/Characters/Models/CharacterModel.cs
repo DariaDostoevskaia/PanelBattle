@@ -14,7 +14,7 @@ namespace LegoBattaleRoyal.Characters.Models
 
             if (jumpLenght <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(jumpLenght), jumpLenght,"Exepted > 0");
+                throw new ArgumentOutOfRangeException(nameof(jumpLenght), jumpLenght, "Exepted > 0");
             }
 
             JumpLenght = jumpLenght;

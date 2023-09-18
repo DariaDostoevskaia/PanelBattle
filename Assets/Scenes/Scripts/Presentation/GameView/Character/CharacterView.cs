@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Characters.View
+namespace LegoBattaleRoyal.Presentation.Character
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
     public class CharacterView : MonoBehaviour
@@ -25,7 +25,8 @@ namespace LegoBattaleRoyal.Characters.View
 
         public void JumpTo(Vector3 endValue)
         {
-            if (_move != null && _move.IsActive())
+            if (_move != null
+                && _move.IsActive())
                 return;
 
             _move?.Kill();
@@ -42,7 +43,6 @@ namespace LegoBattaleRoyal.Characters.View
                     transform.position = movePoint;
                     OnJumped?.Invoke(false);
                 });
-
         }
 
         public void SetPosition(Vector3 position)

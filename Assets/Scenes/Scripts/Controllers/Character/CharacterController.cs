@@ -1,10 +1,9 @@
-using LegoBattaleRoyal.Characters.View;
 using LegoBattaleRoyal.Controllers.CapturePath;
-using LegoBattaleRoyal.Panels.Controllers;
-using System;
+using LegoBattaleRoyal.Controllers.Panel;
+using LegoBattaleRoyal.Presentation.Character;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Characters.Controllers
+namespace LegoBattaleRoyal.Controllers.Character
 {
     public class CharacterController
     {
@@ -37,7 +36,7 @@ namespace LegoBattaleRoyal.Characters.Controllers
             else
             {
                 _capturePathController.UnBind();
-                _panelController.ProcessCapture();
+                _panelController.ProcessCapture(_capturePathController);
             }
         }
 

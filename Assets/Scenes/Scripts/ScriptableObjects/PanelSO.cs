@@ -1,4 +1,4 @@
-﻿using LegoBattaleRoyal.Panels.View;
+﻿using LegoBattaleRoyal.Presentation.Panel;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects

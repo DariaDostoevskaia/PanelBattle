@@ -8,9 +8,14 @@
 
         public bool IsVisiting { get; private set; }
 
+        public bool Occupate { get; private set; }
+
+        public bool Capture { get; private set; }
+
         public void BuildBase()
         {
             IsBase = true;
+            Capture = true;
             //доб первичную инициализацию, где первый блок автоматически захватан
         }
 
