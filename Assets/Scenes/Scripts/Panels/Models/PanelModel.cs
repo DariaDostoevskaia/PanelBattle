@@ -21,6 +21,7 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             return state.Capture;
         }
 
@@ -28,6 +29,7 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             return state.IsVisiting;
         }
 
@@ -48,8 +50,9 @@ namespace LegoBattaleRoyal.Panels.Models
 
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
-            //state.Occupate = true; ??
+
             state.BuildBase();
+            state.OccupateBase(Capture(characterId));
         }
 
         public void SetAvailable(Guid characterId)
@@ -59,6 +62,7 @@ namespace LegoBattaleRoyal.Panels.Models
 
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             state.SetAvailable(true);
         }
 
@@ -66,6 +70,7 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             state.SetAvailable(false);
         }
 
@@ -84,6 +89,7 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
+
             if (!state.IsVisiting)
                 throw new Exception("Block has not player yet.");
 

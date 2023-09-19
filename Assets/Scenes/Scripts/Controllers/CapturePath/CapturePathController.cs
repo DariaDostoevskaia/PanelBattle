@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.Presentation.CapturePath;
+using System;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Controllers.CapturePath
@@ -18,7 +19,7 @@ namespace LegoBattaleRoyal.Controllers.CapturePath
             _capturePathView.Bind(transform);
         }
 
-        public void ResetPath()
+        public void ResetPath(Guid Id)
         {
             _capturePathView.gameObject.SetActive(false);
             _capturePathView.Clear();

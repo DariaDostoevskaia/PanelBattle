@@ -1,4 +1,6 @@
-﻿namespace LegoBattaleRoyal.Panels.Models
+﻿using System;
+
+namespace LegoBattaleRoyal.Panels.Models
 {
     public class State
     {
@@ -34,6 +36,16 @@
         public void RemoveVisitor()
         {
             IsVisiting = false;
+        }
+
+        public void OccupateBase(bool capture)
+        {
+            Capture = capture;
+
+            if (Capture == true)
+                Occupate = false;
+            else
+                Occupate = true;
         }
     }
 }

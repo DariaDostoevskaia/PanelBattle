@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegoBattaleRoyal.Panels.Models;
+using System;
 
 namespace LegoBattaleRoyal.Characters.Models
 {
@@ -18,6 +19,10 @@ namespace LegoBattaleRoyal.Characters.Models
             }
 
             JumpLenght = jumpLenght;
+        }
+
+        public void Capture(PanelModel panelModel)
+        {
         }
     }
 }

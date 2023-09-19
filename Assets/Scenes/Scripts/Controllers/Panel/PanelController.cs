@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.CapturePath;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Presentation.Panel;
 using System;
@@ -12,8 +13,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
     public class PanelController : IDisposable
     {
         public event Action<Vector3> OnMoveSelected;
-
-        public event Action OnEndCaptured;
 
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
@@ -135,13 +134,30 @@ namespace LegoBattaleRoyal.Controllers.Panel
             //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
 
             //реализаци€ захвата
+
             //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
+            var panelModel = _pairs.First(pair => pair.panelView).panelModel;
+            var panelView = _pairs.First(pair => pair.panelView).panelView;
+
+            if (!panelModel.IsVisiting(_characterModel.Id))
+                panelModel.Capture(_characterModel.Id);
+
+            _characterModel.Capture(panelModel);
+
             //у Panel model будет метод capture, мен€ющий состо€ние
+
+            panelModel.Capture(_characterModel.Id);
+
+            var playerColor = _characterModel.Id.ToColor();
+
+            panelView.SetColor(playerColor);
             // у panelView мен€ем цвет - от цвета »грока-захвата
+
             // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
 
-            /*OnEndCaptured +=*/
-            //capturePathController.ResetPath();
+            //public event Action OnEndCaptured;
+
+            //.OnEndCaptured += capturePathController.ResetPath(_characterModel.Id);
         }
 
         public void Dispose()

@@ -87,7 +87,6 @@ namespace LegoBattaleRoyal.App
                 capturePathView.SetColor(playerColor);
 
                 var capturePathController = new CapturePathController(capturePathView);
-
                 var characterController = new Controllers.Character.CharacterController(characterView, capturePathController, panelController);
 
                 panelController.OnMoveSelected += characterController.MoveCharacter;
@@ -114,6 +113,7 @@ namespace LegoBattaleRoyal.App
                     panelController.OnMoveSelected -= ChangeRound;
                     panelController.OnMoveSelected -= characterController.MoveCharacter;
 
+                    characterController.Dispose();
                     panelController.Dispose();
                 };
 
