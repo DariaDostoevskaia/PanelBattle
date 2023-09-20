@@ -135,7 +135,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
         public void ProcessCapture(CapturePathController capturePathController)
         {
-            _capturePathController = capturePathController;
             //проверка на VIsitor (доб свойство оккупирровано) и на это свойство проверяем захват
 
             //реализация захвата
@@ -157,13 +156,14 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
             // в конце событие OnEndCaptured, на него подписывается Capture pass controller и вызывает resetPath(4*)
 
-            _characterModel.OnEndCaptured += capturePathController.ResetPath;
+            _capturePathController = capturePathController;
+            _characterModel.OnEndCaptured += _capturePathController.ResetPath;
         }
 
         public void Dispose()
         {
-            _characterModel.OnEndCaptured -= _capturePathController.ResetPath;
             OnMoveSelected = null;
+            _characterModel.OnEndCaptured -= _capturePathController.ResetPath;
         }
     }
 }
