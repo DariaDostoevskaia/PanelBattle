@@ -77,10 +77,11 @@ namespace LegoBattaleRoyal.App
                 var characterView = Instantiate(_characterViewPrefab);
 
                 var playerColor = characterModel.Id.ToColor();
-
                 characterView.SetColor(playerColor);
+
                 characterView.SetJumpHeight(characterSO.JumpHeight);
                 characterView.SetMoveDuration(characterSO.MoveDuration);
+
                 var panelController = new PanelController(pairs, characterModel);
 
                 var capturePathView = Instantiate(_capturePathViewPrefab);

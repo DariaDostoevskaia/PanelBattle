@@ -17,6 +17,9 @@ namespace LegoBattaleRoyal.Controllers.Panel
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
 
+        private (PanelModel panelModel, PanelView panelView) _pair;
+        private CapturePathController _capturePathController;
+
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
             CharacterModel characterModel)
         {
@@ -101,8 +104,9 @@ namespace LegoBattaleRoyal.Controllers.Panel
             }
             MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
 
-            var panelViewPosition = view.transform.position;
+            _pair = (panelModel, view);
 
+            var panelViewPosition = view.transform.position;
             OnMoveSelected?.Invoke(panelViewPosition);
         }
 
@@ -131,37 +135,34 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
         public void ProcessCapture(CapturePathController capturePathController)
         {
+            _capturePathController = capturePathController;
             //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
 
             //реализаци€ захвата
 
             //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
-            var panelModel = _pairs.First(pair => pair.panelView).panelModel;
-            var panelView = _pairs.First(pair => pair.panelView).panelView;
 
-            if (!panelModel.IsVisiting(_characterModel.Id))
-                panelModel.Capture(_characterModel.Id);
+            if (!_pair.panelModel.IsVisiting(_characterModel.Id))
+                _pair.panelModel.Capture(_characterModel.Id);
 
-            _characterModel.Capture(panelModel);
+            _characterModel.Capture(_pair.panelModel);
 
             //у Panel model будет метод capture, мен€ющий состо€ние
 
-            panelModel.Capture(_characterModel.Id);
+            _pair.panelModel.Capture(_characterModel.Id);
 
             var playerColor = _characterModel.Id.ToColor();
-
-            panelView.SetColor(playerColor);
+            _pair.panelView.SetColor(playerColor);
             // у panelView мен€ем цвет - от цвета »грока-захвата
 
             // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
 
-            //public event Action OnEndCaptured;
-
-            //.OnEndCaptured += capturePathController.ResetPath(_characterModel.Id);
+            _characterModel.OnEndCaptured += capturePathController.ResetPath;
         }
 
         public void Dispose()
         {
+            _characterModel.OnEndCaptured -= _capturePathController.ResetPath;
             OnMoveSelected = null;
         }
     }
