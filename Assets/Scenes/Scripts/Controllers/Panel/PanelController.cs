@@ -147,11 +147,26 @@ namespace LegoBattaleRoyal.Controllers.Panel
             _characterModel.Capture(_pair.panelModel);
 
             //у Panel model будет метод capture, мен€ющий состо€ние
-
             _pair.panelModel.Capture(_characterModel.Id);
 
-            var playerColor = _characterModel.Id.ToColor();
-            _pair.panelView.SetColor(playerColor);
+            if (_characterModel.IsBasePanel)
+            {
+                var panelModelsList = _characterModel._panelModels;
+
+                for (int i = 0; i < panelModelsList.Count; i++)
+                {
+                    var panelColor = _pairs.First(pair => pair.panelModel == panelModelsList[i]).panelModel;
+
+                    var playerColor = _characterModel.Id.ToColor();
+
+                    _pair.panelView.SetColor(playerColor);
+                }
+            }
+
+            //if (_characterModel.IsBasePanel)
+            //    _capturePathController.ResetPath(_characterModel.Id);
+            // - убрать линию, если на базе. как?
+
             // у panelView мен€ем цвет - от цвета »грока-захвата
 
             // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)

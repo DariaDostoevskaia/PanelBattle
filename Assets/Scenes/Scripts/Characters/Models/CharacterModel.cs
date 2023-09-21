@@ -7,10 +7,10 @@ namespace LegoBattaleRoyal.Characters.Models
     public class CharacterModel
     {
         public int JumpLenght { get; }
-
         public Guid Id { get; }
 
         public List<PanelModel> _panelModels = new();
+        public bool IsBasePanel { get; set; }
 
         public event Action<Guid> OnEndCaptured;
 
@@ -38,6 +38,7 @@ namespace LegoBattaleRoyal.Characters.Models
                 {
                     if (_panelModels[i] == _panelModels[0])
                     {
+                        IsBasePanel = true;
                         OnEndCaptured?.Invoke(Id);
                         _panelModels.Clear();
                     }
