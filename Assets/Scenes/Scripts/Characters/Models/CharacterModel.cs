@@ -1,6 +1,7 @@
 ﻿using LegoBattaleRoyal.Panels.Models;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.Characters.Models
 {
@@ -8,9 +9,6 @@ namespace LegoBattaleRoyal.Characters.Models
     {
         public int JumpLenght { get; }
         public Guid Id { get; }
-
-        public List<PanelModel> _panelModels = new();
-        public bool IsBasePanel { get; set; }
 
         public event Action<Guid> OnEndCaptured;
 
@@ -31,18 +29,9 @@ namespace LegoBattaleRoyal.Characters.Models
             if (panelModel == null)
                 throw new ArgumentNullException(nameof(panelModel));
 
-            _panelModels.Add(panelModel);
+            panelModel.Capture(Id);
 
-            if (_panelModels.Count > 0)
-                for (int i = 1; i < _panelModels.Count; i++)
-                {
-                    if (_panelModels[i] == _panelModels[0])
-                    {
-                        IsBasePanel = true;
-                        OnEndCaptured?.Invoke(Id);
-                        _panelModels.Clear();
-                    }
-                }
+            OnEndCaptured?.Invoke(Id);
         }
     }
 }

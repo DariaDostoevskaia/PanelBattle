@@ -19,7 +19,7 @@ namespace LegoBattaleRoyal.Controllers.CapturePath
             _capturePathView.Bind(transform);
         }
 
-        public void ResetPath(Guid Id)
+        public void ResetPath()
         {
             _capturePathView.gameObject.SetActive(false);
             _capturePathView.Clear();

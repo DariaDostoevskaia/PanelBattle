@@ -16,15 +16,14 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
-
-        private (PanelModel panelModel, PanelView panelView) _pair;
-        private CapturePathController _capturePathController;
+        private readonly CapturePathController _capturePathController;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel)
+            CharacterModel characterModel, CapturePathController capturePathController)
         {
             _characterModel = characterModel;
             _pairs = pairs;
+            _capturePathController = capturePathController;
         }
 
         public void SubscribeOnInput()
@@ -98,16 +97,25 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
             panelModel.Add(_characterModel.Id);
 
+            var captureIsReady = panelModel.IsCaptured(_characterModel.Id)
+                && _pairs.Any(pair => pair.panelModel.IsOccupated(_characterModel.Id));
+
+            if (captureIsReady)
+                ProcessCapture();
+            else
+                panelModel.Occupate(_characterModel.Id);
+
             foreach (var (panel, _) in _pairs)
             {
                 panel.SetUnavailable(_characterModel.Id);
             }
             MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
 
-            _pair = (panelModel, view);
-
             var panelViewPosition = view.transform.position;
             OnMoveSelected?.Invoke(panelViewPosition);
+
+            if (captureIsReady)
+                _capturePathController.ResetPath();
         }
 
         private void OnPanelHover(PanelView view)
@@ -133,52 +141,35 @@ namespace LegoBattaleRoyal.Controllers.Panel
             view.CancelHighlight();
         }
 
-        public void ProcessCapture(CapturePathController capturePathController)
+        private void ProcessCapture()
         {
             //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
 
             //реализаци€ захвата
 
             //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
+            var occupatePanels = _pairs.Where(pair => pair.panelModel.IsOccupated(_characterModel.Id)).ToArray();
+            if (occupatePanels.Length == 0)
+                throw new Exception("Occupated panels not found");
 
-            if (!_pair.panelModel.IsVisiting(_characterModel.Id))
-                _pair.panelModel.Capture(_characterModel.Id);
+            var playerColor = _characterModel.Id.ToColor();
 
-            _characterModel.Capture(_pair.panelModel);
-
-            //у Panel model будет метод capture, мен€ющий состо€ние
-            _pair.panelModel.Capture(_characterModel.Id);
-
-            if (_characterModel.IsBasePanel)
+            foreach (var pair in occupatePanels)
             {
-                var panelModelsList = _characterModel._panelModels;
-
-                for (int i = 0; i < panelModelsList.Count; i++)
-                {
-                    var panelColor = _pairs.First(pair => pair.panelModel == panelModelsList[i]).panelModel;
-
-                    var playerColor = _characterModel.Id.ToColor();
-
-                    _pair.panelView.SetColor(playerColor);
-                }
+                _characterModel.Capture(pair.panelModel);
+                pair.panelView.SetColor(playerColor);
             }
 
-            //if (_characterModel.IsBasePanel)
-            //    _capturePathController.ResetPath(_characterModel.Id);
-            // - убрать линию, если на базе. как?
+            //у Panel model будет метод capture, мен€ющий состо€ние
 
             // у panelView мен€ем цвет - от цвета »грока-захвата
 
             // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
-
-            _capturePathController = capturePathController;
-            _characterModel.OnEndCaptured += _capturePathController.ResetPath;
         }
 
         public void Dispose()
         {
             OnMoveSelected = null;
-            _characterModel.OnEndCaptured -= _capturePathController.ResetPath;
         }
     }
 }

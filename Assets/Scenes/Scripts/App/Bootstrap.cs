@@ -82,12 +82,12 @@ namespace LegoBattaleRoyal.App
                 characterView.SetJumpHeight(characterSO.JumpHeight);
                 characterView.SetMoveDuration(characterSO.MoveDuration);
 
-                var panelController = new PanelController(pairs, characterModel);
-
                 var capturePathView = Instantiate(_capturePathViewPrefab);
                 capturePathView.SetColor(playerColor);
-
                 var capturePathController = new CapturePathController(capturePathView);
+
+                var panelController = new PanelController(pairs, characterModel, capturePathController);
+
                 var characterController = new Controllers.Character.CharacterController(characterView, capturePathController, panelController);
 
                 panelController.OnMoveSelected += characterController.MoveCharacter;

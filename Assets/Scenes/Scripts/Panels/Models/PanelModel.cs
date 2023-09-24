@@ -17,12 +17,42 @@ namespace LegoBattaleRoyal.Panels.Models
             GridPosition = gridPosition;
         }
 
-        public bool Capture(Guid characterId)
+        public bool IsCaptured(Guid characterId)
         {
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
 
-            return state.Capture;
+            return state.IsCaptured;
+        }
+
+        public bool IsOccupated(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsOccupated;
+        }
+
+        public void Capture(Guid characterId)
+        {
+            foreach (var stateForCharacter in _stateForCharacters.Values)
+            {
+                stateForCharacter.SetCapture(false);
+                stateForCharacter.Occupate(false);
+            }
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.SetCapture(true);
+        }
+
+        public void Occupate(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.Occupate(true);
         }
 
         public bool IsVisiting(Guid characterId)
@@ -52,7 +82,6 @@ namespace LegoBattaleRoyal.Panels.Models
                 state = _stateForCharacters[characterId] = new State();
 
             state.BuildBase();
-            state.OccupateBase(Capture(characterId));
         }
 
         public void SetAvailable(Guid characterId)

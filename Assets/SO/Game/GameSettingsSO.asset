@@ -20,4 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
   - {fileID: 11400000, guid: 41df4ccd11e8d0c4b9e4a3095c511c9c, type: 2}
   _gridPanelSettings: {fileID: 11400000, guid: 874d8cdb0053dca4b9292d6aa1332e1f, type: 2}
-  _botCount: 2
+  _botCount: 4

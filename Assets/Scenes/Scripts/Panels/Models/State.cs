@@ -10,15 +10,14 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public bool IsVisiting { get; private set; }
 
-        public bool Occupate { get; private set; }
+        public bool IsOccupated { get; private set; }
 
-        public bool Capture { get; private set; }
+        public bool IsCaptured { get; private set; }
 
         public void BuildBase()
         {
             IsBase = true;
-            Capture = true;
-            //доб первичную инициализацию, где первый блок автоматически захватан
+            IsCaptured = true;
         }
 
         public void SetAvailable(bool value)
@@ -29,8 +28,6 @@ namespace LegoBattaleRoyal.Panels.Models
         public void AddVisitor()
         {
             IsVisiting = true;
-            //свой блок - вызываем логику захвата
-            //чужой блок - оккупируем
         }
 
         public void RemoveVisitor()
@@ -38,14 +35,14 @@ namespace LegoBattaleRoyal.Panels.Models
             IsVisiting = false;
         }
 
-        public void OccupateBase(bool capture)
+        public void SetCapture(bool capture)
         {
-            Capture = capture;
+            IsCaptured = capture;
+        }
 
-            if (Capture == true)
-                Occupate = false;
-            else
-                Occupate = true;
+        public void Occupate(bool occupate)
+        {
+            IsOccupated = occupate;
         }
     }
 }

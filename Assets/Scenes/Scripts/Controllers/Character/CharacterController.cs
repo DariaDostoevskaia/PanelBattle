@@ -40,7 +40,6 @@ namespace LegoBattaleRoyal.Controllers.Character
             else
             {
                 _capturePathController.UnBind();
-                _panelController.ProcessCapture(_capturePathController);
             }
         }
 
