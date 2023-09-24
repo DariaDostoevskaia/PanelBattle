@@ -1,25 +1,29 @@
 using LegoBattaleRoyal.Characters.Models;
+using LegoBattaleRoyal.Controllers.CapturePath;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Panels.View;
+using LegoBattaleRoyal.Presentation.Panel;
 using System;
 using System.Linq;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
-namespace LegoBattaleRoyal.Panels.Controllers
+namespace LegoBattaleRoyal.Controllers.Panel
 {
     public class PanelController : IDisposable
     {
         public event Action<Vector3> OnMoveSelected;
 
-        private (PanelModel panelModel, PanelView panelView)[] _pairs;
-        private CharacterModel _characterModel;
+        private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
+        private readonly CharacterModel _characterModel;
+        private readonly CapturePathController _capturePathController;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel)
+            CharacterModel characterModel, CapturePathController capturePathController)
         {
             _characterModel = characterModel;
             _pairs = pairs;
+            _capturePathController = capturePathController;
         }
 
         public void SubscribeOnInput()
@@ -75,6 +79,13 @@ namespace LegoBattaleRoyal.Panels.Controllers
             }
         }
 
+        public bool CanJump(PanelModel panelModel)
+        {
+            return panelModel.IsJumpBlock
+               && panelModel.IsAvailable(_characterModel.Id)
+               && !panelModel.IsVisiting(_characterModel.Id);
+        }
+
         public void OnPanelClicked(PanelView view)
         {
             var panelModel = _pairs.First(pair => pair.panelView == view).panelModel;
@@ -86,6 +97,14 @@ namespace LegoBattaleRoyal.Panels.Controllers
 
             panelModel.Add(_characterModel.Id);
 
+            var captureIsReady = panelModel.IsCaptured(_characterModel.Id)
+                && _pairs.Any(pair => pair.panelModel.IsOccupated(_characterModel.Id));
+
+            if (captureIsReady)
+                ProcessCapture();
+            else
+                panelModel.Occupate(_characterModel.Id);
+
             foreach (var (panel, _) in _pairs)
             {
                 panel.SetUnavailable(_characterModel.Id);
@@ -93,15 +112,10 @@ namespace LegoBattaleRoyal.Panels.Controllers
             MarkToAvailableNeighborPanels(panelModel.GridPosition, _characterModel.JumpLenght);
 
             var panelViewPosition = view.transform.position;
-
             OnMoveSelected?.Invoke(panelViewPosition);
-        }
 
-        public bool CanJump(PanelModel panelModel)
-        {
-            return panelModel.IsJumpBlock
-               && panelModel.IsAvailable(_characterModel.Id)
-               && !panelModel.IsVisiting(_characterModel.Id);
+            if (captureIsReady)
+                _capturePathController.ResetPath();
         }
 
         private void OnPanelHover(PanelView view)
@@ -125,6 +139,32 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private void OnPanelExit(PanelView view)
         {
             view.CancelHighlight();
+        }
+
+        private void ProcessCapture()
+        {
+            //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
+
+            //реализаци€ захвата
+
+            //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
+            var occupatePanels = _pairs.Where(pair => pair.panelModel.IsOccupated(_characterModel.Id)).ToArray();
+            if (occupatePanels.Length == 0)
+                throw new Exception("Occupated panels not found");
+
+            var playerColor = _characterModel.Id.ToColor();
+
+            foreach (var pair in occupatePanels)
+            {
+                _characterModel.Capture(pair.panelModel);
+                pair.panelView.SetColor(playerColor);
+            }
+
+            //у Panel model будет метод capture, мен€ющий состо€ние
+
+            // у panelView мен€ем цвет - от цвета »грока-захвата
+
+            // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
         }
 
         public void Dispose()

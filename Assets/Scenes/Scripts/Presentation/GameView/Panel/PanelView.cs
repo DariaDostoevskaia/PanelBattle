@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace LegoBattaleRoyal.Panels.View
+namespace LegoBattaleRoyal.Presentation.Panel
 {
     public class PanelView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {

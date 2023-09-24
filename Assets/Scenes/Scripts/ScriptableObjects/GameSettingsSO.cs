@@ -6,14 +6,14 @@ namespace LegoBattaleRoyal.ScriptableObjects
     public class GameSettingsSO : ScriptableObject
     {
         [SerializeField] private CharacterSO _characterSO;
-        [SerializeField] private AICharacterSO _aicharacterSO;
+        [SerializeField] private AICharacterSO _aICharacterSO;
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private GridPanelSettingsSO _gridPanelSettings;
         [SerializeField] private int _botCount;
 
         public CharacterSO CharacterSO => _characterSO;
 
-        public AICharacterSO AIcharacterSO => _aicharacterSO;
+        public AICharacterSO AIcharacterSO => _aICharacterSO;
 
         public PanelSO[] PanelSettings => _panelSettings;
 

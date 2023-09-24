@@ -6,7 +6,7 @@ namespace LegoBattaleRoyal.Characters.Models
 {
     public class CharacterRepository
     {
-        private readonly List<CharacterModel> _characterModels = new List<CharacterModel>();
+        private readonly List<CharacterModel> _characterModels = new();
 
         public void Add(CharacterModel characterModel)
         {

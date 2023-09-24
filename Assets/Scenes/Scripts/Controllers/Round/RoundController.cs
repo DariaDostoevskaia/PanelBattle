@@ -1,6 +1,6 @@
 using System;
 
-namespace LegoBattaleRoyal.Round
+namespace LegoBattaleRoyal.Controllers.Round
 {
     public class RoundController
     {

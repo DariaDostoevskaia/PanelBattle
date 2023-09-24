@@ -1,19 +1,18 @@
 using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Panels.Controllers;
+using LegoBattaleRoyal.Controllers.Panel;
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Panels.View;
+using LegoBattaleRoyal.Presentation.Panel;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.AI
+namespace LegoBattaleRoyal.Controllers.AI
 {
     public class AIController
     {
         private static CharacterModel _aiCharacterModel;
-        private PanelController _panelController;
-        private (PanelModel panelModel, PanelView panelView)[] _pairs;
+        private readonly PanelController _panelController;
+        private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
 
         public AIController(PanelController panelController,
             (PanelModel panelModel, PanelView panelView)[] pairs,

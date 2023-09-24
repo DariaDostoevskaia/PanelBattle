@@ -1,12 +1,15 @@
 ﻿using DG.Tweening;
+using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Characters.View
+namespace LegoBattaleRoyal.Presentation.Character
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
     public class CharacterView : MonoBehaviour
     {
+        public event Action<bool> OnJumped;
+
         private static readonly float MinimumPositionY = 1f;
         private Rigidbody _rigidbody;
         private Tween _move;
@@ -22,13 +25,24 @@ namespace LegoBattaleRoyal.Characters.View
 
         public void JumpTo(Vector3 endValue)
         {
-            if (_move != null && _move.IsActive())
+            if (_move != null
+                && _move.IsActive())
                 return;
 
             _move?.Kill();
 
             var movePoint = new Vector3(endValue.x, MinimumPositionY, endValue.z);
-            _move = _rigidbody.DOJump(movePoint, _jumpHeight, 1, _moveDuration);
+
+            OnJumped?.Invoke(true);
+
+            _move = _rigidbody
+                .DOJump(movePoint, _jumpHeight, 1, _moveDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+                {
+                    transform.position = movePoint;
+                    OnJumped?.Invoke(false);
+                });
         }
 
         public void SetPosition(Vector3 position)
