@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LegoBattaleRoyal.Panels.Models
+﻿namespace LegoBattaleRoyal.Panels.Models
 {
     public class State
     {

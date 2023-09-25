@@ -1,11 +1,9 @@
 ﻿using LegoBattaleRoyal.Panels.Models;
 using System;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 namespace LegoBattaleRoyal.Characters.Models
 {
-    public class CharacterModel
+    public class CharacterModel : IDisposable
     {
         public int JumpLenght { get; }
         public Guid Id { get; }
@@ -32,6 +30,11 @@ namespace LegoBattaleRoyal.Characters.Models
             panelModel.Capture(Id);
 
             OnEndCaptured?.Invoke(Id);
+        }
+
+        public void Dispose()
+        {
+            OnEndCaptured = null;
         }
     }
 }

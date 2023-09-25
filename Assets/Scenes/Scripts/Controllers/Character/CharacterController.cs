@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.Controllers.CapturePath;
-using LegoBattaleRoyal.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Character;
 using System;
 using UnityEngine;
@@ -10,15 +9,12 @@ namespace LegoBattaleRoyal.Controllers.Character
     {
         private readonly CharacterView _characterView;
         private readonly CapturePathController _capturePathController;
-        private readonly PanelController _panelController;
 
         public CharacterController(CharacterView characterView,
-            CapturePathController capturePathController,
-            PanelController panelController)
+            CapturePathController capturePathController)
         {
             _characterView = characterView;
             _capturePathController = capturePathController;
-            _panelController = panelController;
 
             _characterView.OnJumped += OnCharacterMoved;
         }
