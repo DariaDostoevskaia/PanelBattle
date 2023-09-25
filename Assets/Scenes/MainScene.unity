@@ -589,6 +589,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterViewPrefab: {fileID: 7357837026706244094, guid: d655ed2f057ec0441a05a98c52df5e49,
     type: 3}
+  _playerCharacterViewPrefab: {fileID: 7357837026706244094, guid: 4d98539b64fa833478add83aa5bcbd24,
+    type: 3}
   _levelContainer: {fileID: 399313825}
   _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
   _capturePathViewPrefab: {fileID: 3423781268855496717, guid: 11e6d7102cc4cc046850e843e208c8b1,

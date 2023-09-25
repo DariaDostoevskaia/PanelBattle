@@ -20,6 +20,7 @@ namespace LegoBattaleRoyal.App
     public class Bootstrap : MonoBehaviour
     {
         [SerializeField] private CharacterView _characterViewPrefab;
+        [SerializeField] private CharacterView _playerCharacterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private CapturePathView _capturePathViewPrefab;
@@ -74,7 +75,10 @@ namespace LegoBattaleRoyal.App
                     : new CharacterModel(characterSO.JumpLenght);
 
                 characterRepository.Add(characterModel);
-                var characterView = Instantiate(_characterViewPrefab);
+
+                var characterView = isAi
+                    ? Instantiate(_characterViewPrefab)
+                    : Instantiate(_playerCharacterViewPrefab);
 
                 var playerColor = characterModel.Id.ToColor();
                 characterView.SetColor(playerColor);
@@ -88,7 +92,7 @@ namespace LegoBattaleRoyal.App
 
                 var panelController = new PanelController(pairs, characterModel, capturePathController);
 
-                var characterController = new Controllers.Character.CharacterController(characterView, capturePathController, panelController);
+                var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
 
                 panelController.OnMoveSelected += characterController.MoveCharacter;
 
@@ -116,6 +120,7 @@ namespace LegoBattaleRoyal.App
 
                     characterController.Dispose();
                     panelController.Dispose();
+                    characterModel.Dispose();
                 };
 
                 void ChangeRound(Vector3 vector)

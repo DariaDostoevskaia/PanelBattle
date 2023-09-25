@@ -143,11 +143,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
         private void ProcessCapture()
         {
-            //проверка на VIsitor (доб свойство оккупирровано) и на это свойство провер€ем захват
-
-            //реализаци€ захвата
-
-            //добавл€ем в chararacter model метод capture (передаетс€ модель панели)
             var occupatePanels = _pairs.Where(pair => pair.panelModel.IsOccupated(_characterModel.Id)).ToArray();
             if (occupatePanels.Length == 0)
                 throw new Exception("Occupated panels not found");
@@ -159,12 +154,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 _characterModel.Capture(pair.panelModel);
                 pair.panelView.SetColor(playerColor);
             }
-
-            //у Panel model будет метод capture, мен€ющий состо€ние
-
-            // у panelView мен€ем цвет - от цвета »грока-захвата
-
-            // в конце событие OnEndCaptured, на него подписываетс€ Capture pass controller и вызывает resetPath(4*)
         }
 
         public void Dispose()

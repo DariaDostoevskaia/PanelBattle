@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.Presentation.CapturePath;
-using System;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Controllers.CapturePath
