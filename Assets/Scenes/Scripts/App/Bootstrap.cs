@@ -7,7 +7,6 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Presentation.CapturePath;
-using LegoBattaleRoyal.Presentation.Character;
 using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -19,21 +18,20 @@ namespace LegoBattaleRoyal.App
 {
     public class Bootstrap : MonoBehaviour
     {
-        [SerializeField] private CharacterView _characterViewPrefab;
-        [SerializeField] private CharacterView _playerCharacterViewPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private CapturePathView _capturePathViewPrefab;
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
-
         private RoundController _roundController;
+        private List<Color> _playerColors = new();
 
         private event Action OnDisposed;
 
         private void Start()
         {
             var characterSO = _gameSettingsSO.CharacterSO;
+
             var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
@@ -48,6 +46,8 @@ namespace LegoBattaleRoyal.App
             }
             CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
+            var index = 0;
+
             characterRepository
                 .GetAll()
                 .ToList()
@@ -59,6 +59,10 @@ namespace LegoBattaleRoyal.App
 
                     availablePair.panelModel.BuildBase(character.Id);
 
+                    availablePair.panelView.SetColor(_playerColors[index]);
+
+                    index++;
+
                     var (characterController, panelController) = _players[character.Id];
 
                     characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
@@ -69,64 +73,64 @@ namespace LegoBattaleRoyal.App
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
             (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController)
         {
+            var characterModel = isAi
+                ? new AICharacterModel(characterSO.JumpLenght)
+                : new CharacterModel(characterSO.JumpLenght);
+
+            characterRepository.Add(characterModel);
+
+            var characterView = isAi
+                ? Instantiate(_gameSettingsSO.AIcharacterSO.PlayerCharacterViewPrefab)
+                : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
+
+            var playerColor = characterModel.Id.ToColor();
+            _playerColors.Add(playerColor);
+
+            characterView.SetColor(playerColor);
+
+            characterView.SetJumpHeight(characterSO.JumpHeight);
+            characterView.SetMoveDuration(characterSO.MoveDuration);
+
+            var capturePathView = Instantiate(_capturePathViewPrefab);
+            capturePathView.SetColor(playerColor);
+            var capturePathController = new CapturePathController(capturePathView);
+
+            var panelController = new PanelController(pairs, characterModel, capturePathController);
+
+            var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
+
+            panelController.OnMoveSelected += characterController.MoveCharacter;
+
+            if (characterModel is AICharacterModel)
             {
-                var characterModel = isAi
-                    ? new AICharacterModel(characterSO.JumpLenght)
-                    : new CharacterModel(characterSO.JumpLenght);
+                var aiController = new AIController(panelController, pairs, characterModel);
+                roundController.OnRoundChanged += aiController.ProcessRound;
 
-                characterRepository.Add(characterModel);
+                OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
+            }
+            else
+            {
+                panelController.OnMoveSelected += ChangeRound;
+                panelController.SubscribeOnInput();
+            }
 
-                var characterView = isAi
-                    ? Instantiate(_characterViewPrefab)
-                    : Instantiate(_playerCharacterViewPrefab);
+            _players[characterModel.Id] = (characterController, panelController);
 
-                var playerColor = characterModel.Id.ToColor();
-                characterView.SetColor(playerColor);
+            OnDisposed += () =>
+            {
+                panelController.UnsubscribeOnInput();
 
-                characterView.SetJumpHeight(characterSO.JumpHeight);
-                characterView.SetMoveDuration(characterSO.MoveDuration);
+                panelController.OnMoveSelected -= ChangeRound;
+                panelController.OnMoveSelected -= characterController.MoveCharacter;
 
-                var capturePathView = Instantiate(_capturePathViewPrefab);
-                capturePathView.SetColor(playerColor);
-                var capturePathController = new CapturePathController(capturePathView);
+                characterController.Dispose();
+                panelController.Dispose();
+                characterModel.Dispose();
+            };
 
-                var panelController = new PanelController(pairs, characterModel, capturePathController);
-
-                var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
-
-                panelController.OnMoveSelected += characterController.MoveCharacter;
-
-                if (characterModel is AICharacterModel)
-                {
-                    var aiController = new AIController(panelController, pairs, characterModel);
-                    roundController.OnRoundChanged += aiController.ProcessRound;
-
-                    OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
-                }
-                else
-                {
-                    panelController.OnMoveSelected += ChangeRound;
-                    panelController.SubscribeOnInput();
-                }
-
-                _players[characterModel.Id] = (characterController, panelController);
-
-                OnDisposed += () =>
-                {
-                    panelController.UnsubscribeOnInput();
-
-                    panelController.OnMoveSelected -= ChangeRound;
-                    panelController.OnMoveSelected -= characterController.MoveCharacter;
-
-                    characterController.Dispose();
-                    panelController.Dispose();
-                    characterModel.Dispose();
-                };
-
-                void ChangeRound(Vector3 vector)
-                {
-                    roundController.ChangeRound();
-                }
+            void ChangeRound(Vector3 vector)
+            {
+                roundController.ChangeRound();
             }
         }
 

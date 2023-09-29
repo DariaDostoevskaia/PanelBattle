@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.Character;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects
@@ -9,10 +10,15 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private float _jumpHeight = 5f;
         [SerializeField] private int _jumpLenght = 1;
 
+        //[SerializeField] private CharacterView _characterViewPrefab;
+        [SerializeField] private CharacterView _playerCharacterViewPrefab;
+
         public float MoveDuration => _moveDuration;
 
         public float JumpHeight => _jumpHeight;
 
         public int JumpLenght => _jumpLenght;
+
+        public CharacterView PlayerCharacterViewPrefab => _playerCharacterViewPrefab;
     }
 }
