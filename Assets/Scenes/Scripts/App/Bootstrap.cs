@@ -6,7 +6,6 @@ using LegoBattaleRoyal.Controllers.Round;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.CapturePath;
 using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -20,11 +19,9 @@ namespace LegoBattaleRoyal.App
     {
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-      
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
         private RoundController _roundController;
-        //private List<Color> _playerColors = new();
 
         private event Action OnDisposed;
 
@@ -46,8 +43,6 @@ namespace LegoBattaleRoyal.App
             }
             CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
-            //var index = 0;
-
             characterRepository
                 .GetAll()
                 .ToList()
@@ -59,9 +54,8 @@ namespace LegoBattaleRoyal.App
 
                     availablePair.panelModel.BuildBase(character.Id);
 
-                    //availablePair.panelView.SetColor(_playerColors[index]);
-
-                    //index++;
+                    var playerColor = character.Id.ToColor();
+                    availablePair.panelView.SetColor(playerColor);
 
                     var (characterController, panelController) = _players[character.Id];
 
@@ -74,17 +68,16 @@ namespace LegoBattaleRoyal.App
             (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController)
         {
             var characterModel = isAi
-                ? new AICharacterModel(characterSO.JumpLenght)
+                ? new AICharacterModel(_gameSettingsSO.AICharacterSO.JumpLenght)
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);
 
             var characterView = isAi
-                ? Instantiate(_gameSettingsSO.AIcharacterSO.PlayerCharacterViewPrefab)
+                ? Instantiate(_gameSettingsSO.AICharacterSO.PlayerCharacterViewPrefab)
                 : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
-            //_playerColors.Add(playerColor);
 
             characterView.SetColor(playerColor);
 
