@@ -5,10 +5,11 @@ namespace LegoBattaleRoyal.Characters.Models
 {
     public class CharacterModel : IDisposable
     {
-        public int JumpLenght { get; }
-        public Guid Id { get; }
-
         public event Action<Guid> OnEndCaptured;
+
+        public int JumpLenght { get; }
+
+        public Guid Id { get; }
 
         public CharacterModel(int jumpLenght)
         {

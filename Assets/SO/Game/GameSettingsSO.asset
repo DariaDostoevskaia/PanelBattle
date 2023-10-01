@@ -20,3 +20,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
   _gridPanelSettings: {fileID: 11400000, guid: 874d8cdb0053dca4b9292d6aa1332e1f, type: 2}
   _botCount: 2
+  _capturePathViewPrefab: {fileID: 3423781268855496717, guid: 11e6d7102cc4cc046850e843e208c8b1,
+    type: 3}

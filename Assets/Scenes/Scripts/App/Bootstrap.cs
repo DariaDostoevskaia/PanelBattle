@@ -20,11 +20,11 @@ namespace LegoBattaleRoyal.App
     {
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-        [SerializeField] private CapturePathView _capturePathViewPrefab;
+      
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
         private RoundController _roundController;
-        private List<Color> _playerColors = new();
+        //private List<Color> _playerColors = new();
 
         private event Action OnDisposed;
 
@@ -46,7 +46,7 @@ namespace LegoBattaleRoyal.App
             }
             CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
-            var index = 0;
+            //var index = 0;
 
             characterRepository
                 .GetAll()
@@ -59,9 +59,9 @@ namespace LegoBattaleRoyal.App
 
                     availablePair.panelModel.BuildBase(character.Id);
 
-                    availablePair.panelView.SetColor(_playerColors[index]);
+                    //availablePair.panelView.SetColor(_playerColors[index]);
 
-                    index++;
+                    //index++;
 
                     var (characterController, panelController) = _players[character.Id];
 
@@ -84,14 +84,14 @@ namespace LegoBattaleRoyal.App
                 : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
-            _playerColors.Add(playerColor);
+            //_playerColors.Add(playerColor);
 
             characterView.SetColor(playerColor);
 
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
 
-            var capturePathView = Instantiate(_capturePathViewPrefab);
+            var capturePathView = Instantiate(_gameSettingsSO.CapturePathViewPrefab);
             capturePathView.SetColor(playerColor);
             var capturePathController = new CapturePathController(capturePathView);
 
