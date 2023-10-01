@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.CapturePath;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects
@@ -10,6 +11,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private GridPanelSettingsSO _gridPanelSettings;
         [SerializeField] private int _botCount;
+        [SerializeField] private CapturePathView _capturePathViewPrefab;
 
         public CharacterSO CharacterSO => _characterSO;
 
@@ -20,5 +22,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
         public GridPanelSettingsSO GridPanelSettings => _gridPanelSettings;
 
         public int BotCount => _botCount;
+
+        public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
     }
 }

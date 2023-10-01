@@ -64,5 +64,10 @@ namespace LegoBattaleRoyal.Presentation.Character
         {
             _meshRenderer.material.color = newColor;
         }
+
+        private void OnDestroy()
+        {
+            OnJumped = null;
+        }
     }
 }
