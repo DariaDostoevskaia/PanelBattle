@@ -37,7 +37,8 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             foreach (var stateForCharacter in _stateForCharacters.Values)
             {
-                stateForCharacter.SetCapture(false);
+                stateForCharacter.SetCapture(false);//очистить от всех, кроме того, кто захватывает
+                //доб событие OnRealise
                 stateForCharacter.Occupate(false);
             }
 

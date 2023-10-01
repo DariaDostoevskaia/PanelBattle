@@ -15,7 +15,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         public CharacterSO CharacterSO => _characterSO;
 
-        public AICharacterSO AIcharacterSO => _aICharacterSO;
+        public AICharacterSO AICharacterSO => _aICharacterSO;
 
         public PanelSO[] PanelSettings => _panelSettings;
 

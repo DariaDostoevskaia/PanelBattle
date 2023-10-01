@@ -35,8 +35,11 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnPointerExited += OnPanelExit;
             }
         }
-
-        public void UnsubscribeOnInput()
+        public void SubscribeOnCallBack()
+        {
+            //panelModel.OnRealise; передаем Id игрока, которыйф потерял панель
+        }
+            public void UnsubscribeOnInput()
         {
             foreach (var (panelModel, panelView) in _pairs)
             {
@@ -153,6 +156,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
             {
                 _characterModel.Capture(pair.panelModel);
                 pair.panelView.SetColor(playerColor);
+
             }
         }
 
