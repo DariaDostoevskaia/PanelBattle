@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
-    public class PanelModel
+    public class PanelModel : IDisposable
     {
+        public Action<Guid> OnPanelModelRealized;
+
         private readonly Dictionary<Guid, State> _stateForCharacters = new();
 
         public bool IsJumpBlock { get; }
@@ -37,8 +39,11 @@ namespace LegoBattaleRoyal.Panels.Models
         {
             foreach (var stateForCharacter in _stateForCharacters.Values)
             {
-                stateForCharacter.SetCapture(false);//очистить от всех, кроме того, кто захватывает
+                stateForCharacter.SetCapture(false);
+                //очистить от всех, кроме того, кто захватывает
                 //доб событие OnRealise
+                OnPanelModelRealized?.Invoke(characterId);       
+                //отписка - реализовать
                 stateForCharacter.Occupate(false);
             }
 
@@ -124,6 +129,11 @@ namespace LegoBattaleRoyal.Panels.Models
                 throw new Exception("Block has not player yet.");
 
             state.RemoveVisitor();
+        }
+
+        public void Dispose()
+        {
+            OnPanelModelRealized = null; // реализовать
         }
     }
 }

@@ -33,20 +33,29 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
+                panelModel.OnPanelModelRealized += SubscribeOnCallBack;
             }
         }
-        public void SubscribeOnCallBack()
-        {
-            //panelModel.OnRealise; передаем Id игрока, которыйф потерял панель
-        }
-            public void UnsubscribeOnInput()
+
+        public void UnsubscribeOnInput()
         {
             foreach (var (panelModel, panelView) in _pairs)
             {
                 panelView.OnClicked -= OnPanelClicked;
                 panelView.OnEntered -= OnPanelHover;
                 panelView.OnPointerExited -= OnPanelExit;
+                panelModel.OnPanelModelRealized -= SubscribeOnCallBack;
             }
+        }
+
+        public void SubscribeOnCallBack(Guid characterId)
+        {
+            //panelModel.OnRealise;
+            //передаем Id игрока, которыйф потерял панель
+
+            //var capturedPanels = _pairs.Where(pair => pair.panelModel.IsCaptured(characterId)== true);
+            //if (capturedPanels)
+            //destroyGameObject
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
