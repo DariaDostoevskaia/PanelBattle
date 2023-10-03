@@ -42,8 +42,8 @@ namespace LegoBattaleRoyal.Panels.Models
                 stateForCharacter.SetCapture(false);
                 //очистить от всех, кроме того, кто захватывает
                 //доб событие OnRealise
-                OnPanelModelRealized?.Invoke(characterId);       
-                //отписка - реализовать
+                OnPanelModelRealized?.Invoke(characterId);
+
                 stateForCharacter.Occupate(false);
             }
 

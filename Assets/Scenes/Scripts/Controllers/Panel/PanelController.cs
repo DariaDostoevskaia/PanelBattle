@@ -53,7 +53,13 @@ namespace LegoBattaleRoyal.Controllers.Panel
             //panelModel.OnRealise;
             //передаем Id игрока, которыйф потерял панель
 
-            //var capturedPanels = _pairs.Where(pair => pair.panelModel.IsCaptured(characterId)== true);
+            //var panelModels = _pairs.Where(pair => pair.panelModel.IsCaptured()).ToList();
+            //if (panelModels.Count < 0)
+            //    _characterModel.DestroyCharacter();
+            //else
+
+            //var capturedPanels = _pairs.Where(pair => pair.panelModel.IsCaptured(characterId) == true);
+            //var capturedPanels = _pairs.
             //if (capturedPanels)
             //destroyGameObject
         }
