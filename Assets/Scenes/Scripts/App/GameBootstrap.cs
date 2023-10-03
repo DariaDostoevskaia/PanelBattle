@@ -17,13 +17,16 @@ namespace LegoBattaleRoyal.App
 {
     public class GameBootstrap : MonoBehaviour
     {
+        private event Action OnDisposed;
+
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
+        //private readonly Dictionary<Guid, Color> _colors = new();
+
         private RoundController _roundController;
 
-        private event Action OnDisposed;
 
         public void Configur()
         {
@@ -43,6 +46,7 @@ namespace LegoBattaleRoyal.App
             }
             CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
+
             characterRepository
                 .GetAll()
                 .ToList()
@@ -52,10 +56,11 @@ namespace LegoBattaleRoyal.App
                     .OrderBy(pair => Guid.NewGuid())
                     .First(pair => pair.panelModel.IsJumpBlock);
 
-                    availablePair.panelModel.BuildBase(character.Id);
+                    availablePair.panelModel.BuildBase(character.Id); 
 
-                    //var playerColor = character.Id.ToColor();
-                    //availablePair.panelView.SetColor(playerColor);
+                    //_colors.TryGetValue(character.Id, out var color);
+                    //color = _colors[character.Id];
+                    //availablePair.panelView.SetColor(color);
 
                     var (characterController, panelController) = _players[character.Id];
 
@@ -78,6 +83,8 @@ namespace LegoBattaleRoyal.App
                 : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
+
+            //_colors.Add(characterModel.Id, playerColor);
 
             characterView.SetColor(playerColor);
 
@@ -110,6 +117,11 @@ namespace LegoBattaleRoyal.App
 
             _players[characterModel.Id] = (characterController, panelController);
 
+            void ChangeRound(Vector3 vector)
+            {
+                roundController.ChangeRound();
+            }
+
             OnDisposed += () =>
             {
                 panelController.UnsubscribeOnInput();
@@ -122,11 +134,6 @@ namespace LegoBattaleRoyal.App
                 characterModel.Dispose();
                 
             };
-
-            void ChangeRound(Vector3 vector)
-            {
-                roundController.ChangeRound();
-            }
         }
 
         private void OnDestroy()
