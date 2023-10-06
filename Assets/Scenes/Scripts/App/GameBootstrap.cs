@@ -23,10 +23,8 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
-        //private readonly Dictionary<Guid, Color> _colors = new();
 
         private RoundController _roundController;
-
 
         public void Configur()
         {
@@ -46,7 +44,6 @@ namespace LegoBattaleRoyal.App
             }
             CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
 
-
             characterRepository
                 .GetAll()
                 .ToList()
@@ -56,11 +53,10 @@ namespace LegoBattaleRoyal.App
                     .OrderBy(pair => Guid.NewGuid())
                     .First(pair => pair.panelModel.IsJumpBlock);
 
-                    availablePair.panelModel.BuildBase(character.Id); 
+                    availablePair.panelModel.BuildBase(character.Id);
 
-                    //_colors.TryGetValue(character.Id, out var color);
-                    //color = _colors[character.Id];
-                    //availablePair.panelView.SetColor(color);
+                    var color = character.Id.ToColor();
+                    availablePair.panelView.SetColor(color);
 
                     var (characterController, panelController) = _players[character.Id];
 
@@ -83,8 +79,6 @@ namespace LegoBattaleRoyal.App
                 : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
-
-            //_colors.Add(characterModel.Id, playerColor);
 
             characterView.SetColor(playerColor);
 
@@ -132,7 +126,6 @@ namespace LegoBattaleRoyal.App
                 characterController.Dispose();
                 panelController.Dispose();
                 characterModel.Dispose();
-                
             };
         }
 

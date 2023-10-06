@@ -19,7 +19,7 @@ namespace LegoBattaleRoyal.Presentation.Panel
 
         private Color _defaultColor;
 
-        private void Start()
+        private void Awake()
         {
             _renderer = GetComponent<MeshRenderer>();
             _defaultColor = _renderer.material.color;
