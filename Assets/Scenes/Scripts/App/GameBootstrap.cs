@@ -90,7 +90,7 @@ namespace LegoBattaleRoyal.App
 
             var capturePathController = new CapturePathController(capturePathView);
 
-            var panelController = new PanelController(pairs, characterModel, capturePathController);
+            var panelController = new PanelController(pairs, characterModel, capturePathController, characterRepository);
 
             var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
 

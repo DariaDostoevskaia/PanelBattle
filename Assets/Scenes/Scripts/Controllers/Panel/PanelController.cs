@@ -6,6 +6,7 @@ using LegoBattaleRoyal.Presentation.Panel;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Color = UnityEngine.Color;
 
 namespace LegoBattaleRoyal.Controllers.Panel
@@ -17,13 +18,17 @@ namespace LegoBattaleRoyal.Controllers.Panel
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
         private readonly CapturePathController _capturePathController;
+        private CharacterRepository _characterRepository;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel, CapturePathController capturePathController)
+            CharacterModel characterModel,
+            CapturePathController capturePathController,
+            CharacterRepository characterRepository)
         {
             _characterModel = characterModel;
             _pairs = pairs;
             _capturePathController = capturePathController;
+            _characterRepository = characterRepository;
         }
 
         public void SubscribeOnInput()
@@ -51,17 +56,22 @@ namespace LegoBattaleRoyal.Controllers.Panel
         public void SubscribeOnCallBack(Guid characterId)
         {
             //panelModel.OnRealise;
-            //передаем Id игрока, которыйф потерял панель
+            //передаем Id игрока, который потерял панель
 
-            //var panelModels = _pairs.Where(pair => pair.panelModel.IsCaptured()).ToList();
-            //if (panelModels.Count < 0)
-            //    _characterModel.DestroyCharacter();
-            //else
+            var capturedPanelModels = _pairs
+                .Any(pair => pair.panelModel.IsCaptured(characterId));
 
-            //var capturedPanels = _pairs.Where(pair => pair.panelModel.IsCaptured(characterId) == true);
-            //var capturedPanels = _pairs.
-            //if (capturedPanels)
-            //destroyGameObject
+            if (capturedPanelModels)
+            {
+                _characterRepository.GetOpponents();
+
+                return;
+            }
+            else
+            {
+                //_characterRepository.GetOpponents();
+                _characterRepository.Remove(characterId);
+            }
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
@@ -171,7 +181,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
             {
                 _characterModel.Capture(pair.panelModel);
                 pair.panelView.SetColor(playerColor);
-
             }
         }
 
