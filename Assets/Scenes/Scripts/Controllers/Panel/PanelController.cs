@@ -2,8 +2,10 @@ using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.CapturePath;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Presentation.Character;
 using LegoBattaleRoyal.Presentation.Panel;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -19,16 +21,19 @@ namespace LegoBattaleRoyal.Controllers.Panel
         private readonly CharacterModel _characterModel;
         private readonly CapturePathController _capturePathController;
         private CharacterRepository _characterRepository;
+        private CharacterView _characterView;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
             CharacterModel characterModel,
             CapturePathController capturePathController,
-            CharacterRepository characterRepository)
+            CharacterRepository characterRepository,
+            CharacterView characterView)
         {
             _characterModel = characterModel;
             _pairs = pairs;
             _capturePathController = capturePathController;
             _characterRepository = characterRepository;
+            _characterView = characterView;
         }
 
         public void SubscribeOnInput()
@@ -58,20 +63,55 @@ namespace LegoBattaleRoyal.Controllers.Panel
             //panelModel.OnRealise;
             //передаем Id игрока, который потерял панель
 
-            var capturedPanelModels = _pairs
-                .Any(pair => pair.panelModel.IsCaptured(characterId));
+            var capturedPanelModels = _pairs.Any(pair => pair.panelModel.IsCaptured(characterId));
 
-            if (capturedPanelModels)
+            if (capturedPanelModels == true)
             {
-                _characterRepository.GetOpponents();
+                var opponents = _characterRepository.GetOpponents();
 
+                //if(opponents == null)
+                //ui - panel - Victory
+
+                foreach (var opponent in opponents)
+                {
+                    var opponentCapturedPanelModels = _pairs.Any(pair => pair.panelModel.IsCaptured(opponent.Id));
+
+                    if (opponentCapturedPanelModels == false)
+                    {
+                        var destroyer = new Destroyer(_capturePathController, _characterView);
+
+                        destroyer.DestroyCharacter();
+
+                        OnMoveSelected = null;
+
+                        Debug.Log("Opponent " + opponent.Id + " destroy");
+
+                        //opponent.DestroyCharacter();   ??
+
+                        //_characterRepository.Remove(characterId);
+
+                        // destroy gameObject - clear
+                        //opponent.Dispose();
+                    }
+                }
                 return;
             }
-            else
-            {
-                //_characterRepository.GetOpponents();
-                _characterRepository.Remove(characterId);
-            }
+            //if (capturedPanelModels == true)
+            //{
+            //    //_capturePathController.ResetPath();
+            //    _destroyer.DestroyCharacter();
+
+            //    Dispose();
+            //Debug.Log("Opponent " + _characterModel.Id + " destroy");
+
+            //_characterModel.DestroyCharacter();   ??
+
+            //_characterRepository.Remove(characterId);
+
+            //_characterModel.Dispose();
+            // destroy gameObject
+            // ui - panel - Lose;
+            //}
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)

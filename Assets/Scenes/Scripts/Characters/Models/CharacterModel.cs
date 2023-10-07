@@ -1,5 +1,6 @@
 ﻿using LegoBattaleRoyal.Panels.Models;
 using System;
+using Unity.VisualScripting;
 
 namespace LegoBattaleRoyal.Characters.Models
 {
@@ -31,6 +32,11 @@ namespace LegoBattaleRoyal.Characters.Models
             panelModel.Capture(Id);
 
             OnEndCaptured?.Invoke(Id);
+        }
+
+        public void DestroyCharacter()
+        {
+            Dispose();
         }
 
         public void Dispose()

@@ -90,11 +90,12 @@ namespace LegoBattaleRoyal.App
 
             var capturePathController = new CapturePathController(capturePathView);
 
-            var panelController = new PanelController(pairs, characterModel, capturePathController, characterRepository);
+            var panelController = new PanelController(pairs, characterModel, capturePathController, characterRepository, characterView);
 
             var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
 
             panelController.OnMoveSelected += characterController.MoveCharacter;
+
 
             if (characterModel is AICharacterModel)
             {
