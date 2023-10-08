@@ -2,13 +2,10 @@ using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.CapturePath;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.Character;
 using LegoBattaleRoyal.Presentation.Panel;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using Color = UnityEngine.Color;
 
 namespace LegoBattaleRoyal.Controllers.Panel
@@ -16,24 +13,19 @@ namespace LegoBattaleRoyal.Controllers.Panel
     public class PanelController : IDisposable
     {
         public event Action<Vector3> OnMoveSelected;
+        public event Action OnCharacterLoss;
 
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
         private readonly CapturePathController _capturePathController;
-        private CharacterRepository _characterRepository;
-        private CharacterView _characterView;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
             CharacterModel characterModel,
-            CapturePathController capturePathController,
-            CharacterRepository characterRepository,
-            CharacterView characterView)
+            CapturePathController capturePathController)
         {
             _characterModel = characterModel;
             _pairs = pairs;
             _capturePathController = capturePathController;
-            _characterRepository = characterRepository;
-            _characterView = characterView;
         }
 
         public void SubscribeOnInput()
@@ -43,7 +35,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
-                panelModel.OnPanelModelRealized += SubscribeOnCallBack;
+
             }
         }
 
@@ -54,59 +46,36 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked -= OnPanelClicked;
                 panelView.OnEntered -= OnPanelHover;
                 panelView.OnPointerExited -= OnPanelExit;
-                panelModel.OnPanelModelRealized -= SubscribeOnCallBack;
             }
         }
 
-        public void SubscribeOnCallBack(Guid characterId)
+        public void SubscribeOnCallBack()
         {
-            //panelModel.OnRealise;
-            //передаем Id игрока, который потерял панель
-
-            var capturedPanelModels = _pairs.Any(pair => pair.panelModel.IsCaptured(characterId));
-
-            if (capturedPanelModels == true)
+            foreach (var (panelModel, panelView) in _pairs)
             {
-                var opponents = _characterRepository.GetOpponents();
-
-                //if(opponents == null)
-                //ui - panel - Victory
-
-                foreach (var opponent in opponents)
-                {
-                    var opponentCapturedPanelModels = _pairs.Any(pair => pair.panelModel.IsCaptured(opponent.Id));
-
-                    if (opponentCapturedPanelModels == false)
-                    {
-                        var opponentCharacterView = x.First(characterView => characterView == opponent.Id); // ?????
-                        var opponentCapturePathController = x.First(capturePathController => capturePathController == opponent.Id); // ?????
-
-                        var opponentDestroyer = new Destroyer(opponentCapturePathController, opponentCharacterView);
-
-                        opponentDestroyer.DestroyCharacter();
-
-                        //OnMoveSelected = null;//Dispose();
-
-                        Debug.Log("Opponent " + opponent.Id + " destroy");
-
-                        //opponent.DestroyCharacter();   ??
-
-                        //_characterRepository.Remove(characterId);
-
-                        // destroy gameObject - clear
-                        //opponent.Dispose();
-                    }
-                }
-                return;
+                panelModel.OnReleased += OnPanelRealised;
             }
+        }
 
-            _capturePathController.ResetPath();
+        public void UnscribeOnCallBack()
+        {
+            foreach (var (panelModel, panelView) in _pairs)
+            {
+                panelModel.OnReleased -= OnPanelRealised;
+            }
+        }
 
-            var destroyer = new Destroyer(_capturePathController, _characterView);
-            destroyer.DestroyCharacter();
-            Debug.Log("Character " + _characterModel.Id + " destroy");
-            Dispose();
-           
+        public void OnPanelRealised(Guid characterId)
+        {
+            if (_characterModel.Id != characterId)
+                return;
+
+            var hasCapturedPanelModels = _pairs.Any(pair => pair.panelModel.IsCaptured(characterId));
+
+            if (hasCapturedPanelModels)
+                return;
+
+            OnCharacterLoss?.Invoke();
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)

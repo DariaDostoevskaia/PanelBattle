@@ -5,7 +5,7 @@ namespace LegoBattaleRoyal.Panels.Models
 {
     public class PanelModel : IDisposable
     {
-        public Action<Guid> OnPanelModelRealized;
+        public Action<Guid> OnReleased;
 
         private readonly Dictionary<Guid, State> _stateForCharacters = new();
 
@@ -37,14 +37,13 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public void Capture(Guid characterId)
         {
-            foreach (var stateForCharacter in _stateForCharacters.Values)
+            foreach (var stateForCharacter in _stateForCharacters)
             {
-                stateForCharacter.SetCapture(false);
-                //очистить от всех, кроме того, кто захватывает
-                //доб событие OnRealise
-                OnPanelModelRealized?.Invoke(characterId);
+                stateForCharacter.Value.SetCapture(false);
 
-                stateForCharacter.Occupate(false);
+                stateForCharacter.Value.Occupate(false);
+
+                OnReleased?.Invoke(stateForCharacter.Key);
             }
 
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
@@ -133,7 +132,7 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public void Dispose()
         {
-            OnPanelModelRealized = null; // реализовать
+            OnReleased = null;
         }
     }
 }

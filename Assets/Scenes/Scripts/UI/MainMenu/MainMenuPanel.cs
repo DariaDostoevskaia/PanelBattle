@@ -1,5 +1,6 @@
+using System;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.UI
 {
@@ -7,10 +8,11 @@ namespace LegoBattaleRoyal.UI
     {
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _endGameButton;
+        public event Action OnStartGameClicked;
 
         private void Start()
         {
-            //_startGameButton.onClick.AddListener(StartNewGame);
+            _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
             //_endGameButton.onClick.AddListener(EndGame);
 
         }

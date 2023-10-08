@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Character;
 using System;
@@ -7,15 +8,20 @@ namespace LegoBattaleRoyal.Controllers.Character
 {
     public class CharacterController : IDisposable
     {
+        private readonly CharacterModel _characterModel;
         private readonly CharacterView _characterView;
         private readonly CapturePathController _capturePathController;
+        private readonly CharacterRepository _characterRepository;
 
-        public CharacterController(CharacterView characterView,
-            CapturePathController capturePathController)
+        public CharacterController(CharacterModel characterModel,
+            CharacterView characterView,
+            CapturePathController capturePathController,
+            CharacterRepository characterRepository)
         {
+            _characterModel = characterModel;
             _characterView = characterView;
             _capturePathController = capturePathController;
-
+            _characterRepository = characterRepository;
             _characterView.OnJumped += OnCharacterMoved;
         }
 
@@ -38,10 +44,17 @@ namespace LegoBattaleRoyal.Controllers.Character
                 _capturePathController.UnBind();
             }
         }
+        public void KillCharacter()
+        {
+            _characterRepository.Remove(_characterModel.Id);
+            UnityEngine.Object.Destroy(_characterView.gameObject);
+            Dispose();
+        }
 
         public void Dispose()
         {
             _characterView.OnJumped -= OnCharacterMoved;
         }
+
     }
 }

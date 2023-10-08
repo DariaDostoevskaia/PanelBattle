@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.AI;
 using LegoBattaleRoyal.Controllers.CapturePath;
+using LegoBattaleRoyal.Controllers.EndGame;
 using LegoBattaleRoyal.Controllers.Panel;
 using LegoBattaleRoyal.Controllers.Round;
 using LegoBattaleRoyal.Extensions;
@@ -8,6 +9,7 @@ using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
+using LegoBattaleRoyal.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +17,18 @@ using UnityEngine;
 
 namespace LegoBattaleRoyal.App
 {
-    public class GameBootstrap : MonoBehaviour
+    public class GameBootstrap : MonoBehaviour, IDisposable
     {
         private event Action OnDisposed;
-
+        public event Action OnRestarted;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
+        [SerializeField] private GamePanel _gamePanel; //TODO move to ui container
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        private RoundController _roundController;
 
-        public void Configur()
+        public void Configure()
         {
             var characterSO = _gameSettingsSO.CharacterSO;
 
@@ -36,13 +38,16 @@ namespace LegoBattaleRoyal.App
 
             var characterRepository = new CharacterRepository();
 
-            _roundController = new RoundController();
+            var roundController = new RoundController();
+
+            var endGameController = new EndGameController(_gamePanel, characterRepository);
+            endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
-                CreatePlayer(characterSO, characterRepository, pairs, true, _roundController);
+                CreatePlayer(characterSO, characterRepository, pairs, true, roundController, endGameController);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, false, _roundController);
+            CreatePlayer(characterSO, characterRepository, pairs, false, roundController, endGameController);
 
             characterRepository
                 .GetAll()
@@ -63,10 +68,19 @@ namespace LegoBattaleRoyal.App
                     characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
                     panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, character.JumpLenght);
                 });
+
+            OnDisposed += () =>
+            {
+                foreach (var pair in pairs)
+                {
+                    pair.panelModel.Dispose();
+                    Destroy(pair.panelView.gameObject);
+                }
+            };
         }
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
-            (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController)
+            (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController, EndGameController endGameController)
         {
             var characterModel = isAi
                 ? new AICharacterModel(characterSO.JumpLenght)
@@ -90,32 +104,42 @@ namespace LegoBattaleRoyal.App
 
             var capturePathController = new CapturePathController(capturePathView);
 
-            var panelController = new PanelController(pairs, characterModel, capturePathController, characterRepository, characterView);
+            var panelController = new PanelController(pairs, characterModel, capturePathController);
 
-            var characterController = new Controllers.Character.CharacterController(characterView, capturePathController);
+            var characterController = new Controllers.Character.CharacterController(characterModel, characterView, capturePathController, characterRepository);
 
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
+            panelController.SubscribeOnCallBack();
+            panelController.OnCharacterLoss += OnCharacterLoss;
 
             if (characterModel is AICharacterModel)
             {
                 var aiController = new AIController(panelController, pairs, characterModel);
                 roundController.OnRoundChanged += aiController.ProcessRound;
 
+                panelController.OnCharacterLoss += TryWinGame; //проверить все ли уничт. TryWin - Win
+
                 OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
+
+                void TryWinGame()
+                {
+                    roundController.OnRoundChanged -= aiController.ProcessRound;
+
+                    panelController.OnCharacterLoss -= TryWinGame;
+
+                    endGameController.TryWinGame();
+                }
             }
-            else
+            else // TODO extract method CreateMainPlayerModule and CreateAIPlayerModule
             {
                 panelController.OnMoveSelected += ChangeRound;
                 panelController.SubscribeOnInput();
+                //lose
+                panelController.OnCharacterLoss += LoseGame;
             }
 
             _players[characterModel.Id] = (characterController, panelController);
-
-            void ChangeRound(Vector3 vector)
-            {
-                roundController.ChangeRound();
-            }
 
             OnDisposed += () =>
             {
@@ -128,12 +152,44 @@ namespace LegoBattaleRoyal.App
                 panelController.Dispose();
                 characterModel.Dispose();
             };
+
+            void ChangeRound(Vector3 vector)
+            {
+                roundController.ChangeRound();
+            }
+
+            void OnCharacterLoss()
+            {
+                capturePathController.ResetPath();
+                characterController.KillCharacter();
+                panelController.UnscribeOnCallBack();
+                panelController.OnMoveSelected -= characterController.MoveCharacter;
+                panelController.OnCharacterLoss -= OnCharacterLoss;
+            }
+
+            void LoseGame()
+            {
+                //TODO EndGameController LoseGame
+                endGameController.LoseGame();
+
+                panelController.OnMoveSelected -= ChangeRound;
+                panelController.UnsubscribeOnInput();
+                panelController.OnCharacterLoss -= LoseGame;
+            }
+
+
+        }
+        public void Dispose()
+        {
+            OnDisposed?.Invoke();
+            OnDisposed = null;
+            OnRestarted = null;
         }
 
         private void OnDestroy()
         {
-            OnDisposed?.Invoke();
-            OnDisposed = null;
+            Dispose();
         }
+
     }
 }
