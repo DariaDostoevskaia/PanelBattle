@@ -78,11 +78,14 @@ namespace LegoBattaleRoyal.Controllers.Panel
 
                     if (opponentCapturedPanelModels == false)
                     {
-                        var destroyer = new Destroyer(_capturePathController, _characterView);
+                        var opponentCharacterView = x.First(characterView => characterView == opponent.Id); // ?????
+                        var opponentCapturePathController = x.First(capturePathController => capturePathController == opponent.Id); // ?????
 
-                        destroyer.DestroyCharacter();
+                        var opponentDestroyer = new Destroyer(opponentCapturePathController, opponentCharacterView);
 
-                        OnMoveSelected = null;
+                        opponentDestroyer.DestroyCharacter();
+
+                        //OnMoveSelected = null;//Dispose();
 
                         Debug.Log("Opponent " + opponent.Id + " destroy");
 
@@ -96,22 +99,14 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 }
                 return;
             }
-            //if (capturedPanelModels == true)
-            //{
-            //    //_capturePathController.ResetPath();
-            //    _destroyer.DestroyCharacter();
 
-            //    Dispose();
-            //Debug.Log("Opponent " + _characterModel.Id + " destroy");
+            _capturePathController.ResetPath();
 
-            //_characterModel.DestroyCharacter();   ??
-
-            //_characterRepository.Remove(characterId);
-
-            //_characterModel.Dispose();
-            // destroy gameObject
-            // ui - panel - Lose;
-            //}
+            var destroyer = new Destroyer(_capturePathController, _characterView);
+            destroyer.DestroyCharacter();
+            Debug.Log("Character " + _characterModel.Id + " destroy");
+            Dispose();
+           
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)
