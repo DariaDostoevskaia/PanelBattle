@@ -191,6 +191,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
         public void Dispose()
         {
             OnMoveSelected = null;
+            OnCharacterLoss = null;
         }
     }
 }

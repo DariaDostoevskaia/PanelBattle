@@ -3,37 +3,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LegoBattaleRoyal.UI
+namespace LegoBattaleRoyal.UI.GamePanel
 {
-    public class GamePanel : MonoBehaviour
+    public class GamePanelUI : MonoBehaviour
     {
+        public event Action OnRestartClicked;
+
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Button _endGameButton;
         [SerializeField] private Button _restartGameButton;
-        public event Action OnRestartClicked;
 
         private void Start()
         {
-            //_returnGameButton.onClick.AddListener(ReturnGame);
-            //_endGameButton.onClick.AddListener(EndGame);
-        }
-
-        private void ReturnGame()
-        {
-            //_startGameButton.interactable = false;
+            _restartGameButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
+            _endGameButton.onClick.AddListener(EndGame);
         }
 
         private void EndGame()
         {
-            //_endGameButton.interactable = false;
-            //Application.Quit();
+            Application.Quit();
         }
 
-        private void OnDestroy()
-        {
-            //_returnGameButton.onClick.RemoveAllListeners();
-            //_endGameButton.onClick.RemoveAllListeners();
-        }
 
         public void SetTitle(string text)
         {
@@ -51,9 +41,16 @@ namespace LegoBattaleRoyal.UI
             gameObject.SetActive(true);
         }
 
-        internal void Close()
+        public void Close()
         {
-            throw new NotImplementedException();
+            gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            OnRestartClicked = null;
+            _restartGameButton.onClick.RemoveAllListeners();
+            _endGameButton.onClick.RemoveAllListeners();
         }
     }
 }

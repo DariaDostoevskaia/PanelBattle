@@ -13,14 +13,16 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private readonly PanelSO[] _panelSettings;
         private GridPanelSettingsSO _gridPanelSettings;
 
-        public GridFactory(PanelSO[] panelSettings)
+        public GridFactory(PanelSO[] panelSettings, GridPanelSettingsSO gridPanelSettings)
         {
             _panelSettings = panelSettings;
+            _gridPanelSettings = gridPanelSettings;
         }
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
             _gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+
             var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
 
             var polygon = BlockMatrixGenerator.GeneratePolygon(_gridPanelSettings.StartedPosition,

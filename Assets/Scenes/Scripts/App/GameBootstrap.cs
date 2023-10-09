@@ -9,7 +9,7 @@ using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
-using LegoBattaleRoyal.UI;
+using LegoBattaleRoyal.UI.Container;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +21,10 @@ namespace LegoBattaleRoyal.App
     {
         private event Action OnDisposed;
         public event Action OnRestarted;
+
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-        [SerializeField] private GamePanel _gamePanel; //TODO move to ui container
+        [SerializeField] private UIContainer _uIContainer;
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
 
@@ -32,7 +33,7 @@ namespace LegoBattaleRoyal.App
         {
             var characterSO = _gameSettingsSO.CharacterSO;
 
-            var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
+            var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings, _gameSettingsSO.GridPanelSettings);
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
@@ -40,7 +41,7 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            var endGameController = new EndGameController(_gamePanel, characterRepository);
+            var endGameController = new EndGameController(_uIContainer.GamePanel, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
@@ -71,6 +72,8 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
+                endGameController.OnGameRestarted -= OnRestarted;
+
                 foreach (var pair in pairs)
                 {
                     pair.panelModel.Dispose();
@@ -111,74 +114,94 @@ namespace LegoBattaleRoyal.App
             panelController.OnMoveSelected += characterController.MoveCharacter;
 
             panelController.SubscribeOnCallBack();
+
             panelController.OnCharacterLoss += OnCharacterLoss;
 
             if (characterModel is AICharacterModel)
             {
-                var aiController = new AIController(panelController, pairs, characterModel);
-                roundController.OnRoundChanged += aiController.ProcessRound;
-
-                panelController.OnCharacterLoss += TryWinGame; //проверить все ли уничт. TryWin - Win
-
-                OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
-
-                void TryWinGame()
-                {
-                    roundController.OnRoundChanged -= aiController.ProcessRound;
-
-                    panelController.OnCharacterLoss -= TryWinGame;
-
-                    endGameController.TryWinGame();
-                }
+                CreateAIPlayerModule(panelController, pairs, (AICharacterModel)characterModel, roundController, endGameController);
             }
-            else // TODO extract method CreateMainPlayerModule and CreateAIPlayerModule
+            else
             {
-                panelController.OnMoveSelected += ChangeRound;
-                panelController.SubscribeOnInput();
-                //lose
-                panelController.OnCharacterLoss += LoseGame;
+                CreateMainPlayerModule(panelController, roundController, endGameController);
             }
 
             _players[characterModel.Id] = (characterController, panelController);
 
             OnDisposed += () =>
             {
+                panelController.OnMoveSelected -= characterController.MoveCharacter;
+
                 panelController.UnsubscribeOnInput();
 
-                panelController.OnMoveSelected -= ChangeRound;
-                panelController.OnMoveSelected -= characterController.MoveCharacter;
+                panelController.OnCharacterLoss -= OnCharacterLoss;
 
                 characterController.Dispose();
                 panelController.Dispose();
                 characterModel.Dispose();
+                endGameController.Dispose();
             };
+
+            void OnCharacterLoss()
+            {
+                capturePathController.ResetPath();
+
+                characterController.KillCharacter();
+
+                panelController.UnscribeOnCallBack();
+
+                panelController.OnMoveSelected -= characterController.MoveCharacter;
+                panelController.OnCharacterLoss -= OnCharacterLoss;
+            }
+
+        }
+
+        private void CreateMainPlayerModule(PanelController panelController, RoundController roundController, EndGameController endGameController)
+        {
+            panelController.OnMoveSelected += ChangeRound;
+            panelController.SubscribeOnInput();
+
+            panelController.OnCharacterLoss += LoseGame;
+
+            OnDisposed += () => panelController.OnMoveSelected -= ChangeRound;
 
             void ChangeRound(Vector3 vector)
             {
                 roundController.ChangeRound();
             }
 
-            void OnCharacterLoss()
-            {
-                capturePathController.ResetPath();
-                characterController.KillCharacter();
-                panelController.UnscribeOnCallBack();
-                panelController.OnMoveSelected -= characterController.MoveCharacter;
-                panelController.OnCharacterLoss -= OnCharacterLoss;
-            }
-
             void LoseGame()
             {
-                //TODO EndGameController LoseGame
                 endGameController.LoseGame();
 
                 panelController.OnMoveSelected -= ChangeRound;
+
                 panelController.UnsubscribeOnInput();
+
                 panelController.OnCharacterLoss -= LoseGame;
             }
-
-
         }
+
+        private void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
+            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController)
+        {
+            var aiController = new AIController(panelController, pairs, characterModel);
+            roundController.OnRoundChanged += aiController.ProcessRound;
+
+            panelController.OnCharacterLoss += TryWinGame;
+
+            OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
+
+            void TryWinGame()
+            {
+                roundController.OnRoundChanged -= aiController.ProcessRound;
+
+                panelController.OnCharacterLoss -= TryWinGame;
+
+                endGameController.TryWinGame();
+            }
+        }
+
         public void Dispose()
         {
             OnDisposed?.Invoke();

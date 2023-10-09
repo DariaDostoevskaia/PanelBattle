@@ -2,37 +2,40 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LegoBattaleRoyal.UI
+namespace LegoBattaleRoyal.UI.MainMenu
 {
     public class MainMenuPanel : MonoBehaviour
     {
+        public event Action OnStartGameClicked;
+
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _endGameButton;
-        public event Action OnStartGameClicked;
 
         private void Start()
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
-            //_endGameButton.onClick.AddListener(EndGame);
-
+            _endGameButton.onClick.AddListener(EndGame);
+        }
+        public void Show()
+        {
+            gameObject.SetActive(true);
         }
 
-        private void StartNewGame()
+        public void Close()
         {
-            //_startGameButton.interactable = false;
-            //SceneManager.LoadScene(0);
+            gameObject.SetActive(false);
         }
 
         private void EndGame()
         {
-            //_endGameButton.interactable = false;
-            //Application.Quit();
+            Application.Quit();
         }
 
         private void OnDestroy()
         {
-            //_startGameButton.onClick.RemoveAllListeners();
-            //_endGameButton.onClick.RemoveAllListeners();
+            _startGameButton.onClick.RemoveAllListeners();
+            _endGameButton.onClick.RemoveAllListeners();
+            OnStartGameClicked = null;
         }
     }
 }

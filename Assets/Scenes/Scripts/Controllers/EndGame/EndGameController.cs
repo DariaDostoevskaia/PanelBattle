@@ -1,17 +1,19 @@
 using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.UI;
+using LegoBattaleRoyal.UI.GamePanel;
 using System;
 using System.Linq;
 
 namespace LegoBattaleRoyal.Controllers.EndGame
 {
-    public class EndGameController
+    public class EndGameController : IDisposable
     {
-        private readonly GamePanel _gamePanel;
-        private readonly CharacterRepository _characterRepository;
         public event Action OnGameRestarted;
 
-        public EndGameController(GamePanel gamePanel, CharacterRepository characterRepository)
+        private GamePanelUI _gamePanel;
+
+        private readonly CharacterRepository _characterRepository;
+
+        public EndGameController(GamePanelUI gamePanel, CharacterRepository characterRepository)
         {
             _gamePanel = gamePanel;
             _characterRepository = characterRepository;
@@ -44,6 +46,13 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _gamePanel.Show();
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            _gamePanel.OnRestartClicked -= RestartGame;
+
+            OnGameRestarted = null;
         }
     }
 }
