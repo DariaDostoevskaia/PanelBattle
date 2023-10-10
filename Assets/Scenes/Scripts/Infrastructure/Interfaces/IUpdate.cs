@@ -1,4 +1,4 @@
-﻿namespace LegoBattaleRoyal.Characters.Interfaces
+﻿namespace LegoBattaleRoyal.Infrastructure.Interfaces
 {
     public interface IUpdate
     {

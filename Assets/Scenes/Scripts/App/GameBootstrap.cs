@@ -19,15 +19,19 @@ namespace LegoBattaleRoyal.App
 {
     public class GameBootstrap : MonoBehaviour, IDisposable
     {
-        private event Action OnDisposed;
         public event Action OnRestarted;
+
+        public event Action OnEndedGame;
+
+        public event Action OnExitedMenu;
+
+        private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uIContainer;
 
         private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
-
 
         public void Configure()
         {
@@ -41,8 +45,10 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            var endGameController = new EndGameController(_uIContainer.GamePanel, characterRepository);
+            var endGameController = new EndGameController(_uIContainer.GamePanel, _uIContainer.MenuPanel, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
+            endGameController.OnMainMenuExited += OnExitedMenu;
+            endGameController.OnEndGame += OnEndedGame;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
@@ -73,6 +79,8 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 endGameController.OnGameRestarted -= OnRestarted;
+                endGameController.OnMainMenuExited -= OnExitedMenu;
+                endGameController.OnEndGame -= OnEndedGame;
 
                 foreach (var pair in pairs)
                 {
@@ -112,9 +120,7 @@ namespace LegoBattaleRoyal.App
             var characterController = new Controllers.Character.CharacterController(characterModel, characterView, capturePathController, characterRepository);
 
             panelController.OnMoveSelected += characterController.MoveCharacter;
-
             panelController.SubscribeOnCallBack();
-
             panelController.OnCharacterLoss += OnCharacterLoss;
 
             if (characterModel is AICharacterModel)
@@ -128,6 +134,8 @@ namespace LegoBattaleRoyal.App
 
             _players[characterModel.Id] = (characterController, panelController);
 
+            endGameController.OnEndGame += EndGame;
+
             OnDisposed += () =>
             {
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
@@ -136,9 +144,10 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
 
-                characterController.Dispose();
-                panelController.Dispose();
+                endGameController.OnEndGame -= EndGame;
+
                 characterModel.Dispose();
+                panelController.Dispose();
                 endGameController.Dispose();
             };
 
@@ -153,17 +162,19 @@ namespace LegoBattaleRoyal.App
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
                 panelController.OnCharacterLoss -= OnCharacterLoss;
             }
-
         }
 
-        private void CreateMainPlayerModule(PanelController panelController, RoundController roundController, EndGameController endGameController)
+        public void EndGame()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void CreateMainPlayerModule(PanelController panelController, RoundController roundController, EndGameController endGameController)
         {
             panelController.OnMoveSelected += ChangeRound;
             panelController.SubscribeOnInput();
 
             panelController.OnCharacterLoss += LoseGame;
-
-            OnDisposed += () => panelController.OnMoveSelected -= ChangeRound;
 
             void ChangeRound(Vector3 vector)
             {
@@ -182,15 +193,13 @@ namespace LegoBattaleRoyal.App
             }
         }
 
-        private void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
+        public void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
             AICharacterModel characterModel, RoundController roundController, EndGameController endGameController)
         {
             var aiController = new AIController(panelController, pairs, characterModel);
             roundController.OnRoundChanged += aiController.ProcessRound;
 
             panelController.OnCharacterLoss += TryWinGame;
-
-            OnDisposed += () => roundController.OnRoundChanged -= aiController.ProcessRound;
 
             void TryWinGame()
             {
@@ -213,6 +222,5 @@ namespace LegoBattaleRoyal.App
         {
             Dispose();
         }
-
     }
 }

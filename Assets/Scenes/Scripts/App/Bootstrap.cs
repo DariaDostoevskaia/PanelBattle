@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.App;
+using LegoBattaleRoyal.Controllers.EndGame;
 using LegoBattaleRoyal.UI.Container;
 using UnityEngine;
 
@@ -6,11 +7,32 @@ public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private GameBootstrap _gameBootstrap;
     [SerializeField] private UIContainer _uIContainer;
+    [SerializeField] private EndGameController _endGameController;
 
-    void Start()
+    private void Start()
     {
         _uIContainer.MenuPanel.Show();
         _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
+        _uIContainer.GamePanel.OnExitMainMenu += ExitMainMenu;
+        _endGameController.OnEndGame += ExitGame;
+    }
+
+    private void ExitGame()
+    {
+        _gameBootstrap.OnEndedGame += ExitGame;
+        _gameBootstrap.gameObject.SetActive(false);
+        _uIContainer.gameObject.SetActive(true);
+    }
+
+    private void ExitMainMenu()
+    {
+        _gameBootstrap.gameObject.SetActive(false);
+
+        _gameBootstrap.OnExitedMenu += ExitMainMenu;
+
+        _uIContainer.GamePanel.Close();
+
+        _uIContainer.MenuPanel.gameObject.SetActive(true);
     }
 
     private void StartGame()
@@ -28,7 +50,12 @@ public class Bootstrap : MonoBehaviour
     private void OnDestroy()
     {
         _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
-
         _gameBootstrap.OnRestarted -= StartGame;
+
+        _uIContainer.GamePanel.OnExitMainMenu -= ExitMainMenu;
+        _gameBootstrap.OnExitedMenu -= ExitMainMenu;
+
+        _endGameController.OnEndGame -= ExitGame;
+        _gameBootstrap.OnEndedGame -= ExitGame;
     }
 }

@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.UI.GamePanel;
+using LegoBattaleRoyal.UI.MainMenu;
 using System;
 using System.Linq;
 
@@ -9,16 +10,29 @@ namespace LegoBattaleRoyal.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        private GamePanelUI _gamePanel;
+        public event Action OnMainMenuExited;
 
+        public event Action OnEndGame;
+
+        private readonly GamePanelUI _gamePanel;
+        private readonly MainMenuPanel _menuPanel;
         private readonly CharacterRepository _characterRepository;
 
-        public EndGameController(GamePanelUI gamePanel, CharacterRepository characterRepository)
+        public EndGameController(GamePanelUI gamePanel, MainMenuPanel menuPanel, CharacterRepository characterRepository)
         {
             _gamePanel = gamePanel;
+            _menuPanel = menuPanel;
             _characterRepository = characterRepository;
 
             _gamePanel.OnRestartClicked += RestartGame;
+            _gamePanel.OnExitMainMenu += ExitMainMenu;
+        }
+
+        private void ExitMainMenu()
+        {
+            _gamePanel.Close();
+            _menuPanel.gameObject.SetActive(true);
+            OnMainMenuExited?.Invoke();
         }
 
         private void RestartGame()
@@ -32,6 +46,8 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _gamePanel.SetTitle("You Lose!");
             _gamePanel.SetActiveRestartButton(true);
             _gamePanel.Show();
+
+            OnEndGame?.Invoke();
         }
 
         public bool TryWinGame()
@@ -45,14 +61,19 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _gamePanel.SetActiveRestartButton(true);
             _gamePanel.Show();
 
+            OnEndGame?.Invoke();
+
             return true;
         }
 
         public void Dispose()
         {
-            _gamePanel.OnRestartClicked -= RestartGame;
-
             OnGameRestarted = null;
+            OnMainMenuExited = null;
+            OnEndGame = null;
+
+            _gamePanel.OnRestartClicked -= RestartGame;
+            _gamePanel.OnExitMainMenu -= ExitMainMenu;
         }
     }
 }

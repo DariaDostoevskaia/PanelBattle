@@ -8,8 +8,10 @@ namespace LegoBattaleRoyal.Presentation.CapturePath
     public class CapturePathView : MonoBehaviour
     {
         [SerializeField] private MeshRenderer _dotPrefab;
+
         private LineRenderer _lineRenderer;
         private Transform _bindedTransform;
+
         private readonly List<MeshRenderer> _dots = new();
 
         private void Awake()

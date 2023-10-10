@@ -7,11 +7,11 @@ namespace LegoBattaleRoyal.Panels.Models
     {
         public Action<Guid> OnReleased;
 
-        private readonly Dictionary<Guid, State> _stateForCharacters = new();
+        public GridPosition GridPosition { get; }
 
         public bool IsJumpBlock { get; }
 
-        public GridPosition GridPosition { get; }
+        private readonly Dictionary<Guid, State> _stateForCharacters = new();
 
         public PanelModel(bool isJumpBlock, GridPosition gridPosition)
         {

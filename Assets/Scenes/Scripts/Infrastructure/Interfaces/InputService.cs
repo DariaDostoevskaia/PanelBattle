@@ -1,4 +1,4 @@
-﻿namespace LegoBattaleRoyal.Characters.Controllers
+﻿namespace LegoBattaleRoyal.Infrastructure.Interfaces
 {
     public class InputService
     {

@@ -12,10 +12,10 @@ namespace LegoBattaleRoyal.Presentation.Character
 
         private static readonly float MinimumPositionY = 1f;
         private Rigidbody _rigidbody;
+        private MeshRenderer _meshRenderer;
         private Tween _move;
         private float _moveDuration;
         private float _jumpHeight;
-        private MeshRenderer _meshRenderer;
 
         private void Awake()
         {

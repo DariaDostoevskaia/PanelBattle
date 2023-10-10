@@ -44,6 +44,7 @@ namespace LegoBattaleRoyal.Controllers.Character
                 _capturePathController.UnBind();
             }
         }
+
         public void KillCharacter()
         {
             _characterRepository.Remove(_characterModel.Id);

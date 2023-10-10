@@ -33,9 +33,10 @@ namespace LegoBattaleRoyal.UI.MainMenu
 
         private void OnDestroy()
         {
+            OnStartGameClicked = null;
+
             _startGameButton.onClick.RemoveAllListeners();
             _endGameButton.onClick.RemoveAllListeners();
-            OnStartGameClicked = null;
         }
     }
 }

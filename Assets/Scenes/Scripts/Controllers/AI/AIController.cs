@@ -18,9 +18,9 @@ namespace LegoBattaleRoyal.Controllers.AI
             (PanelModel panelModel, PanelView panelView)[] pairs,
             CharacterModel characterModel)
         {
+            _aiCharacterModel = characterModel;
             _panelController = panelController;
             _pairs = pairs;
-            _aiCharacterModel = characterModel;
         }
 
         public void ProcessRound()
@@ -37,6 +37,7 @@ namespace LegoBattaleRoyal.Controllers.AI
             var pair = _pairs
               .OrderBy(pair => Guid.NewGuid())
               .First(pair => _panelController.CanJump(pair.panelModel));
+
             return pair;
         }
     }

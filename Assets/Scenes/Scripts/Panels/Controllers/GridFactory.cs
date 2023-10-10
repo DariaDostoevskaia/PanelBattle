@@ -56,10 +56,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelModel = new PanelModel(panelSetting.IsJumpBlock, gridPosition);
 
             var panelView = Object
-               .Instantiate(panelSetting.PanelView,
-               new Vector3(cell[0], parent.position.y, cell[1]),
-               Quaternion.identity,
-               parent);
+               .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]),
+               Quaternion.identity, parent);
 
             return (panelModel, panelView);
         }

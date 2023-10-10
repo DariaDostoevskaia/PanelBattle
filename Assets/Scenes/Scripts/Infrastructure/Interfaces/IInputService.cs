@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Characters.Interfaces
+namespace LegoBattaleRoyal.Infrastructure.Interfaces
 {
     public interface IInputService : IUpdate
     {
