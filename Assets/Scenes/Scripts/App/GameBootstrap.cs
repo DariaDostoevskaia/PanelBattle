@@ -21,9 +21,7 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-        public event Action OnEndedGame;
-
-        public event Action OnExitedMenu;
+        public event Action OnExited;
 
         private event Action OnDisposed;
 
@@ -47,8 +45,7 @@ namespace LegoBattaleRoyal.App
 
             var endGameController = new EndGameController(_uIContainer.GamePanel, _uIContainer.MenuPanel, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
-            endGameController.OnMainMenuExited += OnExitedMenu;
-            endGameController.OnEndGame += OnEndedGame;
+            endGameController.OnExitedMenu += OnExited;
 
             for (int i = 0; i < _gameSettingsSO.BotCount; i++)
             {
@@ -79,8 +76,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 endGameController.OnGameRestarted -= OnRestarted;
-                endGameController.OnMainMenuExited -= OnExitedMenu;
-                endGameController.OnEndGame -= OnEndedGame;
+                endGameController.OnExitedMenu -= OnExited;
 
                 foreach (var pair in pairs)
                 {
@@ -134,8 +130,6 @@ namespace LegoBattaleRoyal.App
 
             _players[characterModel.Id] = (characterController, panelController);
 
-            endGameController.OnEndGame += EndGame;
-
             OnDisposed += () =>
             {
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
@@ -143,8 +137,6 @@ namespace LegoBattaleRoyal.App
                 panelController.UnsubscribeOnInput();
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
-
-                endGameController.OnEndGame -= EndGame;
 
                 characterModel.Dispose();
                 panelController.Dispose();
@@ -162,11 +154,6 @@ namespace LegoBattaleRoyal.App
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
                 panelController.OnCharacterLoss -= OnCharacterLoss;
             }
-        }
-
-        public void EndGame()
-        {
-            gameObject.SetActive(false);
         }
 
         public void CreateMainPlayerModule(PanelController panelController, RoundController roundController, EndGameController endGameController)

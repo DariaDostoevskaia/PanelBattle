@@ -9,7 +9,7 @@ namespace LegoBattaleRoyal.UI.GamePanel
     {
         public event Action OnRestartClicked;
 
-        public event Action OnExitMainMenu;
+        public event Action OnExitMainMenuClicked;
 
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Button _restartGameButton;
@@ -18,7 +18,7 @@ namespace LegoBattaleRoyal.UI.GamePanel
         private void Start()
         {
             _restartGameButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
-            _exitMainMenuGameButton.onClick.AddListener(() => OnExitMainMenu?.Invoke());
+            _exitMainMenuGameButton.onClick.AddListener(() => OnExitMainMenuClicked?.Invoke());
         }
 
         public void SetTitle(string text)
@@ -44,7 +44,7 @@ namespace LegoBattaleRoyal.UI.GamePanel
         private void OnDestroy()
         {
             OnRestartClicked = null;
-            OnExitMainMenu = null;
+            OnExitMainMenuClicked = null;
 
             _restartGameButton.onClick.RemoveAllListeners();
             _exitMainMenuGameButton.onClick.RemoveAllListeners();

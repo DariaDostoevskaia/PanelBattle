@@ -13,26 +13,8 @@ public class Bootstrap : MonoBehaviour
     {
         _uIContainer.MenuPanel.Show();
         _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
-        _uIContainer.GamePanel.OnExitMainMenu += ExitMainMenu;
-        _endGameController.OnEndGame += ExitGame;
-    }
 
-    private void ExitGame()
-    {
-        _gameBootstrap.OnEndedGame += ExitGame;
-        _gameBootstrap.gameObject.SetActive(false);
-        _uIContainer.gameObject.SetActive(true);
-    }
-
-    private void ExitMainMenu()
-    {
-        _gameBootstrap.gameObject.SetActive(false);
-
-        _gameBootstrap.OnExitedMenu += ExitMainMenu;
-
-        _uIContainer.GamePanel.Close();
-
-        _uIContainer.MenuPanel.gameObject.SetActive(true);
+        _uIContainer.GamePanel.OnExitMainMenuClicked += ExitMainMenu;
     }
 
     private void StartGame()
@@ -47,15 +29,20 @@ public class Bootstrap : MonoBehaviour
         _gameBootstrap.Configure();
     }
 
+    private void ExitMainMenu()
+    {
+        _gameBootstrap.OnExited += ExitMainMenu;
+
+        _uIContainer.GamePanel.Close();
+        _uIContainer.MenuPanel.Show();
+    }
+
     private void OnDestroy()
     {
         _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
         _gameBootstrap.OnRestarted -= StartGame;
 
-        _uIContainer.GamePanel.OnExitMainMenu -= ExitMainMenu;
-        _gameBootstrap.OnExitedMenu -= ExitMainMenu;
-
-        _endGameController.OnEndGame -= ExitGame;
-        _gameBootstrap.OnEndedGame -= ExitGame;
+        _uIContainer.GamePanel.OnExitMainMenuClicked -= ExitMainMenu;
+        _gameBootstrap.OnExited -= ExitMainMenu;
     }
 }

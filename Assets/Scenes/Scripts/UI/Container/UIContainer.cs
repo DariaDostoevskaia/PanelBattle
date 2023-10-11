@@ -12,21 +12,5 @@ namespace LegoBattaleRoyal.UI.Container
         public GamePanelUI GamePanel => _gamePanel;
 
         public MainMenuPanel MenuPanel => _menuPanel;
-
-        private void Start()
-        {
-            _gamePanel.OnExitMainMenu += ExitToTheMainMenu;
-        }
-
-        private void ExitToTheMainMenu()
-        {
-            _gamePanel.gameObject.SetActive(false);
-            _menuPanel.gameObject.SetActive(true);
-        }
-
-        private void OnDestroy()
-        {
-            _gamePanel.OnExitMainMenu -= ExitToTheMainMenu;
-        }
     }
 }

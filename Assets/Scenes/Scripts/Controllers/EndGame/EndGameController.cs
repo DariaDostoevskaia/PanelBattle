@@ -10,9 +10,7 @@ namespace LegoBattaleRoyal.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnMainMenuExited;
-
-        public event Action OnEndGame;
+        public event Action OnExitedMenu;
 
         private readonly GamePanelUI _gamePanel;
         private readonly MainMenuPanel _menuPanel;
@@ -25,19 +23,21 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _characterRepository = characterRepository;
 
             _gamePanel.OnRestartClicked += RestartGame;
-            _gamePanel.OnExitMainMenu += ExitMainMenu;
+            _gamePanel.OnExitMainMenuClicked += ExitMainMenu;
         }
 
         private void ExitMainMenu()
         {
+            _menuPanel.Show();
             _gamePanel.Close();
-            _menuPanel.gameObject.SetActive(true);
-            OnMainMenuExited?.Invoke();
+
+            OnExitedMenu?.Invoke();
         }
 
         private void RestartGame()
         {
             _gamePanel.Close();
+
             OnGameRestarted?.Invoke();
         }
 
@@ -46,8 +46,6 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _gamePanel.SetTitle("You Lose!");
             _gamePanel.SetActiveRestartButton(true);
             _gamePanel.Show();
-
-            OnEndGame?.Invoke();
         }
 
         public bool TryWinGame()
@@ -61,19 +59,17 @@ namespace LegoBattaleRoyal.Controllers.EndGame
             _gamePanel.SetActiveRestartButton(true);
             _gamePanel.Show();
 
-            OnEndGame?.Invoke();
-
             return true;
         }
 
         public void Dispose()
         {
             OnGameRestarted = null;
-            OnMainMenuExited = null;
-            OnEndGame = null;
+            OnExitedMenu = null;
 
             _gamePanel.OnRestartClicked -= RestartGame;
-            _gamePanel.OnExitMainMenu -= ExitMainMenu;
+
+            _gamePanel.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
 }

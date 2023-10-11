@@ -16,6 +16,7 @@ namespace LegoBattaleRoyal.UI.MainMenu
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
         }
+
         public void Show()
         {
             gameObject.SetActive(true);
