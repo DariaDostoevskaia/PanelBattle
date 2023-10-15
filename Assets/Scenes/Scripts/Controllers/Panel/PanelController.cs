@@ -127,7 +127,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
             var oldPanel = _pairs.First(pair => pair.panelModel.IsVisiting(_characterModel.Id)).panelModel;
             oldPanel.Remove(_characterModel.Id);
 
-            panelModel.Add(_characterModel.Id);
+            _characterModel.Move(panelModel);
 
             var captureIsReady = panelModel.IsCaptured(_characterModel.Id)
                 && _pairs.Any(pair => pair.panelModel.IsOccupated(_characterModel.Id));

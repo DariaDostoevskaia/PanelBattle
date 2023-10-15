@@ -10,7 +10,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private float _jumpHeight = 5f;
         [SerializeField] private int _jumpLenght = 1;
 
-        [SerializeField] private CharacterView _playerCharacterViewPrefab;
+        [SerializeField] private CharacterView _viewPrefab;
 
         public float MoveDuration => _moveDuration;
 
@@ -18,6 +18,6 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         public int JumpLenght => _jumpLenght;
 
-        public CharacterView PlayerCharacterViewPrefab => _playerCharacterViewPrefab;
+        public CharacterView ViewPrefab => _viewPrefab;
     }
 }
