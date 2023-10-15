@@ -81,7 +81,7 @@ namespace LegoBattaleRoyal.App
                 foreach (var pair in pairs)
                 {
                     pair.panelModel.Dispose();
-                    Destroy(pair.panelView.gameObject);
+                    pair.panelView.DestroyGameObject();
                 }
             };
         }

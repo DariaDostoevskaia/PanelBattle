@@ -748,7 +748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleText: {fileID: 509530015}
   _restartGameButton: {fileID: 1460520743}
-  _exitMainMenuGameButton: {fileID: 0}
+  _exitMainMenuGameButton: {fileID: 2008850988}
 --- !u!1 &794871325
 GameObject:
   m_ObjectHideFlags: 0
