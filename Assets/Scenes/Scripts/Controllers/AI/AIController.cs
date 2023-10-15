@@ -2,7 +2,6 @@ using LegoBattaleRoyal.Characters.Models;
 using LegoBattaleRoyal.Controllers.Panel;
 using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Presentation.Panel;
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -10,15 +9,15 @@ namespace LegoBattaleRoyal.Controllers.AI
 {
     public class AIController
     {
-        private static CharacterModel _aiCharacterModel;
+        private readonly AICharacterModel _aiCharacterModel;
         private readonly PanelController _panelController;
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
 
         public AIController(PanelController panelController,
             (PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel)
+            AICharacterModel aiCharacterModel)
         {
-            _aiCharacterModel = characterModel;
+            _aiCharacterModel = aiCharacterModel;
             _panelController = panelController;
             _pairs = pairs;
         }
@@ -34,11 +33,13 @@ namespace LegoBattaleRoyal.Controllers.AI
 
         private (PanelModel, PanelView) GetJumpPair()
         {
-            var pair = _pairs
-              .OrderBy(pair => Guid.NewGuid())
-              .First(pair => _panelController.CanJump(pair.panelModel));
+            var jumpedPairs = _pairs
+                .Where(pair => _panelController
+                .CanJump(pair.panelModel));
 
-            return pair;
+            var panelToJump = _aiCharacterModel.DecideMove();
+
+            return jumpedPairs.First(pair => pair.panelModel == panelToJump);
         }
     }
 }

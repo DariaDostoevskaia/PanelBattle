@@ -81,7 +81,7 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public void BuildBase(Guid characterId)
         {
-            Add(characterId);
+
 
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();

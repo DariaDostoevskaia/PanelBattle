@@ -47,11 +47,11 @@ namespace LegoBattaleRoyal.App
             endGameController.OnGameRestarted += OnRestarted;
             endGameController.OnExitedMenu += OnExited;
 
-            for (int i = 0; i < _gameSettingsSO.BotCount; i++)
+            for (int i = 0; i < _gameSettingsSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(characterSO, characterRepository, pairs, true, roundController, endGameController);
+                CreatePlayer(_gameSettingsSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, false, roundController, endGameController);
+            CreatePlayer(characterSO, characterRepository, pairs, roundController, endGameController);
 
             characterRepository
                 .GetAll()
@@ -61,6 +61,8 @@ namespace LegoBattaleRoyal.App
                     var availablePair = pairs
                     .OrderBy(pair => Guid.NewGuid())
                     .First(pair => pair.panelModel.IsJumpBlock);
+
+                    character.Move(availablePair.panelModel);
 
                     availablePair.panelModel.BuildBase(character.Id);
 
@@ -87,17 +89,17 @@ namespace LegoBattaleRoyal.App
         }
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
-            (PanelModel panelModel, PanelView panelView)[] pairs, bool isAi, RoundController roundController, EndGameController endGameController)
+            (PanelModel panelModel, PanelView panelView)[] pairs, RoundController roundController,
+            EndGameController endGameController)
         {
-            var characterModel = isAi
-                ? new AICharacterModel(characterSO.JumpLenght)
+            var characterModel = characterSO is AICharacterSO aiCharacterSO
+                ? new AICharacterModel(aiCharacterSO.JumpLenght, aiCharacterSO.BlocksToCapture,
+                aiCharacterSO.Difficulty, pairs.Select(pair => pair.panelModel).ToArray())
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);
 
-            var characterView = isAi
-                ? Instantiate(_gameSettingsSO.AICharacterSO.PlayerCharacterViewPrefab)
-                : Instantiate(_gameSettingsSO.CharacterSO.PlayerCharacterViewPrefab);
+            var characterView = Instantiate(characterSO.ViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
 

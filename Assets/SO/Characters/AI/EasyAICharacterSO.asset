@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62452980eb0baac45880c39eb7c9e214, type: 3}
-  m_Name: AICharacterSO
+  m_Name: EasyAICharacterSO
   m_EditorClassIdentifier: 
   _moveDuration: 0.5
   _jumpHeight: 5
   _jumpLenght: 1
-  _playerCharacterViewPrefab: {fileID: 7357837026706244094, guid: d655ed2f057ec0441a05a98c52df5e49,
+  _viewPrefab: {fileID: 7357837026706244094, guid: d655ed2f057ec0441a05a98c52df5e49,
     type: 3}
+  _blocksToCapture: -1
+  _difficulty: 0
