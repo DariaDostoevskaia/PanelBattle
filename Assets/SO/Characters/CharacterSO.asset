@@ -15,5 +15,5 @@ MonoBehaviour:
   _moveDuration: 0.5
   _jumpHeight: 5
   _jumpLenght: 1
-  _playerCharacterViewPrefab: {fileID: 7357837026706244094, guid: 4d98539b64fa833478add83aa5bcbd24,
+  _viewPrefab: {fileID: 7357837026706244094, guid: 4d98539b64fa833478add83aa5bcbd24,
     type: 3}

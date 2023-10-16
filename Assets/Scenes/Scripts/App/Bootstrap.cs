@@ -1,48 +1,49 @@
-using LegoBattaleRoyal.App;
 using LegoBattaleRoyal.Controllers.EndGame;
 using LegoBattaleRoyal.UI.Container;
 using UnityEngine;
-
-public class Bootstrap : MonoBehaviour
+namespace LegoBattaleRoyal.App
 {
-    [SerializeField] private GameBootstrap _gameBootstrap;
-    [SerializeField] private UIContainer _uIContainer;
-    [SerializeField] private EndGameController _endGameController;
-
-    private void Start()
+    public class Bootstrap : MonoBehaviour
     {
-        _uIContainer.MenuPanel.Show();
-        _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
+        [SerializeField] private GameBootstrap _gameBootstrap;
+        [SerializeField] private UIContainer _uIContainer;
+        [SerializeField] private EndGameController _endGameController;
 
-        _uIContainer.GamePanel.OnExitMainMenuClicked += ExitMainMenu;
-    }
+        private void Start()
+        {
+            _uIContainer.MenuPanel.Show();
+            _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
 
-    private void StartGame()
-    {
-        _gameBootstrap.Dispose();
-        // subscribe again after dispose
+            _uIContainer.GamePanel.OnExitMainMenuClicked += ExitMainMenu;
+        }
 
-        _gameBootstrap.OnRestarted += StartGame;
+        private void StartGame()
+        {
+            _gameBootstrap.Dispose();
+            // subscribe again after dispose
 
-        _uIContainer.MenuPanel.Close();
+            _gameBootstrap.OnRestarted += StartGame;
 
-        _gameBootstrap.Configure();
-    }
+            _uIContainer.MenuPanel.Close();
 
-    private void ExitMainMenu()
-    {
-        _gameBootstrap.OnExited += ExitMainMenu;
+            _gameBootstrap.Configure();
+        }
 
-        _uIContainer.GamePanel.Close();
-        _uIContainer.MenuPanel.Show();
-    }
+        private void ExitMainMenu()
+        {
+            _gameBootstrap.OnExited += ExitMainMenu;
 
-    private void OnDestroy()
-    {
-        _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
-        _gameBootstrap.OnRestarted -= StartGame;
+            _uIContainer.GamePanel.Close();
+            _uIContainer.MenuPanel.Show();
+        }
 
-        _uIContainer.GamePanel.OnExitMainMenuClicked -= ExitMainMenu;
-        _gameBootstrap.OnExited -= ExitMainMenu;
+        private void OnDestroy()
+        {
+            _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
+            _gameBootstrap.OnRestarted -= StartGame;
+
+            _uIContainer.GamePanel.OnExitMainMenuClicked -= ExitMainMenu;
+            _gameBootstrap.OnExited -= ExitMainMenu;
+        }
     }
 }
