@@ -37,10 +37,5 @@ namespace LegoBattaleRoyal.Characters.Models
         {
             OnEndCaptured = null;
         }
-
-        public void DestroyCharacter()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

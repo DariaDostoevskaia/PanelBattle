@@ -1,12 +1,14 @@
-using LegoBattaleRoyal.App;
 using UnityEngine;
 
-public class Bootstrap : MonoBehaviour
+namespace LegoBattaleRoyal.App
 {
-    [SerializeField] private GameBootstrap _gameBootstrap;
-    void Start()
+    public class Bootstrap : MonoBehaviour
     {
-        _gameBootstrap.Configur();
-    }
+        [SerializeField] private GameBootstrap _gameBootstrap;
+        void Start()
+        {
+            _gameBootstrap.Configur();
+        }
 
+    }
 }

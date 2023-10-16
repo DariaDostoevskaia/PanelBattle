@@ -33,7 +33,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
-                panelModel.OnPanelModelRealized += SubscribeOnCallBack;
             }
         }
 
@@ -44,24 +43,12 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked -= OnPanelClicked;
                 panelView.OnEntered -= OnPanelHover;
                 panelView.OnPointerExited -= OnPanelExit;
-                panelModel.OnPanelModelRealized -= SubscribeOnCallBack;
             }
         }
 
         public void SubscribeOnCallBack(Guid characterId)
         {
-            //panelModel.OnRealise;
-            //передаем Id игрока, которыйф потерял панель
 
-            //var panelModels = _pairs.Where(pair => pair.panelModel.IsCaptured()).ToList();
-            //if (panelModels.Count < 0)
-            //    _characterModel.DestroyCharacter();
-            //else
-
-            //var capturedPanels = _pairs.Where(pair => pair.panelModel.IsCaptured(characterId) == true);
-            //var capturedPanels = _pairs.
-            //if (capturedPanels)
-            //destroyGameObject
         }
 
         public void MarkToAvailableNeighborPanels(GridPosition gridPosition, int movementRadius)

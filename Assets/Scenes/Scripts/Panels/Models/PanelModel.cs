@@ -40,8 +40,6 @@ namespace LegoBattaleRoyal.Panels.Models
             foreach (var stateForCharacter in _stateForCharacters.Values)
             {
                 stateForCharacter.SetCapture(false);
-                //очистить от всех, кроме того, кто захватывает
-                //доб событие OnRealise
                 OnPanelModelRealized?.Invoke(characterId);
 
                 stateForCharacter.Occupate(false);
@@ -133,7 +131,7 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public void Dispose()
         {
-            OnPanelModelRealized = null; // реализовать
+            OnPanelModelRealized = null;
         }
     }
 }
