@@ -39,8 +39,10 @@ namespace LegoBattaleRoyal.Controllers.Character
         {
             if (isStartMove)
                 _capturePathController.BindTo(_characterView.transform);
-
-            _capturePathController.UnBind();
+            else
+            {
+                _capturePathController.UnBind();
+            }
         }
 
         public void KillCharacter()

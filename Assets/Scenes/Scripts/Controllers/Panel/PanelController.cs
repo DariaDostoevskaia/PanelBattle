@@ -185,7 +185,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
             {
                 _characterModel.Capture(pair.panelModel);
                 pair.panelView.SetColor(playerColor);
-
             }
         }
 
