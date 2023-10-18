@@ -142,6 +142,7 @@ namespace LegoBattaleRoyal.App
 
                 characterModel.Dispose();
                 panelController.Dispose();
+                roundController.Dispose();
                 endGameController.Dispose();
             };
 
