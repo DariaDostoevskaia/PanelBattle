@@ -25,6 +25,11 @@ namespace LegoBattaleRoyal.Characters.Models
             CurrentPosition = new GridPosition(0, 0);
         }
 
+        public virtual void Occupate(PanelModel panelModel)
+        {
+            panelModel.Occupate(Id);
+        }
+
         public void Capture(PanelModel panelModel)
         {
             if (panelModel == null)

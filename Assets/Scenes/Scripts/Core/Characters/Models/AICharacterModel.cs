@@ -1,7 +1,8 @@
-﻿using LegoBattaleRoyal.Panels.Models;
+﻿using LegoBattaleRoyal.Core.AI.AIStrategy;
+using LegoBattaleRoyal.Panels.Models;
 using LegoBattaleRoyal.Strategy;
 using LegoBattaleRoyal.Strategy.Difficulty;
-using LegoBattaleRoyal.Strategy.Easy;
+using System;
 
 namespace LegoBattaleRoyal.Characters.Models
 {
@@ -19,12 +20,29 @@ namespace LegoBattaleRoyal.Characters.Models
                     break;
 
                 case Difficulty.Medium:
+                    _aiMovementStrategy = new MediumAIMovement(blocksToCapture, CurrentPosition, panelModels, Id);
                     break;
 
                 case Difficulty.Hard:
                     break;
             }
         }
+        public override void Occupate(PanelModel panelModel)
+        {
+            base.Occupate(panelModel);
+
+            if (!_aiMovementStrategy.ReturnWhenLosingCombatZone)
+                return;
+
+            panelModel.OnReleased += OnPanelRealised;
+
+            void OnPanelRealised(Guid guid)
+            {
+                panelModel.OnReleased -= OnPanelRealised;
+                _aiMovementStrategy.LoseCapturePath();
+            }
+        }
+
 
         public PanelModel DecideMove()
         {

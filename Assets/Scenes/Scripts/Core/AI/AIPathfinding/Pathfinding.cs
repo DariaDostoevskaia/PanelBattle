@@ -1,4 +1,5 @@
-﻿using LegoBattaleRoyal.Panels.Models;
+﻿using LegoBattaleRoyal.Common;
+using LegoBattaleRoyal.Panels.Models;
 using System;
 using System.Collections.Generic;
 

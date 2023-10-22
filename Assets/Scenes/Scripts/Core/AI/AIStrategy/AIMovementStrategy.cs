@@ -10,6 +10,8 @@ namespace LegoBattaleRoyal.Strategy
 
         private readonly int _maxY;
 
+        public bool ReturnWhenLosingCombatZone { get; protected set; }
+
         protected Pathfinding Pathfinding { get; private set; }
 
         protected int BlocksToCapture { get; }
@@ -19,6 +21,8 @@ namespace LegoBattaleRoyal.Strategy
         protected PanelModel[] PanelModels { get; }
 
         protected Guid OwnerId { get; }
+
+
 
         public AIMovementStrategy(int blocksToCapture, GridPosition currentPosition,
             PanelModel[] panelModels, Guid ownerId)
@@ -46,6 +50,19 @@ namespace LegoBattaleRoyal.Strategy
                 return;
 
             CreateNewPathToHome();
+        }
+
+        protected bool TryUsePathfindingStrategy(out PanelModel panelModel)
+        {
+            panelModel = null;
+
+            var position = Pathfinding?.Next();
+            if (position == null)
+                return false;
+
+            panelModel = PanelModels.First(panelModel => panelModel.GridPosition.Equals(position));
+            return true;
+
         }
 
         protected PanelModel UseRandomStrategy()
