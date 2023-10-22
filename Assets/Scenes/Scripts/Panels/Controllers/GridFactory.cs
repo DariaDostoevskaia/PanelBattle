@@ -1,10 +1,8 @@
 using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Panels.View;
+using LegoBattaleRoyal.Presentation.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static LegoBattaleRoyal.Panels.Controllers.PanelController;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -15,14 +13,16 @@ namespace LegoBattaleRoyal.Panels.Controllers
         private readonly PanelSO[] _panelSettings;
         private GridPanelSettingsSO _gridPanelSettings;
 
-        public GridFactory(PanelSO[] panelSettings)
+        public GridFactory(PanelSO[] panelSettings, GridPanelSettingsSO gridPanelSettings)
         {
             _panelSettings = panelSettings;
+            _gridPanelSettings = gridPanelSettings;
         }
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
             _gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+
             var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
 
             var polygon = BlockMatrixGenerator.GeneratePolygon(_gridPanelSettings.StartedPosition,
@@ -56,10 +56,8 @@ namespace LegoBattaleRoyal.Panels.Controllers
             var panelModel = new PanelModel(panelSetting.IsJumpBlock, gridPosition);
 
             var panelView = Object
-               .Instantiate(panelSetting.PanelView,
-               new Vector3(cell[0], parent.position.y, cell[1]),
-               Quaternion.identity,
-               parent);
+               .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]),
+               Quaternion.identity, parent);
 
             return (panelModel, panelView);
         }

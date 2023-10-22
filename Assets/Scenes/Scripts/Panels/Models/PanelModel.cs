@@ -1,59 +1,138 @@
-using LegoBattaleRoyal.Panels.Controllers;
 using System;
+using System.Collections.Generic;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
-    public class PanelModel
+    public class PanelModel : IDisposable
     {
-        private readonly State _state;
+        public Action<Guid> OnReleased;
+
+        public GridPosition GridPosition { get; }
 
         public bool IsJumpBlock { get; }
 
-        public bool IsAvailable => _state.IsAvailable;
-
-        public bool IsVisiting => _state.IsVisiting;
-
-        public GridPosition GridPosition { get; }
+        private readonly Dictionary<Guid, State> _stateForCharacters = new();
 
         public PanelModel(bool isJumpBlock, GridPosition gridPosition)
         {
             IsJumpBlock = isJumpBlock;
             GridPosition = gridPosition;
-            _state = new State();
         }
 
-        public void BuildBase()
+        public bool IsCaptured(Guid characterId)
         {
-            Add();
-            _state.BuildBase();
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsCaptured;
         }
 
-        public void SetAvailable()
+        public bool IsOccupated(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsOccupated;
+        }
+
+        public void Capture(Guid characterId)
+        {
+            foreach (var stateForCharacter in _stateForCharacters)
+            {
+                stateForCharacter.Value.SetCapture(false);
+
+                stateForCharacter.Value.Occupate(false);
+
+                OnReleased?.Invoke(stateForCharacter.Key);
+            }
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.SetCapture(true);
+        }
+
+        public void Occupate(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.Occupate(true);
+        }
+
+        public bool IsVisiting(Guid characterId)
+        {
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsVisiting;
+        }
+
+        public bool IsAvailable(Guid characterId)
+        {
+            if (!IsJumpBlock)
+                return false;
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            return state.IsAvailable;
+        }
+
+        public void BuildBase(Guid characterId)
+        {
+
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.BuildBase();
+        }
+
+        public void SetAvailable(Guid characterId)
         {
             if (!IsJumpBlock)
                 throw new Exception("Block is not available for jump.");
-            _state.SetAvailable(true);
+
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.SetAvailable(true);
         }
 
-        public void SetUnavailable()
+        public void SetUnavailable(Guid characterId)
         {
-            _state.SetAvailable(false);
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            state.SetAvailable(false);
         }
 
-        public void Add()
+        public void Add(Guid characterId)
         {
-            if (_state.IsVisiting)
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            if (state.IsVisiting)
                 throw new Exception("Block has player already.");
 
-            _state.AddVisitor();
+            state.AddVisitor();
         }
 
-        public void Remove()
+        public void Remove(Guid characterId)
         {
-            if (!_state.IsVisiting)
+            if (!_stateForCharacters.TryGetValue(characterId, out State state))
+                state = _stateForCharacters[characterId] = new State();
+
+            if (!state.IsVisiting)
                 throw new Exception("Block has not player yet.");
 
-            _state.RemoveVisitor();
+            state.RemoveVisitor();
+        }
+
+        public void Dispose()
+        {
+            OnReleased = null;
         }
     }
 }

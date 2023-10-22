@@ -8,9 +8,14 @@
 
         public bool IsVisiting { get; private set; }
 
+        public bool IsOccupated { get; private set; }
+
+        public bool IsCaptured { get; private set; }
+
         public void BuildBase()
         {
             IsBase = true;
+            IsCaptured = true;
         }
 
         public void SetAvailable(bool value)
@@ -26,6 +31,16 @@
         public void RemoveVisitor()
         {
             IsVisiting = false;
+        }
+
+        public void SetCapture(bool capture)
+        {
+            IsCaptured = capture;
+        }
+
+        public void Occupate(bool occupate)
+        {
+            IsOccupated = occupate;
         }
     }
 }

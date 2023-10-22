@@ -20,5 +20,15 @@ namespace LegoBattaleRoyal.Panels.Models
                 && Row == other.Row
                 && Column == other.Column;
         }
+
+        public override string ToString()
+        {
+            return $"{Row}:{Column}";
+        }
+
+        internal void Change(GridPosition gridPosition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

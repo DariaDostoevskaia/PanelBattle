@@ -1,27 +1,35 @@
-using LegoBattaleRoyal.Characters.Interfaces;
+using LegoBattaleRoyal.Infrastructure.Interfaces;
 using System;
 using UnityEngine;
 
-public class InputService : IInputService
+namespace LegoBattaleRoyal.Infrastructure
 {
-    public event Action<Vector3> OnClicked;
-
-    private readonly Camera _camera;
-
-    public InputService()
+    public class InputService : IInputService, IDisposable
     {
-        _camera = Camera.main;
-    }
+        public event Action<Vector3> OnClicked;
 
-    public void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private readonly Camera _camera;
+
+        public InputService()
         {
-            var mousePosition = Input.mousePosition;
-            var ray = _camera.ScreenPointToRay(mousePosition);
+            _camera = Camera.main;
+        }
 
-            if (Physics.Raycast(ray, out var hit))
-                OnClicked?.Invoke(hit.point);
+        public void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var mousePosition = Input.mousePosition;
+                var ray = _camera.ScreenPointToRay(mousePosition);
+
+                if (Physics.Raycast(ray, out var hit))
+                    OnClicked?.Invoke(hit.point);
+            }
+        }
+
+        public void Dispose()
+        {
+            OnClicked = null;
         }
     }
 }

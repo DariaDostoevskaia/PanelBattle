@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c94af568783d33428f91a8e0cc3c8d0, type: 3}
+  m_Name: GameSettingsSO
+  m_EditorClassIdentifier: 
+  _characterSO: {fileID: 11400000, guid: 93b417e1bf99e4c44b44373929faf783, type: 2}
+  _aICharacterSO:
+  - {fileID: 11400000, guid: b9eb37c68a5e824418281b9696a4a9ef, type: 2}
+  - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
+  - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
+  _panelSettings:
+  - {fileID: 11400000, guid: e150eb798991e234cbb2f1cb9122a345, type: 2}
+  - {fileID: 11400000, guid: c8a7bb1f559bc214ca7fa0a3576ec1aa, type: 2}
+  - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
+  _gridPanelSettings: {fileID: 11400000, guid: 874d8cdb0053dca4b9292d6aa1332e1f, type: 2}
+  _capturePathViewPrefab: {fileID: 3423781268855496717, guid: 11e6d7102cc4cc046850e843e208c8b1,
+    type: 3}

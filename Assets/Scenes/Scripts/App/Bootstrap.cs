@@ -1,59 +1,49 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Characters.View;
-using LegoBattaleRoyal.Panels.Controllers;
-using LegoBattaleRoyal.ScriptableObjects;
-using System;
-using System.Linq;
+using LegoBattaleRoyal.Controllers.EndGame;
+using LegoBattaleRoyal.UI.Container;
 using UnityEngine;
-
 namespace LegoBattaleRoyal.App
 {
     public class Bootstrap : MonoBehaviour
     {
-        [SerializeField] private CharacterView _characterViewPrefab;
-        [SerializeField] private Transform _levelContainer;
-        [SerializeField] private GameSettingsSO _gameSettingsSO;
-
-        private Characters.Controllers.CharacterController _characterController;
-
-        private event Action OnDisposed;
+        [SerializeField] private GameBootstrap _gameBootstrap;
+        [SerializeField] private UIContainer _uIContainer;
+        [SerializeField] private EndGameController _endGameController;
 
         private void Start()
         {
-            var characterSO = _gameSettingsSO.CharacterSO;
-            var characterModel = new CharacterModel(characterSO.JumpLenght);
+            _uIContainer.MenuPanel.Show();
+            _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
 
-            var characterView = Instantiate(_characterViewPrefab);
-            characterView.SetJumpHeight(characterSO.JumpHeight);
-            characterView.SetMoveDuration(characterSO.MoveDuration);
+            _uIContainer.GamePanel.OnExitMainMenuClicked += ExitMainMenu;
+        }
 
-            _characterController = new Characters.Controllers.CharacterController(characterModel, characterView);
+        private void StartGame()
+        {
+            _gameBootstrap.Dispose();
+            // subscribe again after dispose
 
-            var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings);
+            _gameBootstrap.OnRestarted += StartGame;
 
-            var pairs = gridFactory.CreatePairs(_levelContainer);
+            _uIContainer.MenuPanel.Close();
 
-            var panelController = new PanelController(pairs, characterModel);
-            panelController.OnMoveSelected += _characterController.MoveCharacter;
+            _gameBootstrap.Configure();
+        }
 
-            var availablePair = pairs.First(pair => pair.panelModel.IsJumpBlock);
+        private void ExitMainMenu()
+        {
+            _gameBootstrap.OnExited += ExitMainMenu;
 
-            availablePair.panelModel.BuildBase();
-
-            _characterController.ForceMoveCharacter(availablePair.panelView.transform.position);
-            panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, characterModel.JumpLenght);
-
-            OnDisposed += () =>
-            {
-                panelController.OnMoveSelected -= _characterController.MoveCharacter;
-                panelController.Dispose();
-            };
+            _uIContainer.GamePanel.Close();
+            _uIContainer.MenuPanel.Show();
         }
 
         private void OnDestroy()
         {
-            OnDisposed?.Invoke();
-            OnDisposed = null;
+            _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
+            _gameBootstrap.OnRestarted -= StartGame;
+
+            _uIContainer.GamePanel.OnExitMainMenuClicked -= ExitMainMenu;
+            _gameBootstrap.OnExited -= ExitMainMenu;
         }
     }
 }
