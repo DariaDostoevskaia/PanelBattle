@@ -1,20 +1,31 @@
-using LegoBattaleRoyal.Controllers.EndGame;
+using LegoBattaleRoyal.Controllers.Menu;
 using LegoBattaleRoyal.UI.Container;
+using System;
 using UnityEngine;
 namespace LegoBattaleRoyal.App
 {
     public class Bootstrap : MonoBehaviour
     {
+        private event Action OnDisposed;
+
         [SerializeField] private GameBootstrap _gameBootstrap;
-        [SerializeField] private UIContainer _uIContainer;
-        [SerializeField] private EndGameController _endGameController;
+        [SerializeField] private UIContainer _uiContainer;
 
         private void Start()
         {
-            _uIContainer.MenuPanel.Show();
-            _uIContainer.MenuPanel.OnStartGameClicked += StartGame;
+            _uiContainer.CloseAll();
+            var menuController = new MenuController(_uiContainer.MenuView);
+            menuController.ShowMenu();
 
-            _uIContainer.GamePanel.OnExitMainMenuClicked += ExitMainMenu;
+            menuController.OnGameStarted += StartGame;
+
+            OnDisposed += () =>
+            {
+                menuController.OnGameStarted -= StartGame;
+                menuController.Dispose();
+
+                _gameBootstrap.OnRestarted -= StartGame;
+            };
         }
 
         private void StartGame()
@@ -24,26 +35,16 @@ namespace LegoBattaleRoyal.App
 
             _gameBootstrap.OnRestarted += StartGame;
 
-            _uIContainer.MenuPanel.Close();
+            _uiContainer.MenuView.Close();
 
             _gameBootstrap.Configure();
         }
 
-        private void ExitMainMenu()
-        {
-            _gameBootstrap.OnExited += ExitMainMenu;
-
-            _uIContainer.GamePanel.Close();
-            _uIContainer.MenuPanel.Show();
-        }
 
         private void OnDestroy()
         {
-            _uIContainer.MenuPanel.OnStartGameClicked -= StartGame;
-            _gameBootstrap.OnRestarted -= StartGame;
-
-            _uIContainer.GamePanel.OnExitMainMenuClicked -= ExitMainMenu;
-            _gameBootstrap.OnExited -= ExitMainMenu;
+            OnDisposed?.Invoke();
+            OnDisposed = null;
         }
     }
 }

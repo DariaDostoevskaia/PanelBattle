@@ -13,6 +13,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
     public class PanelController : IDisposable
     {
         public event Action<Vector3> OnMoveSelected;
+
         public event Action OnCharacterLoss;
 
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
@@ -35,7 +36,6 @@ namespace LegoBattaleRoyal.Controllers.Panel
                 panelView.OnClicked += OnPanelClicked;
                 panelView.OnEntered += OnPanelHover;
                 panelView.OnPointerExited += OnPanelExit;
-
             }
         }
 
@@ -53,7 +53,7 @@ namespace LegoBattaleRoyal.Controllers.Panel
         {
             foreach (var (panelModel, panelView) in _pairs)
             {
-                panelModel.OnReleased += OnPanelRealised;
+                panelModel.OnReleased += OnPanelReleased;
             }
         }
 
@@ -61,11 +61,11 @@ namespace LegoBattaleRoyal.Controllers.Panel
         {
             foreach (var (panelModel, panelView) in _pairs)
             {
-                panelModel.OnReleased -= OnPanelRealised;
+                panelModel.OnReleased -= OnPanelReleased;
             }
         }
 
-        public void OnPanelRealised(Guid characterId)
+        public void OnPanelReleased(Guid characterId)
         {
             if (_characterModel.Id != characterId)
                 return;

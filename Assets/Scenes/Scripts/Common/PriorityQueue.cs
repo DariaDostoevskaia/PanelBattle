@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LegoBattaleRoyal.Strategy
+namespace LegoBattaleRoyal.Common
 {
     public class PriorityQueue<T, P>
     {
