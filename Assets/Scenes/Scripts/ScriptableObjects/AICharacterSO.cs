@@ -1,14 +1,8 @@
-﻿using UnityEngine;
+﻿using LegoBattaleRoyal.Strategy.Difficulty;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects
 {
-    public enum Difficulty
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-
     [CreateAssetMenu(fileName = nameof(AICharacterSO), menuName = "Config/Characters/AI Character SO")]
     public class AICharacterSO : CharacterSO
     {

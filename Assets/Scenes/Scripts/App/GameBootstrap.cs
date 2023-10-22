@@ -22,8 +22,6 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-        public event Action OnExited;
-
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -44,9 +42,8 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            var endGameController = new EndGameController(_uIContainer.GamePanel, _uIContainer.MenuPanel, characterRepository);
+            var endGameController = new EndGameController(_uIContainer.EndGamePopup, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
-            endGameController.OnExitedMenu += OnExited;
 
             for (int i = 0; i < _gameSettingsSO.AICharactersSO.Length; i++)
             {
@@ -61,7 +58,8 @@ namespace LegoBattaleRoyal.App
                 {
                     var availablePair = pairs
                     .OrderBy(pair => Guid.NewGuid())
-                    .First(pair => pair.panelModel.IsJumpBlock);
+                    .First(pair => pair.panelModel.IsJumpBlock
+                    && !pair.panelModel.IsBase);
 
                     character.Move(availablePair.panelModel);
 
@@ -79,7 +77,6 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 endGameController.OnGameRestarted -= OnRestarted;
-                endGameController.OnExitedMenu -= OnExited;
 
                 foreach (var pair in pairs)
                 {

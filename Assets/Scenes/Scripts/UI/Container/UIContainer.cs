@@ -9,8 +9,14 @@ namespace LegoBattaleRoyal.UI.Container
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanel _menuPanel;
 
-        public GamePanelUI GamePanel => _gamePanel;
+        public GamePanelUI EndGamePopup => _gamePanel;
 
-        public MainMenuPanel MenuPanel => _menuPanel;
+        public MainMenuPanel MenuView => _menuPanel;
+
+        public void CloseAll()
+        {
+            _gamePanel.Close();
+            _menuPanel.Close();
+        }
     }
 }

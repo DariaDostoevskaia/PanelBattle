@@ -8,8 +8,10 @@ namespace LegoBattaleRoyal.ScriptableObjects
     {
         [SerializeField] private CharacterSO _characterSO;
         [SerializeField] private AICharacterSO[] _aICharacterSO;
+
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private GridPanelSettingsSO _gridPanelSettings;
+
         [SerializeField] private CapturePathView _capturePathViewPrefab;
 
         public CharacterSO CharacterSO => _characterSO;

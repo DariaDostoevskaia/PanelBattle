@@ -15,7 +15,7 @@ MonoBehaviour:
   _moveDuration: 0.5
   _jumpHeight: 5
   _jumpLenght: 1
-  _viewPrefab: {fileID: 7357837026706244094, guid: d655ed2f057ec0441a05a98c52df5e49,
+  _viewPrefab: {fileID: 7357837026706244094, guid: 1e366bf736e21fb4fad4d0b04f9f1399,
     type: 3}
   _blocksToCapture: -1
   _difficulty: 0

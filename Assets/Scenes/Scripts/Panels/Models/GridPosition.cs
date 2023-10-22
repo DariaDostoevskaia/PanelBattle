@@ -26,9 +26,10 @@ namespace LegoBattaleRoyal.Panels.Models
             return $"{Row}:{Column}";
         }
 
-        internal void Change(GridPosition gridPosition)
+        public void Change(GridPosition gridPosition)
         {
-            throw new NotImplementedException();
+            Row = gridPosition.Row;
+            Column = gridPosition.Column;
         }
     }
 }

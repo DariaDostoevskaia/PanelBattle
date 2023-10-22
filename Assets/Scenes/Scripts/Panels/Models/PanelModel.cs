@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
@@ -7,11 +8,13 @@ namespace LegoBattaleRoyal.Panels.Models
     {
         public Action<Guid> OnReleased;
 
+        private readonly Dictionary<Guid, State> _stateForCharacters = new();
+
         public GridPosition GridPosition { get; }
 
         public bool IsJumpBlock { get; }
 
-        private readonly Dictionary<Guid, State> _stateForCharacters = new();
+        public bool IsBase => _stateForCharacters.Values.Any(state => state.IsBase);
 
         public PanelModel(bool isJumpBlock, GridPosition gridPosition)
         {
@@ -81,8 +84,6 @@ namespace LegoBattaleRoyal.Panels.Models
 
         public void BuildBase(Guid characterId)
         {
-
-
             if (!_stateForCharacters.TryGetValue(characterId, out State state))
                 state = _stateForCharacters[characterId] = new State();
 
