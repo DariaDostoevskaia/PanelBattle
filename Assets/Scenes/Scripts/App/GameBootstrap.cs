@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Controllers.CapturePath;
 using LegoBattaleRoyal.Controllers.EndGame;
 using LegoBattaleRoyal.Controllers.Panel;
 using LegoBattaleRoyal.Controllers.Round;
+using LegoBattaleRoyal.Exceptions;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Panels.Controllers;
 using LegoBattaleRoyal.Panels.Models;
