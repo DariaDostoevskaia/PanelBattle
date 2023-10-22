@@ -26,12 +26,10 @@ namespace LegoBattaleRoyal.Panels.Models
             return $"{Row}:{Column}";
         }
 
-        public GridPosition Change(GridPosition gridPosition)
+        public void Change(GridPosition gridPosition)
         {
-            gridPosition.Row = Row;
-            gridPosition.Column = Column;
-
-            return gridPosition;
+            Row = gridPosition.Row;
+            Column = gridPosition.Column;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LegoBattaleRoyal.Panels.Models
 {
@@ -10,6 +11,8 @@ namespace LegoBattaleRoyal.Panels.Models
         public GridPosition GridPosition { get; }
 
         public bool IsJumpBlock { get; }
+
+        public bool IsBase => _stateForCharacters.Values.Any(state => state.IsBase);
 
         private readonly Dictionary<Guid, State> _stateForCharacters = new();
 

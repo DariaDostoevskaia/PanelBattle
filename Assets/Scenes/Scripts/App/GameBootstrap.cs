@@ -60,7 +60,8 @@ namespace LegoBattaleRoyal.App
                 {
                     var availablePair = pairs
                     .OrderBy(pair => Guid.NewGuid())
-                    .First(pair => pair.panelModel.IsJumpBlock);
+                    .First(pair => pair.panelModel.IsJumpBlock
+                    && !pair.panelModel.IsBase);
 
                     character.Move(availablePair.panelModel);
 
