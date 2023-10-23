@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Presentation.Character
+namespace LegoBattaleRoyal.Presentation.GameView.Character
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
     public class CharacterView : MonoBehaviour

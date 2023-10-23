@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Exceptions
+namespace LegoBattaleRoyal.Extensions
 {
     public static class ComponentExtensions
     {
@@ -23,4 +23,3 @@ namespace LegoBattaleRoyal.Exceptions
         }
     }
 }
-

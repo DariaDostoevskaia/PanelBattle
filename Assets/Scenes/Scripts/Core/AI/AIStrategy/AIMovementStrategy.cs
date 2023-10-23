@@ -1,8 +1,9 @@
-﻿using LegoBattaleRoyal.Panels.Models;
+﻿using LegoBattaleRoyal.Core.AI.AIPathfinding;
+using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 using System.Linq;
 
-namespace LegoBattaleRoyal.Strategy
+namespace LegoBattaleRoyal.Core.AI.AIStrategy
 {
     public abstract class AIMovementStrategy
     {
@@ -21,8 +22,6 @@ namespace LegoBattaleRoyal.Strategy
         protected PanelModel[] PanelModels { get; }
 
         protected Guid OwnerId { get; }
-
-
 
         public AIMovementStrategy(int blocksToCapture, GridPosition currentPosition,
             PanelModel[] panelModels, Guid ownerId)
@@ -62,7 +61,6 @@ namespace LegoBattaleRoyal.Strategy
 
             panelModel = PanelModels.First(panelModel => panelModel.GridPosition.Equals(position));
             return true;
-
         }
 
         protected PanelModel UseRandomStrategy()

@@ -1,4 +1,4 @@
-using LegoBattaleRoyal.Presentation.CapturePath;
+using LegoBattaleRoyal.Presentation.GameView.CapturePath;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects
@@ -23,6 +23,5 @@ namespace LegoBattaleRoyal.ScriptableObjects
         public GridPanelSettingsSO GridPanelSettings => _gridPanelSettings;
 
         public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
-
     }
 }

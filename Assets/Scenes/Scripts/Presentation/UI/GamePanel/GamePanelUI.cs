@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LegoBattaleRoyal.UI.GamePanel
+namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 {
     public class GamePanelUI : MonoBehaviour
     {

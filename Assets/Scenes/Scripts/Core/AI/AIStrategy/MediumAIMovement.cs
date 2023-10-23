@@ -1,5 +1,5 @@
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Strategy;
+using LegoBattaleRoyal.Core.AI.AIStrategy;
+using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 
 public class MediumAIMovement : AIMovementStrategy
@@ -20,5 +20,4 @@ public class MediumAIMovement : AIMovementStrategy
         panel = UseRandomStrategy();
         return panel;
     }
-
 }

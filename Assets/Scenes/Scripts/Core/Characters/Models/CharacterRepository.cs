@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LegoBattaleRoyal.Characters.Models
+namespace LegoBattaleRoyal.Core.Characters.Models
 {
     public class CharacterRepository
     {

@@ -1,12 +1,12 @@
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.Panel;
+using LegoBattaleRoyal.Core.Panels.Models;
+using LegoBattaleRoyal.Presentation.GameView.Panel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace LegoBattaleRoyal.Panels.Controllers
+namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 {
     public class GridFactory
     {

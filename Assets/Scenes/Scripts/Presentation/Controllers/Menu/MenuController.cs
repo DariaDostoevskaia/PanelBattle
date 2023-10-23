@@ -1,12 +1,13 @@
-using LegoBattaleRoyal.UI.MainMenu;
+using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
-namespace LegoBattaleRoyal.Controllers.Menu
+namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 {
     public class MenuController : IDisposable
     {
         public event Action OnGameStarted;
-        private MainMenuPanel _menuView;
+
+        private readonly MainMenuPanel _menuView;
 
         public MenuController(MainMenuPanel menuView)
         {

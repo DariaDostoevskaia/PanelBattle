@@ -1,11 +1,11 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Controllers.Panel;
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.Panel;
+using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Panels.Models;
+using LegoBattaleRoyal.Presentation.Controllers.Panel;
+using LegoBattaleRoyal.Presentation.GameView.Panel;
 using System.Linq;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Controllers.AI
+namespace LegoBattaleRoyal.Presentation.Controllers.AI
 {
     public class AIController
     {

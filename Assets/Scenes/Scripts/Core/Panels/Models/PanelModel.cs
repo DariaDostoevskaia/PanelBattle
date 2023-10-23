@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LegoBattaleRoyal.Panels.Models
+namespace LegoBattaleRoyal.Core.Panels.Models
 {
     public class PanelModel : IDisposable
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LegoBattaleRoyal.Panels.Models
+namespace LegoBattaleRoyal.Core.Panels.Models
 {
     public static class BlockMatrixGenerator
     {

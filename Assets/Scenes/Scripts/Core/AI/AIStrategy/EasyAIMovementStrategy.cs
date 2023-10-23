@@ -1,5 +1,4 @@
-﻿using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Strategy;
+﻿using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 
 namespace LegoBattaleRoyal.Core.AI.AIStrategy

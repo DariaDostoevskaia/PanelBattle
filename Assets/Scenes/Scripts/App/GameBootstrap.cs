@@ -1,16 +1,14 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Controllers.AI;
-using LegoBattaleRoyal.Controllers.CapturePath;
-using LegoBattaleRoyal.Controllers.EndGame;
-using LegoBattaleRoyal.Controllers.Panel;
-using LegoBattaleRoyal.Controllers.Round;
-using LegoBattaleRoyal.Exceptions;
+using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
-using LegoBattaleRoyal.Panels.Controllers;
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.Panel;
+using LegoBattaleRoyal.Presentation.Controllers.AI;
+using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
+using LegoBattaleRoyal.Presentation.Controllers.EndGame;
+using LegoBattaleRoyal.Presentation.Controllers.Panel;
+using LegoBattaleRoyal.Presentation.Controllers.Round;
+using LegoBattaleRoyal.Presentation.GameView.Panel;
+using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
-using LegoBattaleRoyal.UI.Container;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +26,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uIContainer;
 
-        private readonly Dictionary<Guid, (Controllers.Character.CharacterController, PanelController)> _players = new();
+        private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
         public void Configure()
         {
@@ -113,7 +111,8 @@ namespace LegoBattaleRoyal.App
 
             var panelController = new PanelController(pairs, characterModel, capturePathController);
 
-            var characterController = new Controllers.Character.CharacterController(characterModel, characterView, capturePathController, characterRepository);
+            var characterController = new Presentation.Controllers.Character.CharacterController
+                (characterModel, characterView, capturePathController, characterRepository);
 
             panelController.OnMoveSelected += characterController.MoveCharacter;
             panelController.SubscribeOnCallBack();

@@ -1,17 +1,17 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.UI.GamePanel;
+using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-namespace LegoBattaleRoyal.Controllers.EndGame
+namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 {
     public class EndGameController : IDisposable
     {
         public event Action OnGameRestarted;
 
         private readonly CharacterRepository _characterRepository;
-        private GamePanelUI _endGamePopup;
+        private readonly GamePanelUI _endGamePopup;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository)
         {

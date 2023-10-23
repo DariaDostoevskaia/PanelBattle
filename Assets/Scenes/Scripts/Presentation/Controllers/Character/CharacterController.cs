@@ -1,10 +1,10 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Controllers.CapturePath;
-using LegoBattaleRoyal.Presentation.Character;
+using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
+using LegoBattaleRoyal.Presentation.GameView.Character;
 using System;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Controllers.Character
+namespace LegoBattaleRoyal.Presentation.Controllers.Character
 {
     public class CharacterController : IDisposable
     {

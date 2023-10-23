@@ -1,8 +1,8 @@
-using LegoBattaleRoyal.UI.GamePanel;
-using LegoBattaleRoyal.UI.MainMenu;
+using LegoBattaleRoyal.Presentation.UI.GamePanel;
+using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.UI.Container
+namespace LegoBattaleRoyal.Presentation.UI.Container
 {
     public class UIContainer : MonoBehaviour
     {

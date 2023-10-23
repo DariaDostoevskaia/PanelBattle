@@ -1,7 +1,8 @@
-using LegoBattaleRoyal.Controllers.Menu;
-using LegoBattaleRoyal.UI.Container;
+using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.UI.Container;
 using System;
 using UnityEngine;
+
 namespace LegoBattaleRoyal.App
 {
     public class Bootstrap : MonoBehaviour
@@ -39,7 +40,6 @@ namespace LegoBattaleRoyal.App
 
             _gameBootstrap.Configure();
         }
-
 
         private void OnDestroy()
         {

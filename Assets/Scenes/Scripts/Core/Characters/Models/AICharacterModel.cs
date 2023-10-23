@@ -1,10 +1,9 @@
 ﻿using LegoBattaleRoyal.Core.AI.AIStrategy;
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Strategy;
-using LegoBattaleRoyal.Strategy.Difficulty;
+using LegoBattaleRoyal.Core.AI.AIStrategy.Difficulty;
+using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 
-namespace LegoBattaleRoyal.Characters.Models
+namespace LegoBattaleRoyal.Core.Characters.Models
 {
     public class AICharacterModel : CharacterModel
     {
@@ -27,6 +26,7 @@ namespace LegoBattaleRoyal.Characters.Models
                     break;
             }
         }
+
         public override void Occupate(PanelModel panelModel)
         {
             base.Occupate(panelModel);
@@ -42,7 +42,6 @@ namespace LegoBattaleRoyal.Characters.Models
                 _aiMovementStrategy.LoseCapturePath();
             }
         }
-
 
         public PanelModel DecideMove()
         {

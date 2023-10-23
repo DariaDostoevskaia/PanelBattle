@@ -1,4 +1,4 @@
-﻿namespace LegoBattaleRoyal.Panels.Models
+﻿namespace LegoBattaleRoyal.Core.Panels.Models
 {
     public class State
     {

@@ -1,9 +1,9 @@
 ﻿using LegoBattaleRoyal.Common;
-using LegoBattaleRoyal.Panels.Models;
+using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 using System.Collections.Generic;
 
-namespace LegoBattaleRoyal.Strategy
+namespace LegoBattaleRoyal.Core.AI.AIPathfinding
 {
     public class Pathfinding
     {
@@ -18,7 +18,6 @@ namespace LegoBattaleRoyal.Strategy
 
         public Pathfinding(int minX, int minY, int maxX, int maxY)
         {
-            //TODO validation minX and minY    < max
             if (minX < maxX
                 && minY < maxY)
             {

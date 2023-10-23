@@ -1,7 +1,7 @@
-using LegoBattaleRoyal.Presentation.CapturePath;
+using LegoBattaleRoyal.Presentation.GameView.CapturePath;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Controllers.CapturePath
+namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
 {
     public class CapturePathController
     {

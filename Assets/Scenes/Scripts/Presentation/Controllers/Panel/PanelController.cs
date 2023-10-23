@@ -1,14 +1,14 @@
-using LegoBattaleRoyal.Characters.Models;
-using LegoBattaleRoyal.Controllers.CapturePath;
+using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
-using LegoBattaleRoyal.Panels.Models;
-using LegoBattaleRoyal.Presentation.Panel;
+using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
+using LegoBattaleRoyal.Presentation.GameView.Panel;
 using System;
 using System.Linq;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
-namespace LegoBattaleRoyal.Controllers.Panel
+namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 {
     public class PanelController : IDisposable
     {

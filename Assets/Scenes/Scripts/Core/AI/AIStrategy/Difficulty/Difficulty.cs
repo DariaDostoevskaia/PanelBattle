@@ -1,4 +1,4 @@
-﻿namespace LegoBattaleRoyal.Strategy.Difficulty
+﻿namespace LegoBattaleRoyal.Core.AI.AIStrategy.Difficulty
 {
     public enum Difficulty
     {

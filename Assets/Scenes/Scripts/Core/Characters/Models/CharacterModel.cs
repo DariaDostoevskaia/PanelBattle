@@ -1,7 +1,7 @@
-﻿using LegoBattaleRoyal.Panels.Models;
+﻿using LegoBattaleRoyal.Core.Panels.Models;
 using System;
 
-namespace LegoBattaleRoyal.Characters.Models
+namespace LegoBattaleRoyal.Core.Characters.Models
 {
     public class CharacterModel : IDisposable
     {
