@@ -1,48 +1,48 @@
-using LegoBattaleRoyal.Core.AI.AIStrategy;
 using LegoBattaleRoyal.Core.Panels.Models;
 using System;
+using System.Linq;
 
-public class MediumAIMovement : AIMovementStrategy
+namespace LegoBattaleRoyal.Core.AI.AIStrategy
 {
-    public int BlocksToCapture { get; }
-
-    public MediumAIMovement(int blocksToCapture, GridPosition currentPosition, PanelModel[] panelModels, Guid ownerId)
-        : base(blocksToCapture, currentPosition, panelModels, ownerId)
+    public class MediumAIMovement : AIMovementStrategy
     {
-        ReturnWhenLosingCombatZone = true;
-        BlocksToCapture = blocksToCapture;
-    }
+        private int _blocksToCapture;
+        private readonly PanelModel[] _panelModels;
 
-    public override PanelModel Dicide()
-    {
-        if (TryUsePathfindingStrategy(out var panel))
-            return panel;
-
-        if (TryUseToCaptureStrategy(out panel))
-            return panel;
-        //TryUseToCaptureStrategy если 5блоков то домой blocksToCapture - через config
-
-        panel = UseRandomStrategy();
-        return panel;
-    }
-
-    private bool TryUseToCaptureStrategy(out PanelModel panelModel)
-    {
-        panelModel = null;
-        var occupiedBlockCount = BlocksToCapture;
-        foreach (var block in PanelModels)
+        public MediumAIMovement(int blocksToCapture, GridPosition currentPosition, PanelModel[] panelModels, Guid ownerId)
+            : base(blocksToCapture, currentPosition, panelModels, ownerId)
         {
-            if (block.IsOccupated(OwnerId))
+            ReturnWhenLosingCombatZone = true;
+            _blocksToCapture = blocksToCapture;
+            _panelModels = panelModels;
+        }
+
+        public override PanelModel Dicide()
+        {
+            if (TryUsePathfindingStrategy(out var panel))
+                return panel;
+
+            if (TryUseToCaptureStrategy(out panel))
+                return panel;
+            //TryUseToCaptureStrategy если 5блоков то домой blocksToCapture - через config
+
+            panel = UseRandomStrategy();
+            return panel;
+        }
+
+        private bool TryUseToCaptureStrategy(out PanelModel panelModel)
+        {
+            var occupatePanels = _panelModels.Where(panelModel => panelModel.IsOccupated(OwnerId)).ToList();
+
+            if (occupatePanels.Count == _blocksToCapture)
             {
-                occupiedBlockCount--;
+                panelModel = occupatePanels.First();
+                CreateNewPathToHome();
+                return true;
             }
-        }
 
-        if (occupiedBlockCount == 0)
-        {
-            CreateNewPathToHome();
-            return true;
+            panelModel = occupatePanels.FirstOrDefault();
+            return false;
         }
-        return false;
     }
 }
