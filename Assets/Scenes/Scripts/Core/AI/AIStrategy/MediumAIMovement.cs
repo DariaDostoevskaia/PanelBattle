@@ -24,7 +24,6 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
 
             if (TryUseToCaptureStrategy(out panel))
                 return panel;
-            //TryUseToCaptureStrategy если 5блоков то домой blocksToCapture - через config
 
             panel = UseRandomStrategy();
             return panel;
@@ -32,16 +31,17 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
 
         private bool TryUseToCaptureStrategy(out PanelModel panelModel)
         {
-            var occupatePanels = _panelModels.Where(panelModel => panelModel.IsOccupated(OwnerId)).ToList();
+            panelModel = null;
 
-            if (occupatePanels.Count == _blocksToCapture)
+            var occupatePanels = _panelModels.Where(panelModel => panelModel.IsOccupated(OwnerId)).ToArray();
+
+            if (occupatePanels.Length == _blocksToCapture)
             {
                 panelModel = occupatePanels.First();
                 CreateNewPathToHome();
                 return true;
             }
 
-            panelModel = occupatePanels.FirstOrDefault();
             return false;
         }
     }
