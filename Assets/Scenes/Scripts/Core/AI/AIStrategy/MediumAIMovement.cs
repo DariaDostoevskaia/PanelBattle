@@ -33,13 +33,12 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
         {
             panelModel = null;
 
-            var occupatePanels = _panelModels.Where(panelModel => panelModel.IsOccupated(OwnerId)).ToArray();
+            var occupatePanelsCount = _panelModels.Count(panelModel => panelModel.IsOccupated(OwnerId));
 
-            if (occupatePanels.Length == _blocksToCapture)
+            if (occupatePanelsCount >= _blocksToCapture)
             {
-                panelModel = occupatePanels.First();
                 CreateNewPathToHome();
-                return true;
+                return TryUsePathfindingStrategy(out panelModel);
             }
 
             return false;

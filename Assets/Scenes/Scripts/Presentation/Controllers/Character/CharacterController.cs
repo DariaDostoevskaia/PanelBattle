@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.GameView.Character;
 using System;
@@ -46,7 +47,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Character
         public void KillCharacter()
         {
             _characterRepository.Remove(_characterModel.Id);
-            UnityEngine.Object.Destroy(_characterView.gameObject);
+            _characterView.DestroyGameObject();
             Dispose();
         }
 

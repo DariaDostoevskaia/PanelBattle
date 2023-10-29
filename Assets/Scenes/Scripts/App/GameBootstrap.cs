@@ -137,6 +137,7 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
 
+                characterView.DestroyGameObject();
                 characterModel.Dispose();
                 panelController.Dispose();
                 roundController.Dispose();
