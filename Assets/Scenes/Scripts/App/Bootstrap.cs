@@ -15,10 +15,14 @@ namespace LegoBattaleRoyal.App
         private void Start()
         {
             _uiContainer.CloseAll();
+
+            var levelRepository = new LevelRepository();
+
             var menuController = new MenuController(_uiContainer.MenuView);
-            menuController.ShowMenu();
 
             menuController.OnGameStarted += StartGame;
+
+            menuController.ShowMenu();
 
             OnDisposed += () =>
             {
@@ -27,18 +31,17 @@ namespace LegoBattaleRoyal.App
 
                 _gameBootstrap.OnRestarted -= StartGame;
             };
-        }
 
-        private void StartGame()
-        {
-            _gameBootstrap.Dispose();
-            // subscribe again after dispose
+            void StartGame()
+            {
+                _gameBootstrap.Dispose();
+                // subscribe again after dispose
 
-            _gameBootstrap.OnRestarted += StartGame;
+                _gameBootstrap.OnRestarted += StartGame;
+                _uiContainer.MenuView.Close();
 
-            _uiContainer.MenuView.Close();
-
-            _gameBootstrap.Configure();
+                _gameBootstrap.Configure(levelRepository);
+            }
         }
 
         private void OnDestroy()

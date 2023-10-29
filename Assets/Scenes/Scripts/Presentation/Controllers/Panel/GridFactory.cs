@@ -11,23 +11,21 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
-        private GridPanelSettingsSO _gridPanelSettings;
+        private LevelSO _levelSettings;
 
-        public GridFactory(PanelSO[] panelSettings, GridPanelSettingsSO gridPanelSettings)
+        public GridFactory(LevelSO levelSettings)
         {
-            _panelSettings = panelSettings;
-            _gridPanelSettings = gridPanelSettings;
+            _panelSettings = levelSettings.PanelSettings;
+            _levelSettings = levelSettings;
         }
 
         public (PanelModel panelModel, PanelView panelView)[] CreatePairs(Transform parent)
         {
-            _gridPanelSettings = ScriptableObject.CreateInstance<GridPanelSettingsSO>();
+            var grid = BlockMatrixGenerator.GenerateGrid(_levelSettings.Rect);
 
-            var grid = BlockMatrixGenerator.GenerateGrid(_gridPanelSettings.Rect);
-
-            var polygon = BlockMatrixGenerator.GeneratePolygon(_gridPanelSettings.StartedPosition,
-                _gridPanelSettings.Rect,
-                _gridPanelSettings.Spacing);
+            var polygon = BlockMatrixGenerator.GeneratePolygon(_levelSettings.StartedPosition,
+                _levelSettings.Rect,
+                _levelSettings.Spacing);
 
             var pairs = polygon
                 .Select((cell, i) =>

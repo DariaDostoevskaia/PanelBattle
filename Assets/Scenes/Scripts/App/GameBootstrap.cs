@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
@@ -28,11 +29,15 @@ namespace LegoBattaleRoyal.App
 
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure()
+        public void Configure(ILevelRepository levelRepository)
         {
             var characterSO = _gameSettingsSO.CharacterSO;
 
-            var gridFactory = new GridFactory(_gameSettingsSO.PanelSettings, _gameSettingsSO.GridPanelSettings);
+            var currentLevel = levelRepository.GetCurrentLevel();
+
+            var levelSO = _gameSettingsSO.Levels[currentLevel.Order - 1];
+
+            var gridFactory = new GridFactory(levelSO);
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
@@ -43,9 +48,9 @@ namespace LegoBattaleRoyal.App
             var endGameController = new EndGameController(_uIContainer.EndGamePopup, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
 
-            for (int i = 0; i < _gameSettingsSO.AICharactersSO.Length; i++)
+            for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(_gameSettingsSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController);
+                CreatePlayer(levelSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController);
             }
             CreatePlayer(characterSO, characterRepository, pairs, roundController, endGameController);
 
