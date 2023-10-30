@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterSO: {fileID: 11400000, guid: 93b417e1bf99e4c44b44373929faf783, type: 2}
   _aICharacterSO:
-  - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
+  - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   _panelSettings:
   - {fileID: 11400000, guid: e150eb798991e234cbb2f1cb9122a345, type: 2}
   - {fileID: 11400000, guid: c8a7bb1f559bc214ca7fa0a3576ec1aa, type: 2}
