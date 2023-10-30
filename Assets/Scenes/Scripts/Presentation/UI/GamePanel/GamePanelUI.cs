@@ -9,15 +9,19 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
     {
         public event Action OnRestartClicked;
 
+        public event Action OnNextLevelClicked;
+
         public event Action OnExitMainMenuClicked;
 
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Button _restartGameButton;
+        [SerializeField] private Button _nextLevelGameButton;
         [SerializeField] private Button _exitMainMenuGameButton;
 
         private void Start()
         {
             _restartGameButton.onClick.AddListener(() => OnRestartClicked?.Invoke());
+            _nextLevelGameButton.onClick.AddListener(() => OnNextLevelClicked?.Invoke());
             _exitMainMenuGameButton.onClick.AddListener(() => OnExitMainMenuClicked?.Invoke());
         }
 
@@ -29,6 +33,11 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
         public void SetActiveRestartButton(bool value)
         {
             _restartGameButton.gameObject.SetActive(value);
+        }
+
+        public void SetActiveNextLevelButton(bool value)
+        {
+            _nextLevelGameButton.gameObject.SetActive(value);
         }
 
         public void Show()
@@ -44,9 +53,11 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
         private void OnDestroy()
         {
             OnRestartClicked = null;
+            OnNextLevelClicked = null;
             OnExitMainMenuClicked = null;
 
             _restartGameButton.onClick.RemoveAllListeners();
+            _nextLevelGameButton.onClick.RemoveAllListeners();
             _exitMainMenuGameButton.onClick.RemoveAllListeners();
         }
     }

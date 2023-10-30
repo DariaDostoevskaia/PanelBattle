@@ -1,33 +1,40 @@
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using System.Collections.Generic;
+using System.Linq;
 
-public class LevelRepository : ILevelRepository
+namespace LegoBattaleRoyal.Infrastructure.Repository
 {
-    public int Count => throw new System.NotImplementedException();
-
-    public void Add(LevelModel levelModel)
+    public class LevelRepository : ILevelRepository
     {
-        throw new System.NotImplementedException();
-    }
+        private readonly List<LevelModel> _levelModels = new();
 
-    public IEnumerable<LevelModel> GetAll()
-    {
-        throw new System.NotImplementedException();
-    }
+        public int Count => _levelModels.Count();
 
-    public LevelModel GetCurrentLevel()
-    {
-        throw new System.NotImplementedException();
-    }
+        public void Add(LevelModel levelModel)
+        {
+            _levelModels.Add(levelModel);
+        }
 
-    public IEnumerable<LevelModel> GetFinishedLevels()
-    {
-        throw new System.NotImplementedException();
-    }
+        public IEnumerable<LevelModel> GetAll()
+        {
+            return _levelModels;
+        }
 
-    public LevelModel GetNextLevel()
-    {
-        throw new System.NotImplementedException();
+        public LevelModel GetCurrentLevel()
+        {
+            return _levelModels.First(level => level.IsCurrent);
+        }
+
+        public IEnumerable<LevelModel> GetFinishedLevels()
+        {
+            return _levelModels.Where(level => level.IsFinished);
+        }
+
+        public LevelModel GetNextLevel()
+        {
+            var current = _levelModels.IndexOf(GetCurrentLevel());
+            return _levelModels[current + 1];
+        }
     }
 }

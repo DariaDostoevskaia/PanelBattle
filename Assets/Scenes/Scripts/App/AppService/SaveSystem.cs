@@ -463,10 +463,5 @@ namespace LegoBattaleRoyal.App.AppService
             var fileName = typeof(T).Name;
             return Load<T>(fileName, converts);
         }
-
-        public TextAsset SaveToTextAsset(string name, object content, string ext = "json")
-        {
-            throw new NotImplementedException(); //TODO
-        }
     }
 }

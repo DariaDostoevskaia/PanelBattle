@@ -162,7 +162,8 @@ namespace LegoBattaleRoyal.App
             }
         }
 
-        public void CreateMainPlayerModule(PanelController panelController, RoundController roundController, EndGameController endGameController)
+        public void CreateMainPlayerModule(PanelController panelController, RoundController roundController,
+            EndGameController endGameController)
         {
             panelController.OnMoveSelected += ChangeRound;
             panelController.SubscribeOnInput();

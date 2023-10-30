@@ -49,7 +49,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             _endGamePopup.SetTitle("You Win!");
-            _endGamePopup.SetActiveRestartButton(true);
+            _endGamePopup.SetActiveNextLevelButton(true);
             _endGamePopup.Show();
 
             return true;

@@ -12,6 +12,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
+        private LevelModel _level;
 
         public LevelController(ILevelRepository levelRepository, ISaveService saveService)
         {
@@ -29,14 +30,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             {
                 var order = i + 1;
                 var isFinished = levelDTO.FinishedOrders.Contains(order);
-                var level = new LevelModel(order, levelSO.Price, levelSO.Reward, isFinished);
+                _level = new LevelModel(order, levelSO.Price, levelSO.Reward, isFinished);
 
-                if (order == levelDTO.CurrenOrder)
-                    level.Launch();
+                if (order == levelDTO.CurrentOrder)
+                    _level.Launch();
 
-                level.OnSuccessEnded += OnSuccessEnded;
+                _level.OnSuccessEnded += OnSuccessEnded;
 
-                return level;
+                return _level;
             });
         }
 
@@ -52,8 +53,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             _saveService.Save(new LevelDTO()
             {
                 FinishedOrders = finishedLevels,
-                CurrenOrder = currentLevel.Order + 1
+                CurrentOrder = currentLevel.Order + 1
             });
+        }
+
+        private void OnDestroy()
+        {
+            _level.OnSuccessEnded -= OnSuccessEnded;
+            _level.Dispose();
         }
     }
 }

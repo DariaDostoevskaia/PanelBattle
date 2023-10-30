@@ -57,8 +57,6 @@ namespace LegoBattaleRoyal.ApplicationLayer.SaveSystem
 
         TextAsset SaveToTextAsset(string name, string text, string ext = "json");
 
-        TextAsset SaveToTextAsset(string name, object content, string ext = "json");
-
         T LoadFromTextAsset<T>(string relativePath);
 
         string LoadFromTextAsset(string relativePath);
