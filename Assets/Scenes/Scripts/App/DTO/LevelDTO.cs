@@ -1,9 +1,8 @@
 using System;
-using UnityEngine;
 
 namespace LegoBattaleRoyal.App.DTO
 {
-    public class LevelDTO : MonoBehaviour
+    public class LevelDTO
     {
         public int CurrentOrder { get; set; } = 1;
 

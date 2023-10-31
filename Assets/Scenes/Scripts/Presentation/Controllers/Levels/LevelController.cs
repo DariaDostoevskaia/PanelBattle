@@ -3,12 +3,12 @@ using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 using System.Linq;
-using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 {
-    public class LevelController : MonoBehaviour
+    public class LevelController : IDisposable
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
@@ -57,7 +57,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             });
         }
 
-        private void OnDestroy()
+        public void Dispose()
         {
             _level.OnSuccessEnded -= OnSuccessEnded;
             _level.Dispose();

@@ -22,7 +22,6 @@ namespace LegoBattaleRoyal.Core.Levels
             Price = price;
             Reward = reward;
             IsFinished = isFinished;
-            //TODO validations params
         }
 
         public void Launch()

@@ -34,6 +34,8 @@ namespace LegoBattaleRoyal.App
         {
             var characterSO = gameSettingsSO.CharacterSO;
 
+            levelController = new LevelController(levelRepository, saveService);
+
             var currentLevel = levelRepository.GetCurrentLevel();
 
             var levelSO = levelsSO[currentLevel.Order - 1];
