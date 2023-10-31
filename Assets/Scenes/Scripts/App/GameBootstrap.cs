@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
@@ -5,6 +6,7 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
+using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
@@ -24,18 +26,17 @@ namespace LegoBattaleRoyal.App
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
-        [SerializeField] private GameSettingsSO _gameSettingsSO;
-        [SerializeField] private UIContainer _uIContainer;
 
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository)
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, LevelSO[] levelsSO,
+            LevelController levelController, UIContainer uiContainer, ISaveService saveService)
         {
-            var characterSO = _gameSettingsSO.CharacterSO;
+            var characterSO = gameSettingsSO.CharacterSO;
 
             var currentLevel = levelRepository.GetCurrentLevel();
 
-            var levelSO = _gameSettingsSO.Levels[currentLevel.Order - 1];
+            var levelSO = levelsSO[currentLevel.Order - 1];
 
             var gridFactory = new GridFactory(levelSO);
 
@@ -45,14 +46,14 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            var endGameController = new EndGameController(_uIContainer.EndGamePopup, characterRepository);
+            var endGameController = new EndGameController(uiContainer.EndGamePopup, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(levelSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController);
+                CreatePlayer(levelSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController, gameSettingsSO);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, roundController, endGameController);
+            CreatePlayer(characterSO, characterRepository, pairs, roundController, endGameController, gameSettingsSO);
 
             characterRepository
                 .GetAll()
@@ -91,7 +92,7 @@ namespace LegoBattaleRoyal.App
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
             (PanelModel panelModel, PanelView panelView)[] pairs, RoundController roundController,
-            EndGameController endGameController)
+            EndGameController endGameController, GameSettingsSO gameSettingsSO)
         {
             var characterModel = characterSO is AICharacterSO aiCharacterSO
                 ? new AICharacterModel(aiCharacterSO.JumpLenght, aiCharacterSO.BlocksToCapture,
@@ -109,7 +110,7 @@ namespace LegoBattaleRoyal.App
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
 
-            var capturePathView = Instantiate(_gameSettingsSO.CapturePathViewPrefab);
+            var capturePathView = Instantiate(gameSettingsSO.CapturePathViewPrefab);
             capturePathView.SetColor(playerColor);
 
             var capturePathController = new CapturePathController(capturePathView);

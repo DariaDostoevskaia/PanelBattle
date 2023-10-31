@@ -1,6 +1,9 @@
+using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
+using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.UI.Container;
+using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
 
@@ -11,6 +14,7 @@ namespace LegoBattaleRoyal.App
         private event Action OnDisposed;
 
         [SerializeField] private GameBootstrap _gameBootstrap;
+        [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
 
         private void Start()
@@ -18,6 +22,12 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             var levelRepository = new LevelRepository();
+            var saveService = new SaveService();
+
+            var levelSO = _gameSettingsSO.Levels;
+
+            var levelController = new LevelController(levelRepository, saveService);
+            levelController.CreateLevels(levelSO);
 
             var menuController = new MenuController(_uiContainer.MenuView);
 
@@ -28,9 +38,9 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
-                menuController.Dispose();
-
                 _gameBootstrap.OnRestarted -= StartGame;
+
+                menuController.Dispose();
             };
 
             void StartGame()
@@ -41,7 +51,7 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, levelSO, levelController, _uiContainer, saveService);
             }
         }
 

@@ -5,10 +5,10 @@ namespace LegoBattaleRoyal.ScriptableObjects
     [CreateAssetMenu(fileName = nameof(LevelSO), menuName = "Config/LevelSO")]
     public class LevelSO : ScriptableObject
     {
+        [SerializeField] private AudioClip _music;
+
         [SerializeField] private PanelSO[] _panelSettings;
         [SerializeField] private AICharacterSO[] _aICharacterSO;
-
-        [SerializeField] private AudioClip _music;
 
         [SerializeField] private int[] _rect = new int[] { 5, 5 };
         [SerializeField] private float[] _startedPosition = new float[] { 0, 0 };
