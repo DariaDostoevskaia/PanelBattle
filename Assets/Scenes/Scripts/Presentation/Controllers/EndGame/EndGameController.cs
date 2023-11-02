@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
@@ -11,13 +12,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public event Action OnGameRestarted;
 
         private readonly CharacterRepository _characterRepository;
+        private readonly ILevelRepository levelRepository;
         private readonly GamePanelUI _endGamePopup;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository)
         {
             _endGamePopup = endGamePopup;
             _characterRepository = characterRepository;
-
+            this.levelRepository = levelRepository;
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
         }

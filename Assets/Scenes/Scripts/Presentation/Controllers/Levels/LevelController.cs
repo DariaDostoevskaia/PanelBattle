@@ -26,10 +26,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
                 ? _saveService.Load<LevelDTO>()
                 : new LevelDTO();
 
-            var levels = levelSettings.Select((levelSO, i) =>
+            for (int i = 0; i < levelSettings.Length; i++)
             {
+                //var levels = levelSettings.Select((levelSO, i) =>
+                //{
                 var order = i + 1;
                 var isFinished = levelDTO.FinishedOrders.Contains(order);
+
+                var levelSO = levelSettings[i];
+
                 _level = new LevelModel(order, levelSO.Price, levelSO.Reward, isFinished);
 
                 if (order == levelDTO.CurrentOrder)
@@ -37,8 +42,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
                 _level.OnSuccessEnded += OnSuccessEnded;
 
-                return _level;
-            });
+                _levelRepository.Add(_level);
+
+                //return _level;
+                //});
+            }
         }
 
         private void OnSuccessEnded()

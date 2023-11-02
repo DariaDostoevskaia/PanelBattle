@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
@@ -26,7 +27,7 @@ namespace LegoBattaleRoyal.App
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
-
+        private LevelModel _currentLevel;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, LevelSO[] levelsSO,
@@ -36,9 +37,9 @@ namespace LegoBattaleRoyal.App
 
             levelController = new LevelController(levelRepository, saveService);
 
-            var currentLevel = levelRepository.GetCurrentLevel();
+            _currentLevel = levelRepository.GetCurrentLevel();
 
-            var levelSO = levelsSO[currentLevel.Order - 1];
+            var levelSO = levelsSO[_currentLevel.Order - 1];
 
             var gridFactory = new GridFactory(levelSO);
 
@@ -204,12 +205,15 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
+                _currentLevel.Win();
                 endGameController.TryWinGame();
             }
         }
 
         public void Dispose()
         {
+            _currentLevel.Exit();
+
             OnDisposed?.Invoke();
             OnDisposed = null;
             OnRestarted = null;

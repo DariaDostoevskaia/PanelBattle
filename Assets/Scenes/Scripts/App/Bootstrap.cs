@@ -23,10 +23,10 @@ namespace LegoBattaleRoyal.App
 
             var levelsSO = _gameSettingsSO.Levels;
 
-            var levelRepository = new LevelRepository();
+            var levelRepository = new LevelRepository(levelsSO);
             var saveService = new SaveService();
-
             var levelController = new LevelController(levelRepository, saveService);
+
             levelController.CreateLevels(levelsSO);
 
             var menuController = new MenuController(_uiContainer.MenuView);
