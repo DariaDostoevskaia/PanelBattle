@@ -63,21 +63,6 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
             return true;
         }
 
-        protected bool TryUseToCaptureStrategy(out PanelModel panelModel)
-        {
-            panelModel = null;
-
-            var occupatePanelsCount = PanelModels.Count(panelModel => panelModel.IsOccupated(OwnerId));
-
-            if (occupatePanelsCount >= BlocksToCapture)
-            {
-                CreateNewPathToHome();
-                return TryUsePathfindingStrategy(out panelModel);
-            }
-
-            return false;
-        }
-
         protected PanelModel UseRandomStrategy()
         {
             return PanelModels

@@ -17,39 +17,36 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
 
         public override PanelModel Dicide()
         {
-            GetCapturedPanels();
-
             if (TryUsePathfindingStrategy(out var panel))
                 return panel;
 
             if (TryUseToCaptureStrategy(out panel))
                 return panel;
 
-            if (TryUseToCaptureZoneStrategy(out panel))
-                return panel;
-
             panel = UseRandomStrategy();
             return panel;
         }
 
-        private int GetCapturedPanels()
-        {
-            var capturePanels = _panelModels
-                .Count(panelModel => panelModel != null
-                && panelModel.IsCaptured(OwnerId));
-
-            return capturePanels;
-        }
-
-        private bool TryUseToCaptureZoneStrategy(out PanelModel panelModel)
+        private bool TryUseToCaptureStrategy(out PanelModel panelModel)
         {
             panelModel = null;
 
-            var capturedPanels = _panelModels.Count(panelModel => panelModel.IsCaptured(OwnerId));
+            var occupyPanelsCount = _panelModels.Count(panel => panel.IsOccupated(OwnerId));
 
-            if (capturedPanels < GetCapturedPanels())
+            var ownCapturePanelsCount = _panelModels
+                .Count(panel => panel.IsOccupated(OwnerId)
+                && panel.IsCaptured(OwnerId));
+
+            if (occupyPanelsCount >= BlocksToCapture)
             {
                 CreateNewPathToHome();
+                return TryUsePathfindingStrategy(out panelModel);
+            }
+
+            if (ownCapturePanelsCount < BlocksToCapture
+                && occupyPanelsCount == 0)
+            {
+                LoseCapturePath();
                 return TryUsePathfindingStrategy(out panelModel);
             }
 
