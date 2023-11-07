@@ -205,15 +205,14 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
-                _currentLevel.Win();
                 endGameController.TryWinGame();
+                _currentLevel.Win();
+                _currentLevel.Exit();
             }
         }
 
         public void Dispose()
         {
-            _currentLevel.Exit();
-
             OnDisposed?.Invoke();
             OnDisposed = null;
             OnRestarted = null;
