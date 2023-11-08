@@ -24,22 +24,23 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
+        public event Action OnNexted;
+
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
+
         private LevelModel _currentLevel;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, LevelSO[] levelsSO,
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, LevelModel currentLevel,
             LevelController levelController, UIContainer uiContainer, ISaveService saveService)
         {
             var characterSO = gameSettingsSO.CharacterSO;
 
-            levelController = new LevelController(levelRepository, saveService);
-
-            _currentLevel = levelRepository.GetCurrentLevel();
-
-            var levelSO = levelsSO[_currentLevel.Order - 1];
+            //levelController = new LevelController(levelRepository, saveService);
+            _currentLevel = currentLevel;
+            var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var gridFactory = new GridFactory(levelSO);
 
@@ -51,6 +52,7 @@ namespace LegoBattaleRoyal.App
 
             var endGameController = new EndGameController(uiContainer.EndGamePopup, characterRepository);
             endGameController.OnGameRestarted += OnRestarted;
+            endGameController.OnGameNexted += OnNexted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -84,6 +86,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 endGameController.OnGameRestarted -= OnRestarted;
+                endGameController.OnGameNexted -= OnNexted; //TODO
 
                 foreach (var pair in pairs)
                 {
@@ -98,8 +101,10 @@ namespace LegoBattaleRoyal.App
             EndGameController endGameController, GameSettingsSO gameSettingsSO)
         {
             var characterModel = characterSO is AICharacterSO aiCharacterSO
+
                 ? new AICharacterModel(aiCharacterSO.JumpLenght, aiCharacterSO.BlocksToCapture,
                 aiCharacterSO.Difficulty, pairs.Select(pair => pair.panelModel).ToArray())
+
                 : new CharacterModel(characterSO.JumpLenght);
 
             characterRepository.Add(characterModel);
@@ -205,8 +210,8 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
-                endGameController.TryWinGame();
                 _currentLevel.Win();
+                endGameController.TryWinGame();
                 _currentLevel.Exit();
             }
         }

@@ -13,6 +13,7 @@ namespace LegoBattaleRoyal.ApplicationLayer.SaveSystem
         event Action<string> OnFileDeleted;
 
         public string SaveDataDir { get; }
+
         public string ResourcesDataPath { get; }
 
         bool Exists(string filename);

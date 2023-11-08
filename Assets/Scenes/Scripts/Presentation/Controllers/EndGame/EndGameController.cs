@@ -10,6 +10,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
+        public event Action OnGameNexted;
+
         private readonly CharacterRepository _characterRepository;
         private readonly GamePanelUI _endGamePopup;
 
@@ -19,7 +21,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _characterRepository = characterRepository;
 
             _endGamePopup.OnRestartClicked += RestartGame;
+            _endGamePopup.OnNextLevelClicked += NextLevelGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
+        }
+
+        private void NextLevelGame()
+        {
+            _endGamePopup.Close();
+
+            OnGameNexted?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -49,6 +59,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             _endGamePopup.SetTitle("You Win!");
+            _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(true);
             _endGamePopup.Show();
 
@@ -58,9 +69,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
+            OnGameNexted = null;
 
-            _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
             _endGamePopup.OnRestartClicked -= RestartGame;
+            _endGamePopup.OnNextLevelClicked -= NextLevelGame;
+            _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
 }

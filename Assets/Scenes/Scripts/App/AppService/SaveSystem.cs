@@ -16,6 +16,7 @@ namespace LegoBattaleRoyal.App.AppService
         public event Action<string> OnFileDeleted;
 
         public string SaveDataDir { get; }
+
         public string ResourcesDataPath { get; } = Path.Combine(Application.dataPath, "Resources");
 
         public SaveService(string saveDataDir = "SaveData")
