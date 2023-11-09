@@ -23,7 +23,7 @@ namespace LegoBattaleRoyal.App
 
             var levelsSO = _gameSettingsSO.Levels;
 
-            var levelRepository = new LevelRepository(levelsSO);
+            var levelRepository = new LevelRepository();
             var saveService = new SaveService();
             var levelController = new LevelController(levelRepository, saveService);
 
@@ -54,7 +54,7 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, currentLevel, levelController, _uiContainer, saveService);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer);
             }
         }
 

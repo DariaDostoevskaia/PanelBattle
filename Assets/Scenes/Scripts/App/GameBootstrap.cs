@@ -1,13 +1,11 @@
-using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
+using EasyButtons;
 using LegoBattaleRoyal.Core.Characters.Models;
-using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
-using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
@@ -29,38 +27,34 @@ namespace LegoBattaleRoyal.App
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
-
-        private LevelModel _currentLevel;
+        private EndGameController _endGameController;
+        private CharacterRepository _characterRepository;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, LevelModel currentLevel,
-            LevelController levelController, UIContainer uiContainer, ISaveService saveService)
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer)
         {
             var characterSO = gameSettingsSO.CharacterSO;
-
-            //levelController = new LevelController(levelRepository, saveService);
-            _currentLevel = currentLevel;
+            var currentLevel = levelRepository.GetCurrentLevel();
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var gridFactory = new GridFactory(levelSO);
 
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
-            var characterRepository = new CharacterRepository();
+            _characterRepository = new CharacterRepository();
 
             var roundController = new RoundController();
 
-            var endGameController = new EndGameController(uiContainer.EndGamePopup, characterRepository);
-            endGameController.OnGameRestarted += OnRestarted;
-            endGameController.OnGameNexted += OnNexted;
+            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository);
+            _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(levelSO.AICharactersSO[i], characterRepository, pairs, roundController, endGameController, gameSettingsSO);
+                CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
             }
-            CreatePlayer(characterSO, characterRepository, pairs, roundController, endGameController, gameSettingsSO);
+            CreatePlayer(characterSO, _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
 
-            characterRepository
+            _characterRepository
                 .GetAll()
                 .ToList()
                 .ForEach(character =>
@@ -85,8 +79,8 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
-                endGameController.OnGameRestarted -= OnRestarted;
-                endGameController.OnGameNexted -= OnNexted; //TODO
+                _endGameController.OnGameRestarted -= OnRestarted;
+                _endGameController.OnGameNexted -= OnNexted; //TODO
 
                 foreach (var pair in pairs)
                 {
@@ -210,9 +204,7 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
-                _currentLevel.Win();
                 endGameController.TryWinGame();
-                _currentLevel.Exit();
             }
         }
 
@@ -227,5 +219,26 @@ namespace LegoBattaleRoyal.App
         {
             Dispose();
         }
+
+#if DEBUG
+
+        [Button]
+        private void LoseLevel()
+        {
+            _endGameController.LoseGame();
+        }
+
+        [Button]
+        private void WinGame()
+        {
+            var opponents = _characterRepository.GetOpponents().ToArray();
+            foreach (var opponent in opponents)
+            {
+                _characterRepository.Remove(opponent.Id);
+            }
+            _endGameController.TryWinGame();
+        }
+
+#endif
     }
 }

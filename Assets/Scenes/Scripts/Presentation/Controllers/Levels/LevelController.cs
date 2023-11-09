@@ -12,7 +12,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
-        private LevelModel _level;
 
         public LevelController(ILevelRepository levelRepository, ISaveService saveService)
         {
@@ -28,24 +27,19 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
             for (int i = 0; i < levelSettings.Length; i++)
             {
-                //var levels = levelSettings.Select((levelSO, i) =>
-                //{
                 var order = i + 1;
                 var isFinished = levelDTO.FinishedOrders.Contains(order);
 
                 var levelSO = levelSettings[i];
 
-                _level = new LevelModel(order, levelSO.Price, levelSO.Reward, isFinished);
+                var level = new LevelModel(order, levelSO.Price, levelSO.Reward, isFinished);
 
                 if (order == levelDTO.CurrentOrder)
-                    _level.Launch();
+                    level.Launch();
 
-                _level.OnSuccessEnded += OnSuccessEnded;
+                level.OnSuccessEnded += OnSuccessEnded;
 
-                _levelRepository.Add(_level);
-
-                //return _level;
-                //});
+                _levelRepository.Add(level);
             }
         }
 
@@ -67,8 +61,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
         public void Dispose()
         {
-            _level.OnSuccessEnded -= OnSuccessEnded;
-            _level.Dispose();
+            foreach (var level in _levelRepository.GetAll())
+            {
+                level.OnSuccessEnded -= OnSuccessEnded;
+                level.Dispose();
+            }
         }
     }
 }

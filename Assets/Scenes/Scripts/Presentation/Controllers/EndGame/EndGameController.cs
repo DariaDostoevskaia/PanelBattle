@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
@@ -13,23 +14,19 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public event Action OnGameNexted;
 
         private readonly CharacterRepository _characterRepository;
+        private readonly ILevelRepository _levelRepository;
         private readonly GamePanelUI _endGamePopup;
 
-        public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository)
+        public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
+            ILevelRepository levelRepository)
         {
             _endGamePopup = endGamePopup;
             _characterRepository = characterRepository;
+            _levelRepository = levelRepository;
 
             _endGamePopup.OnRestartClicked += RestartGame;
-            _endGamePopup.OnNextLevelClicked += NextLevelGame;
+            _endGamePopup.OnNextLevelClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
-        }
-
-        private void NextLevelGame()
-        {
-            _endGamePopup.Close();
-
-            OnGameNexted?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -48,6 +45,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         {
             _endGamePopup.SetTitle("You Lose!");
             _endGamePopup.SetActiveRestartButton(true);
+            _endGamePopup.SetActiveNextLevelButton(false);
             _endGamePopup.Show();
         }
 
@@ -58,11 +56,25 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             if (opponents.Any())
                 return false;
 
-            _endGamePopup.SetTitle("You Win!");
-            _endGamePopup.SetActiveRestartButton(true);
-            _endGamePopup.SetActiveNextLevelButton(true);
-            _endGamePopup.Show();
+            var currentLevel = _levelRepository.GetCurrentLevel();
+            currentLevel.Win();
+            var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
+            _endGamePopup.SetTitle("You Win!");
+            _endGamePopup.SetActiveRestartButton(false);
+            _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
+
+            if (!isLastLevel)
+            {
+                var nextLevel = _levelRepository.GetNextLevel();
+                currentLevel.Exit();
+                nextLevel.Launch();
+
+                _endGamePopup.Show();
+                return true;
+            }
+
+            _endGamePopup.Show();
             return true;
         }
 
@@ -72,7 +84,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             OnGameNexted = null;
 
             _endGamePopup.OnRestartClicked -= RestartGame;
-            _endGamePopup.OnNextLevelClicked -= NextLevelGame;
+            _endGamePopup.OnNextLevelClicked -= RestartGame;
             _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
