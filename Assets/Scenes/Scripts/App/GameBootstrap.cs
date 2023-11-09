@@ -1,3 +1,4 @@
+using Cinemachine;
 using EasyButtons;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
@@ -27,6 +28,8 @@ namespace LegoBattaleRoyal.App
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
+        [SerializeField] private CinemachineFreeLook _cinemachineCamera;
+
         private EndGameController _endGameController;
         private CharacterRepository _characterRepository;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
@@ -133,6 +136,8 @@ namespace LegoBattaleRoyal.App
             else
             {
                 CreateMainPlayerModule(panelController, roundController, endGameController);
+                _cinemachineCamera.Follow = characterView.transform;
+                _cinemachineCamera.LookAt = characterView.transform;
             }
 
             _players[characterModel.Id] = (characterController, panelController);
