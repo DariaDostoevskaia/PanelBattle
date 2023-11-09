@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LegoBattaleRoyal.Presentation.CapturePath
+namespace LegoBattaleRoyal.Presentation.GameView.CapturePath
 {
     [RequireComponent(typeof(LineRenderer))]
     public class CapturePathView : MonoBehaviour

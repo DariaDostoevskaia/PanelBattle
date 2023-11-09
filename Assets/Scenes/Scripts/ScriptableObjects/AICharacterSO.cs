@@ -1,4 +1,4 @@
-﻿using LegoBattaleRoyal.Strategy.Difficulty;
+﻿using LegoBattaleRoyal.Core.AI.AIStrategy.Difficulty;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects

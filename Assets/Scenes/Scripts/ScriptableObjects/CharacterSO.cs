@@ -1,4 +1,4 @@
-using LegoBattaleRoyal.Presentation.Character;
+using LegoBattaleRoyal.Presentation.GameView.Character;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.ScriptableObjects

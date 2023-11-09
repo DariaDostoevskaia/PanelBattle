@@ -5,8 +5,8 @@ namespace LegoBattaleRoyal.Common
 {
     public class PriorityQueue<T, P>
     {
-        private List<(T item, P priority)> _items = new();
-        private IComparer<P> _priorityComparer;
+        private readonly List<(T item, P priority)> _items = new();
+        private readonly IComparer<P> _priorityComparer;
 
         public int Count => _items.Count;
 
