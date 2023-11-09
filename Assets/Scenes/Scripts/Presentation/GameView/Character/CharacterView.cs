@@ -10,9 +10,12 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
     {
         public event Action<bool> OnJumped;
 
+        [SerializeField] private AudioClip _audioClip;
+
         private static readonly float MinimumPositionY = 1f;
         private Rigidbody _rigidbody;
         private MeshRenderer _meshRenderer;
+        private AudioSource _audioSource;
         private Tween _move;
         private float _moveDuration;
         private float _jumpHeight;
@@ -21,6 +24,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         {
             _rigidbody = GetComponent<Rigidbody>();
             _meshRenderer = GetComponent<MeshRenderer>();
+            _audioSource = GetComponent<AudioSource>();
+            _audioSource.loop = false;
         }
 
         public void JumpTo(Vector3 endValue)
@@ -41,6 +46,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
+                    _audioSource.clip = _audioClip;
+                    _audioSource.Play();
                     OnJumped?.Invoke(false);
                 });
         }

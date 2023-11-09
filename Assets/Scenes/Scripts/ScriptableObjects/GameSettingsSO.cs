@@ -12,10 +12,14 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         [SerializeField] private LevelSO[] _levels;
 
+        [SerializeField] private AudioClip _music;
+
         public CharacterSO CharacterSO => _characterSO;
 
         public LevelSO[] Levels => _levels;
 
         public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
+
+        public AudioClip MainMusic => _music;
     }
 }
