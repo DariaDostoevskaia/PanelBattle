@@ -1,6 +1,5 @@
 using LegoBattaleRoyal.Core.Panels.Models;
 using System;
-using System.Linq;
 
 namespace LegoBattaleRoyal.Core.AI.AIStrategy
 {
@@ -27,30 +26,5 @@ namespace LegoBattaleRoyal.Core.AI.AIStrategy
             return panel;
         }
 
-        private bool TryUseToCaptureStrategy(out PanelModel panelModel)
-        {
-            panelModel = null;
-
-            var occupyPanelsCount = _panelModels.Count(panel => panel.IsOccupated(OwnerId));
-
-            var ownCapturePanelsCount = _panelModels
-                .Count(panel => panel.IsOccupated(OwnerId)
-                && panel.IsCaptured(OwnerId));
-
-            if (occupyPanelsCount >= BlocksToCapture)
-            {
-                CreateNewPathToHome();
-                return TryUsePathfindingStrategy(out panelModel);
-            }
-
-            if (ownCapturePanelsCount < BlocksToCapture
-                && occupyPanelsCount == 0)
-            {
-                LoseCapturePath();
-                return TryUsePathfindingStrategy(out panelModel);
-            }
-
-            return false;
-        }
     }
 }
