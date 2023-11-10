@@ -13,9 +13,11 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         [SerializeField] private AudioClip _audioClip;
 
         private static readonly float MinimumPositionY = 1f;
+
         private Rigidbody _rigidbody;
         private MeshRenderer _meshRenderer;
         private AudioSource _audioSource;
+
         private Tween _move;
         private float _moveDuration;
         private float _jumpHeight;

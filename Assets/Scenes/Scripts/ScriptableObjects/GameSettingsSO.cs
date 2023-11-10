@@ -14,6 +14,8 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         [SerializeField] private AudioClip _music;
 
+        [SerializeField] private float _musicVolume = 1f;
+
         public CharacterSO CharacterSO => _characterSO;
 
         public LevelSO[] Levels => _levels;
@@ -21,5 +23,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
         public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
 
         public AudioClip MainMusic => _music;
+
+        public float MusicVolume => _musicVolume;
     }
 }

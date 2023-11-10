@@ -23,6 +23,7 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
+            _soundController.SetVolume(_gameSettingsSO.MusicVolume);
 
             var levelsSO = _gameSettingsSO.Levels;
 

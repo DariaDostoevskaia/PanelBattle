@@ -11,8 +11,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnGameNexted;
-
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly GamePanelUI _endGamePopup;
@@ -81,7 +79,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
-            OnGameNexted = null;
 
             _endGamePopup.OnRestartClicked -= RestartGame;
             _endGamePopup.OnNextLevelClicked -= RestartGame;
