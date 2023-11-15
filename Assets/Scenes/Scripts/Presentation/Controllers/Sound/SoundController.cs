@@ -1,25 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class SoundController : MonoBehaviour
+namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 {
-    private AudioSource _audioSource;
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class SoundController : MonoBehaviour
     {
-        _audioSource = GetComponent<AudioSource>();
-        _audioSource.loop = true;
-        _audioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-    }
+        private AudioSource _audioSource;
 
-    public void Play(AudioClip audioClip)
-    {
-        _audioSource.clip = audioClip;
-        _audioSource.Play();
-    }
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+            _audioSource.loop = true;
+            _audioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        }
 
-    public void SetVolume(float volume)
-    {
-        _audioSource.volume = volume;
+        public void Play(AudioClip audioClip)
+        {
+            _audioSource.clip = audioClip;
+            _audioSource.Play();
+        }
+
+        public void SetVolume(float volume)
+        {
+            _audioSource.volume = volume;
+        }
     }
 }

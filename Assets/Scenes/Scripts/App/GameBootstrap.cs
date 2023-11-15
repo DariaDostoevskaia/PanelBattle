@@ -9,6 +9,7 @@ using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
@@ -32,11 +33,16 @@ namespace LegoBattaleRoyal.App
         private CharacterRepository _characterRepository;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer)
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
+            UIContainer uiContainer, SoundController soundController)
         {
             var characterSO = gameSettingsSO.CharacterSO;
             var currentLevel = levelRepository.GetCurrentLevel();
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
+
+            var music = levelSO.LevelMusic;
+            soundController.Play(music);
+            soundController.SetVolume(gameSettingsSO.MusicVolume);
 
             var gridFactory = new GridFactory(levelSO);
 
