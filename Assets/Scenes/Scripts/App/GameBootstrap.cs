@@ -42,7 +42,6 @@ namespace LegoBattaleRoyal.App
 
             var music = levelSO.LevelMusic;
             soundController.Play(music);
-            soundController.SetVolume(gameSettingsSO.MusicVolume);
 
             var gridFactory = new GridFactory(levelSO);
 
@@ -57,9 +56,9 @@ namespace LegoBattaleRoyal.App
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
+                CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController, _endGameController, gameSettingsSO, soundController);
             }
-            CreatePlayer(characterSO, _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
+            CreatePlayer(characterSO, _characterRepository, pairs, roundController, _endGameController, gameSettingsSO, soundController);
 
             _characterRepository
                 .GetAll()
@@ -98,7 +97,7 @@ namespace LegoBattaleRoyal.App
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
             (PanelModel panelModel, PanelView panelView)[] pairs, RoundController roundController,
-            EndGameController endGameController, GameSettingsSO gameSettingsSO)
+            EndGameController endGameController, GameSettingsSO gameSettingsSO, SoundController soundController)
         {
             var characterModel = characterSO is AICharacterSO aiCharacterSO
 
@@ -134,11 +133,15 @@ namespace LegoBattaleRoyal.App
 
             if (characterModel is AICharacterModel)
             {
-                CreateAIPlayerModule(panelController, pairs, (AICharacterModel)characterModel, roundController, endGameController);
+                CreateAIPlayerModule(panelController, pairs,
+                    (AICharacterModel)characterModel, roundController,
+                    endGameController, soundController, gameSettingsSO);
             }
             else
             {
-                CreateMainPlayerModule(panelController, roundController, endGameController);
+                CreateMainPlayerModule(panelController, roundController,
+                    endGameController, soundController, gameSettingsSO);
+
                 _cinemachineCamera.Follow = characterView.transform;
                 _cinemachineCamera.LookAt = characterView.transform;
             }
@@ -169,12 +172,13 @@ namespace LegoBattaleRoyal.App
                 panelController.UnscribeOnCallBack();
 
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
+
                 panelController.OnCharacterLoss -= OnCharacterLoss;
             }
         }
 
         public void CreateMainPlayerModule(PanelController panelController, RoundController roundController,
-            EndGameController endGameController)
+            EndGameController endGameController, SoundController soundController, GameSettingsSO gameSettingsSO)
         {
             panelController.OnMoveSelected += ChangeRound;
             panelController.SubscribeOnInput();
@@ -195,11 +199,14 @@ namespace LegoBattaleRoyal.App
                 panelController.UnsubscribeOnInput();
 
                 panelController.OnCharacterLoss -= LoseGame;
+
+                var loseMusic = gameSettingsSO.LoseGameMusic;
+                soundController.Play(loseMusic);
             }
         }
 
         public void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
-            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController)
+            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController, SoundController soundController, GameSettingsSO gameSettingsSO)
         {
             var aiController = new AIController(panelController, pairs, characterModel);
             roundController.OnRoundChanged += aiController.ProcessRound;
@@ -213,6 +220,9 @@ namespace LegoBattaleRoyal.App
                 panelController.OnCharacterLoss -= TryWinGame;
 
                 endGameController.TryWinGame();
+
+                var winMusic = gameSettingsSO.WinGameMusic;
+                soundController.Play(winMusic);
             }
         }
 

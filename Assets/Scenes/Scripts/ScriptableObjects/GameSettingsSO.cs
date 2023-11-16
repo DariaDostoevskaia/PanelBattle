@@ -7,14 +7,14 @@ namespace LegoBattaleRoyal.ScriptableObjects
     public class GameSettingsSO : ScriptableObject
     {
         [SerializeField] private CharacterSO _characterSO;
-
         [SerializeField] private CapturePathView _capturePathViewPrefab;
-
         [SerializeField] private LevelSO[] _levels;
 
-        [SerializeField] private AudioClip _music;
-
-        [SerializeField] private float _musicVolume = 1f;
+        [SerializeField] private AudioClip _mainMusic;
+        [SerializeField] private AudioClip _loseMusic;
+        [SerializeField] private AudioClip _winMusic;
+        [SerializeField] private AudioClip _losePanels;
+        [SerializeField] private AudioClip _capturePanels;
 
         public CharacterSO CharacterSO => _characterSO;
 
@@ -22,8 +22,14 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
 
-        public AudioClip MainMusic => _music;
+        public AudioClip MainMusic => _mainMusic;
 
-        public float MusicVolume => _musicVolume;
+        public AudioClip LoseGameMusic => _loseMusic;
+
+        public AudioClip WinGameMusic => _winMusic;
+
+        public AudioClip LosePanels => _losePanels;
+
+        public AudioClip CapturePanels => _capturePanels;
     }
 }

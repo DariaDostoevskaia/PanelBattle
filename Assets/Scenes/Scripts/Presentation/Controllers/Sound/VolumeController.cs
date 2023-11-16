@@ -25,15 +25,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             _slider.value = Mathf.Pow(10f, _volumeValue / _multiplier);
         }
 
+        public void HandleSliderValueChanged(float value)
+        {
+            _volumeValue = Mathf.Log10(value) * _multiplier;
+            _audioMixer.SetFloat(_volumeParameter, _volumeValue);
+        }
+
         private void OnDisable()
         {
             PlayerPrefs.SetFloat(_volumeParameter, _volumeValue);
         }
 
-        public void HandleSliderValueChanged(float value)
+        private void OnDestroy()
         {
-            _volumeValue = Mathf.Log10(value) * _multiplier;
-            _audioMixer.SetFloat(_volumeParameter, _volumeValue);
+            _slider.onValueChanged.RemoveAllListeners();
         }
     }
 }

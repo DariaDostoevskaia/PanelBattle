@@ -11,7 +11,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         {
             _audioSource = GetComponent<AudioSource>();
             _audioSource.loop = true;
-            _audioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            //_audioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         }
 
         public void Play(AudioClip audioClip)

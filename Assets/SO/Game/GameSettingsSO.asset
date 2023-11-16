@@ -36,5 +36,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5c2106efb9e8004e80bc9486c3aad4b, type: 2}
   - {fileID: 11400000, guid: b73d84e9ea538ce4faf8de8c56f4c4c5, type: 2}
   - {fileID: 11400000, guid: fe040481efd96bf46b3dca6c7a06fee0, type: 2}
-  _music: {fileID: 8300000, guid: 3fc26869a512b4e5187c9be6310ad8c2, type: 3}
-  _musicVolume: 2
+  _mainMusic: {fileID: 8300000, guid: 3fc26869a512b4e5187c9be6310ad8c2, type: 3}
+  _loseMusic: {fileID: 8300000, guid: 36fd10c2ade9bc64dbc5805a3b207372, type: 3}
+  _winMusic: {fileID: 8300000, guid: 6163b9986e07bd34e83c9039ee0ba9f5, type: 3}
+  _losePanels: {fileID: 8300000, guid: 005fd9880949689419641c0fdad7fec3, type: 3}
+  _capturePanels: {fileID: 8300000, guid: 34339a88fd761d34b99f013b23633cc3, type: 3}
