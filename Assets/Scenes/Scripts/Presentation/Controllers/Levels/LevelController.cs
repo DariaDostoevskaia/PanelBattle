@@ -2,6 +2,7 @@ using LegoBattaleRoyal.App.DTO;
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Linq;
@@ -12,11 +13,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
+        private readonly WalletController _walletController;
 
-        public LevelController(ILevelRepository levelRepository, ISaveService saveService)
+        public LevelController(ILevelRepository levelRepository, ISaveService saveService, WalletController walletController)
         {
             _levelRepository = levelRepository;
             _saveService = saveService;
+            _walletController = walletController;
         }
 
         public void CreateLevels(LevelSO[] levelSettings)
@@ -40,6 +43,22 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
                 level.OnSuccessEnded += OnSuccessEnded;
 
                 _levelRepository.Add(level);
+            }
+
+            void IsLevelPaid()
+            {
+                var currentLevel = _levelRepository.GetCurrentLevel();
+
+                if (_walletController.CanUnlockLevel(levelDTO))
+                {
+                    _walletController.SpendCoins(levelDTO.levelCost);
+                    // Запустите ваш уровень.
+                }
+                else
+                {
+                    // Монеты недостаточно
+                    // (например, покажите опцию просмотра рекламы).
+                }
             }
         }
 

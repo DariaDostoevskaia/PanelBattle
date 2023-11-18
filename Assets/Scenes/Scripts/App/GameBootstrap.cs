@@ -23,8 +23,6 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-        public event Action OnNexted;
-
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -83,7 +81,6 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 _endGameController.OnGameRestarted -= OnRestarted;
-                _endGameController.OnGameNexted -= OnNexted; //TODO
 
                 foreach (var pair in pairs)
                 {

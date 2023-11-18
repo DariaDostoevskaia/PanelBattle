@@ -2,6 +2,7 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -25,7 +26,11 @@ namespace LegoBattaleRoyal.App
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-            var levelController = new LevelController(levelRepository, saveService);
+
+            var walletController = new WalletController();
+            walletController.LoadWalletData(); //?where?
+
+            var levelController = new LevelController(levelRepository, saveService, walletController);
 
             levelController.CreateLevels(levelsSO);
             var currentLevel = levelRepository.GetCurrentLevel();
