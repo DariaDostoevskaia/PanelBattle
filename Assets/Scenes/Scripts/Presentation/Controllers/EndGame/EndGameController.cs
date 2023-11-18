@@ -1,8 +1,10 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
+using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
@@ -13,14 +15,21 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
+
         private readonly GamePanelUI _endGamePopup;
 
+        private readonly GameSettingsSO _gameSettingsSO;
+        private readonly AudioSource _audioSource;
+
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository)
+            ILevelRepository levelRepository, GameSettingsSO gameSettingsSO)
         {
             _endGamePopup = endGamePopup;
+
             _characterRepository = characterRepository;
             _levelRepository = levelRepository;
+
+            _gameSettingsSO = gameSettingsSO;
 
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
@@ -44,6 +53,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetTitle("You Lose!");
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
+
+            var loseMusic = _gameSettingsSO.LoseGameMusic;
+            _audioSource.clip = loseMusic;
+            _audioSource.loop = false;
+            _audioSource.Play();
+
             _endGamePopup.Show();
         }
 
@@ -61,6 +76,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetTitle("You Win!");
             _endGamePopup.SetActiveRestartButton(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
+
+            var winMusic = _gameSettingsSO.WinGameMusic;
+            _audioSource.clip = winMusic;
+            _audioSource.loop = false;
+            _audioSource.Play();
 
             if (!isLastLevel)
             {
