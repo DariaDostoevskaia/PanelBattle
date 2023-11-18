@@ -2,6 +2,7 @@ using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
+using LegoBattaleRoyal.Presentation.GameView.Character;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
 using System;
 using System.Linq;
@@ -18,13 +19,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 
         private readonly (PanelModel panelModel, PanelView panelView)[] _pairs;
         private readonly CharacterModel _characterModel;
+        private readonly CharacterView _characterView;
         private readonly CapturePathController _capturePathController;
 
         public PanelController((PanelModel panelModel, PanelView panelView)[] pairs,
-            CharacterModel characterModel,
+            CharacterModel characterModel, CharacterView characterView,
             CapturePathController capturePathController)
         {
             _characterModel = characterModel;
+            _characterView = characterView;
             _pairs = pairs;
             _capturePathController = capturePathController;
         }
@@ -147,7 +150,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             OnMoveSelected?.Invoke(panelViewPosition);
 
             if (captureIsReady)
+            {
+                _characterView.GetCapturePanelsAudio().Play();
                 _capturePathController.ResetPath();
+            }
         }
 
         private void OnPanelHover(PanelView view)

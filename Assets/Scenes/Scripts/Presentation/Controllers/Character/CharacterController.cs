@@ -48,6 +48,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Character
         {
             _characterRepository.Remove(_characterModel.Id);
             _characterView.DestroyGameObject();
+
+            _characterView.GetKillAudio().Play(); //proverit
             Dispose();
         }
 

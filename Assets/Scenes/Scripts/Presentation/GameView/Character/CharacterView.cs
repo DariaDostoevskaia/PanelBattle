@@ -10,7 +10,9 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
     {
         public event Action<bool> OnJumped;
 
-        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private AudioClip _jumpAudioClip;
+        [SerializeField] private AudioClip _killCharacterAudioClip;
+        [SerializeField] private AudioClip _capturePanelsAudioClip;
 
         private static readonly float MinimumPositionY = 1f;
 
@@ -48,8 +50,7 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
-                    _audioSource.clip = _audioClip;
-                    _audioSource.Play();
+                    GetJumpAudio().Play();
                     OnJumped?.Invoke(false);
                 });
         }
@@ -72,6 +73,24 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         public void SetColor(Color newColor)
         {
             _meshRenderer.material.color = newColor;
+        }
+
+        public AudioSource GetKillAudio()
+        {
+            _audioSource.clip = _killCharacterAudioClip;
+            return _audioSource;
+        }
+
+        public AudioSource GetJumpAudio()
+        {
+            _audioSource.clip = _jumpAudioClip;
+            return _audioSource;
+        }
+
+        public AudioSource GetCapturePanelsAudio()
+        {
+            _audioSource.clip = _capturePanelsAudioClip;
+            return _audioSource;
         }
 
         private void OnDestroy()
