@@ -56,6 +56,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             var currentLevel = _levelRepository.GetCurrentLevel();
             currentLevel.Win();
+            //начислить деньги
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
             _endGamePopup.SetTitle("You Win!");

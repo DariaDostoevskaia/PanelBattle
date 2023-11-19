@@ -45,11 +45,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
                 _levelRepository.Add(level);
             }
 
-            void IsLevelPaid()
+            void TryBuyLevel()
             {
                 var currentLevel = _levelRepository.GetCurrentLevel();
 
-                if (_walletController.CanUnlockLevel(levelDTO))
+                if (_walletController.CanUnlockLevel(levelDTO)) //достаточно ли денег- метод, передавтаь сразу levelCost
                 {
                     _walletController.SpendCoins(levelDTO.levelCost);
                     // Запустите ваш уровень.

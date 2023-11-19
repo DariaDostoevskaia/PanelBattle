@@ -2,6 +2,7 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.App.DTO;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
 {
@@ -36,13 +37,28 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
         public void LoadWalletData()
         {
             // Используйте SaveService для загрузки данных кошелька из сохраненных данных.
-            _walletModel = _saveService.LoadWalletData();
+            var initValue = _saveService.Exists<PlayerWalletDto>()
+                 ? _saveService.Load<PlayerWalletDto>().WalletValue
+                 : /*_gameSettingsSO.Money; */ 100;
+
+            _walletModel = new WalletModel(initValue);
         }
 
         public void SaveWalletData()
         {
             // Используйте SaveService для сохранения данных кошелька.
-            _saveService.SaveWalletData(_walletModel);
+
+            var playerDTO = new PlayerWalletDto()
+            {
+                WalletValue = _walletModel.Money
+            };
+            _saveService.Save(playerDTO);
         }
     }
+}
+
+[Serializable]
+public class PlayerWalletDto
+{
+    public int WalletValue { get; set; }
 }
