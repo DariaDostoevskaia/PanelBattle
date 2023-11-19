@@ -18,12 +18,15 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
+        [SerializeField] private SettingsPopup _settingsPopup;
 
         private void Start()
         {
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
+
+            var settingsController = new SettingController(_settingsPopup, _soundController);
 
             var levelsSO = _gameSettingsSO.Levels;
 

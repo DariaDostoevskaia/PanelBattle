@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
     {
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanel _menuPanel;
+        [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private AudioClip _buttonsClickAudio;
 
         private AudioSource _audioSource;
@@ -16,22 +18,20 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public MainMenuPanel MenuView => _menuPanel;
 
+        public SettingsPopup SettingsPopup => _settingsPopup;
+
         private void Start()
         {
-            _menuPanel.OnStartGameClicked += PLayButtonClickedMusic;
-
-            _gamePanel.OnRestartClicked += PLayButtonClickedMusic;
-            _gamePanel.OnNextLevelClicked += PLayButtonClickedMusic;
-            _gamePanel.OnExitMainMenuClicked += PLayButtonClickedMusic;
-
             _audioSource = GetComponent<AudioSource>();
-            _audioSource.loop = false;
-        }
 
-        private void PLayButtonClickedMusic()
-        {
+            _menuPanel.OnStartGameClicked += _audioSource.Play;
+
+            _gamePanel.OnRestartClicked += _audioSource.Play;
+            _gamePanel.OnNextLevelClicked += _audioSource.Play;
+            _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
+
+            _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
-            _audioSource.Play();
         }
 
         public void CloseAll()
@@ -42,11 +42,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         private void OnDestroy()
         {
-            _menuPanel.OnStartGameClicked -= PLayButtonClickedMusic;
+            //_menuPanel.OnStartGameClicked -= PLayButtonClickedMusic;
 
-            _gamePanel.OnRestartClicked -= PLayButtonClickedMusic;
-            _gamePanel.OnNextLevelClicked -= PLayButtonClickedMusic;
-            _gamePanel.OnExitMainMenuClicked -= PLayButtonClickedMusic;
+            //_gamePanel.OnRestartClicked -= PLayButtonClickedMusic;
+            //_gamePanel.OnNextLevelClicked -= PLayButtonClickedMusic;
+            //_gamePanel.OnExitMainMenuClicked -= PLayButtonClickedMusic;
         }
     }
 }

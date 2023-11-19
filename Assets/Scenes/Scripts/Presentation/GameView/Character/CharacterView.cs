@@ -50,7 +50,7 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
-                    GetJumpAudio().Play();
+                    PlaySound(_jumpAudioClip);
                     OnJumped?.Invoke(false);
                 });
         }
@@ -75,22 +75,22 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
             _meshRenderer.material.color = newColor;
         }
 
-        public AudioSource GetKillAudio()
+        private void PlaySound(AudioClip audioClip)
         {
-            _audioSource.clip = _killCharacterAudioClip;
-            return _audioSource;
+            if (audioClip == null)
+                return;
+            _audioSource.clip = audioClip;
+            _audioSource.Play();
         }
 
-        public AudioSource GetJumpAudio()
+        public void Die()
         {
-            _audioSource.clip = _jumpAudioClip;
-            return _audioSource;
+            PlaySound(_killCharacterAudioClip);
         }
 
-        public AudioSource GetCapturePanelsAudio()
+        public void Capture()
         {
-            _audioSource.clip = _capturePanelsAudioClip;
-            return _audioSource;
+            PlaySound(_capturePanelsAudioClip);
         }
 
         private void OnDestroy()

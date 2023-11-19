@@ -151,7 +151,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 
             if (captureIsReady)
             {
-                _characterView.GetCapturePanelsAudio().Play(); //???????
+                _characterView.Capture();
                 _capturePathController.ResetPath();
             }
         }

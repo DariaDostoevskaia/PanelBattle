@@ -13,8 +13,6 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private AudioClip _mainMusic;
         [SerializeField] private AudioClip _loseMusic;
         [SerializeField] private AudioClip _winMusic;
-        [SerializeField] private AudioClip _losePanels;
-        [SerializeField] private AudioClip _capturePanels;
 
         public CharacterSO CharacterSO => _characterSO;
 
@@ -27,9 +25,5 @@ namespace LegoBattaleRoyal.ScriptableObjects
         public AudioClip LoseGameMusic => _loseMusic;
 
         public AudioClip WinGameMusic => _winMusic;
-
-        public AudioClip LosePanels => _losePanels;
-
-        public AudioClip CapturePanels => _capturePanels;
     }
 }

@@ -6,7 +6,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JumpCharacter
+  m_Name: SoundVolume
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 72f74638ebe3082498d13b0b89487f47
   m_Children: []
@@ -36,9 +36,9 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 282c70beed8f884429b2cd6b5148d741
-    name: CharacterVolume
+    name: SoundVolume
   - guid: 458bef96d76f8d34697704572c77aaca
-    name: MainVolume
+    name: MusicVolume
   m_AudioMixerGroupViews:
   - guids:
     - 95cdda396cde8f641a4be89ff064b2f1
@@ -92,12 +92,12 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 4f9fb615b8076be4d896a96d88e8afde
   m_FloatValues:
-    18c6cc635b6e34a49b21fcb8dbd7d5f5: 10
-    4b07e925913ebdf48928199b4e0cef42: 10
-    458bef96d76f8d34697704572c77aaca: -0.0024419352
-    dd44b0c884af9d14aa59f38a4578ccf2: 10
+    18c6cc635b6e34a49b21fcb8dbd7d5f5: 1
+    4b07e925913ebdf48928199b4e0cef42: 1
+    458bef96d76f8d34697704572c77aaca: 0
+    dd44b0c884af9d14aa59f38a4578ccf2: 1
     66b9327bdb354d94482e61c048e483b4: 0
-    282c70beed8f884429b2cd6b5148d741: -0.0024419352
+    282c70beed8f884429b2cd6b5148d741: 0
   m_TransitionOverrides: {}
 --- !u!244 &845945735329208960
 AudioMixerEffectController:
@@ -133,7 +133,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Main
+  m_Name: MusicVolume
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 79ee76bf231eb31439f1572bf6005ec0
   m_Children: []
