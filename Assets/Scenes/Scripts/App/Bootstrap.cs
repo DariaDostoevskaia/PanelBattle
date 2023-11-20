@@ -26,7 +26,7 @@ namespace LegoBattaleRoyal.App
 
             _soundController.Play(_gameSettingsSO.MainMusic);
 
-            var settingsController = new SettingController(_settingsPopup, _soundController);
+            var settingsController = new SettingsController(_settingsPopup, _soundController);
 
             var levelsSO = _gameSettingsSO.Levels;
 
@@ -51,6 +51,7 @@ namespace LegoBattaleRoyal.App
                 menuController.Dispose();
                 saveService.Dispose();
                 levelController.Dispose();
+                settingsController.Dispose();
             };
 
             void StartGame()

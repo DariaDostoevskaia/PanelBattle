@@ -1,12 +1,12 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using System;
 
-public class SettingController : IDisposable
+public class SettingsController : IDisposable
 {
     private readonly SettingsPopup _settingsPopup;
     private readonly SoundController _soundController;
 
-    public SettingController(SettingsPopup settingsPopup, SoundController soundController)
+    public SettingsController(SettingsPopup settingsPopup, SoundController soundController)
     {
         _settingsPopup = settingsPopup;
         _soundController = soundController;

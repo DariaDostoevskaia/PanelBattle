@@ -25,13 +25,24 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _audioSource = GetComponent<AudioSource>();
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
-
             _gamePanel.OnRestartClicked += _audioSource.Play;
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
 
+            _settingsPopup.OnOkClicked += _audioSource.Play;
+            _settingsPopup.OnHomeClicked += _audioSource.Play;
+            _settingsPopup.OnCloseClicked += _audioSource.Play;
+
+            _settingsPopup.OnHomeClicked += GoHome;
+
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
+        }
+
+        private void GoHome()
+        {
+            _gamePanel.Close();
+            _menuPanel.Show();
         }
 
         public void CloseAll()
@@ -42,11 +53,16 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         private void OnDestroy()
         {
-            //_menuPanel.OnStartGameClicked -= PLayButtonClickedMusic;
+            _menuPanel.OnStartGameClicked -= _audioSource.Play;
+            _gamePanel.OnRestartClicked -= _audioSource.Play;
+            _gamePanel.OnNextLevelClicked -= _audioSource.Play;
+            _gamePanel.OnExitMainMenuClicked -= _audioSource.Play;
 
-            //_gamePanel.OnRestartClicked -= PLayButtonClickedMusic;
-            //_gamePanel.OnNextLevelClicked -= PLayButtonClickedMusic;
-            //_gamePanel.OnExitMainMenuClicked -= PLayButtonClickedMusic;
+            _settingsPopup.OnOkClicked -= _audioSource.Play;
+            _settingsPopup.OnHomeClicked -= _audioSource.Play;
+            _settingsPopup.OnCloseClicked -= _audioSource.Play;
+
+            _settingsPopup.OnHomeClicked -= GoHome;
         }
     }
 }
