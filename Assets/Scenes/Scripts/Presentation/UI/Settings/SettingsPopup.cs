@@ -25,14 +25,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         [SerializeField] private Button _homeButton;
         [SerializeField] private Button _closeButton;
 
-        //[SerializeField] private GameObject _settingsPanel; //???????
+        //[SerializeField] private Panel _settingsPanel; // this
 
         private void Start()
         {
             _musicSlider.onValueChanged.AddListener((value) => OnMusicVolumeChanged?.Invoke(value));
             _soundSlider.onValueChanged.AddListener((value) => OnSoundVolumeChanged?.Invoke(value));
 
-            _settingsButton.onClick.AddListener(ShowPopup);
+            //_settingsButton.onClick.AddListener(ShowPopup); // this
 
             _okButton.onClick.AddListener(() =>
             {
@@ -72,7 +72,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 
         private void ShowPopup()
         {
-            //_settingsPanel.SetActive(true);       //???????
         }
 
         private void LoadPrefs()
