@@ -3,13 +3,13 @@ namespace LegoBattaleRoyal.Core.Wallet
     public class WalletModel
     {
         private int _money;
-        private int initValue;
+        private int _initValue;
 
         public WalletModel(int initValue)
         {
-            this.initValue = initValue;
+            _initValue = initValue;
         }
 
-        public int Money => _money;
+        public int Money { get; set; }
     }
 }

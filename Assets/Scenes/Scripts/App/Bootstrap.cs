@@ -28,12 +28,13 @@ namespace LegoBattaleRoyal.App
             var saveService = new SaveService();
 
             var walletController = new WalletController();
-            walletController.LoadWalletData(); //?where?
 
             var levelController = new LevelController(levelRepository, saveService, walletController);
 
+            levelController.TryBuyLevel();
+            walletController.LoadWalletData(); //?where?
+
             levelController.CreateLevels(levelsSO);
-            var currentLevel = levelRepository.GetCurrentLevel();
 
             var menuController = new MenuController(_uiContainer.MenuView);
 
