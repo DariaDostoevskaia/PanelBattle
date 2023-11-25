@@ -2,6 +2,7 @@ using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.Container
 {
@@ -10,8 +11,10 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanel _menuPanel;
         [SerializeField] private SettingsPopup _settingsPopup;
-        [SerializeField] private AudioClip _buttonsClickAudio;
 
+        [SerializeField] private Button _settingsPopupButton;
+
+        [SerializeField] private AudioClip _buttonsClickAudio;
         private AudioSource _audioSource;
 
         public GamePanelUI EndGamePopup => _gamePanel;
@@ -20,11 +23,14 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public SettingsPopup SettingsPopup => _settingsPopup;
 
+        public Button SettingsPopupButton => _settingsPopupButton;
+
         private void Start()
         {
             _audioSource = GetComponent<AudioSource>();
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
+
             _gamePanel.OnRestartClicked += _audioSource.Play;
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
@@ -54,6 +60,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         private void OnDestroy()
         {
             _menuPanel.OnStartGameClicked -= _audioSource.Play;
+
             _gamePanel.OnRestartClicked -= _audioSource.Play;
             _gamePanel.OnNextLevelClicked -= _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked -= _audioSource.Play;

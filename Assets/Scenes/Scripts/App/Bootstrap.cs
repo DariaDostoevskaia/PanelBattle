@@ -18,15 +18,15 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
-        [SerializeField] private SettingsPopup _settingsPopup;
 
         private void Start()
         {
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
+            var settingsPopup = _uiContainer.SettingsPopup;
 
-            var settingsController = new SettingsController(_settingsPopup, _soundController);
+            var settingsController = new SettingsController(settingsPopup, _soundController);
 
             var levelsSO = _gameSettingsSO.Levels;
 
@@ -38,15 +38,18 @@ namespace LegoBattaleRoyal.App
             var currentLevel = levelRepository.GetCurrentLevel();
 
             var menuController = new MenuController(_uiContainer.MenuView);
-
             menuController.OnGameStarted += StartGame;
-
             menuController.ShowMenu();
+
+            _uiContainer.SettingsPopupButton.gameObject.SetActive(true);
+            _uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
+
+                _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
 
                 menuController.Dispose();
                 saveService.Dispose();
