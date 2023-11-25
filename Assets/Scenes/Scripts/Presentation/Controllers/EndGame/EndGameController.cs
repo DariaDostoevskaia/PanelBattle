@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
@@ -13,15 +14,16 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
+        private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository)
+            ILevelRepository levelRepository, WalletController walletController)
         {
             _endGamePopup = endGamePopup;
             _characterRepository = characterRepository;
             _levelRepository = levelRepository;
-
+            _walletController = walletController;
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
@@ -56,7 +58,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             var currentLevel = _levelRepository.GetCurrentLevel();
             currentLevel.Win();
-            //начислить деньги
+
+            _walletController.EarnCoins();
+
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
             _endGamePopup.SetTitle("You Win!");

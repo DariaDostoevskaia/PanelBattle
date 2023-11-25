@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.App.DTO.Level;
-using LegoBattaleRoyal.App.DTO.Wallet;
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
@@ -50,6 +49,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
         public void TryBuyLevel()
         {
+            // _levelDto is not needed Dto?
             if (_walletController.CanUnlockLevel(_levelDTO))
             {
                 _walletController.SpendCoins();
@@ -74,8 +74,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             _saveService.Save(new LevelDTO()
             {
                 FinishedOrders = finishedLevels,
-                CurrentOrder = currentLevel.Order + 1,
-                LevelCost = _saveService.Load<PlayerWalletDto>().WalletValue // ?
+                CurrentOrder = currentLevel.Order + 1
+                //LevelCost = _saveService.Load<PlayerWalletDto>().WalletValue // ?
             });
         }
 

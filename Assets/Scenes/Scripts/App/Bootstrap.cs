@@ -27,14 +27,14 @@ namespace LegoBattaleRoyal.App
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
 
-            var walletController = new WalletController();
+            var walletController = new WalletController(saveService, _gameSettingsSO);
 
             var levelController = new LevelController(levelRepository, saveService, walletController);
 
-            levelController.TryBuyLevel();
-            walletController.LoadWalletData(); //?where?
-
             levelController.CreateLevels(levelsSO);
+
+            levelController.TryBuyLevel();
+            walletController.LoadWalletData();
 
             var menuController = new MenuController(_uiContainer.MenuView);
 
@@ -58,9 +58,10 @@ namespace LegoBattaleRoyal.App
                 // subscribe again after dispose
 
                 _gameBootstrap.OnRestarted += StartGame;
+
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
             }
         }
 

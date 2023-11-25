@@ -1,15 +1,17 @@
+using System;
+
 namespace LegoBattaleRoyal.Core.Wallet
 {
     public class WalletModel
     {
-        private int _money;
-        private int _initValue;
+        public int Money { get; set; }
 
         public WalletModel(int initValue)
         {
-            _initValue = initValue;
-        }
+            if (initValue < 0)
+                throw new Exception("Init value don't be a negative.");
 
-        public int Money { get; set; }
+            Money = initValue;
+        }
     }
 }

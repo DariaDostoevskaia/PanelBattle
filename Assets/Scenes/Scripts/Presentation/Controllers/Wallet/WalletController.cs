@@ -13,6 +13,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
         private LevelSO _levelSO;
         private GameSettingsSO _gameSettingsSO;
 
+        public WalletController(SaveService saveService, GameSettingsSO gameSettingsSO)
+        {
+            _saveService = saveService;
+            _gameSettingsSO = gameSettingsSO;
+        }
+
         public bool CanUnlockLevel(LevelDTO levelData)
         {
             return _walletModel.Money >= levelData.LevelCost;
