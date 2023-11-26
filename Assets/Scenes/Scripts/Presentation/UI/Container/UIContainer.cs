@@ -2,7 +2,6 @@ using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.Container
 {
@@ -11,10 +10,10 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanel _menuPanel;
         [SerializeField] private SettingsPopup _settingsPopup;
-
-        [SerializeField] private Button _settingsPopupButton;
+        [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
+
         private AudioSource _audioSource;
 
         public GamePanelUI EndGamePopup => _gamePanel;
@@ -23,7 +22,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public SettingsPopup SettingsPopup => _settingsPopup;
 
-        public Button SettingsPopupButton => _settingsPopupButton;
+        public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
 
         private void Start()
         {

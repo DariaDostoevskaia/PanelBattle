@@ -24,10 +24,6 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
-            var settingsPopup = _uiContainer.SettingsPopup;
-
-            var settingsController = new SettingsController(settingsPopup, _soundController);
-
             var levelsSO = _gameSettingsSO.Levels;
 
             var levelRepository = new LevelRepository();
@@ -41,15 +37,21 @@ namespace LegoBattaleRoyal.App
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
-            _uiContainer.SettingsPopupButton.gameObject.SetActive(true);
-            _uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(settingsPopup, _soundController);
+
+            var topbarPanel = _uiContainer.TopbarScreenPanel;
+            var topbarController = new TopbarController(settingsPopup);
+
+            //_uiContainer.SettingsPopupButton.gameObject.SetActive(true);
+            //_uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
 
-                _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
+                //_uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
 
                 menuController.Dispose();
                 saveService.Dispose();
