@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.App.AppService;
-using LegoBattaleRoyal.App.DTO.Level;
 using LegoBattaleRoyal.App.DTO.Wallet;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
@@ -10,7 +9,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
     {
         private WalletModel _walletModel;
         private SaveService _saveService;
-        private LevelSO _levelSO;
         private GameSettingsSO _gameSettingsSO;
 
         public WalletController(SaveService saveService, GameSettingsSO gameSettingsSO)
@@ -19,20 +17,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
             _gameSettingsSO = gameSettingsSO;
         }
 
-        public bool CanUnlockLevel(LevelDTO levelData)
+        public bool CanBuy(int price)
         {
-            return _walletModel.Money >= levelData.LevelCost;
+            return _walletModel.Money >= price;
         }
 
-        public void SpendCoins()
+        public void SpendCoins(int price)
         {
-            _walletModel.Money -= _levelSO.Price;
+            _walletModel.Money -= price;
             SaveWalletData();
         }
 
-        public void EarnCoins()
+        public void EarnCoins(int reward)
         {
-            _walletModel.Money += _levelSO.Reward;
+            _walletModel.Money += reward;
             SaveWalletData();
         }
 
@@ -52,13 +50,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
                 WalletValue = _walletModel.Money
             };
             _saveService.Save(playerDTO);
-        }
-
-        public void LookAdvertisement()
-        {
-            //Look Advertisement & get money for level
-            var needCountMoney = _levelSO.Price;
-            _walletModel.Money = needCountMoney;
         }
     }
 }

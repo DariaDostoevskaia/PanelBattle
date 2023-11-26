@@ -33,7 +33,6 @@ namespace LegoBattaleRoyal.App
 
             levelController.CreateLevels(levelsSO);
 
-            levelController.TryBuyLevel();
             walletController.LoadWalletData();
 
             var menuController = new MenuController(_uiContainer.MenuView);
@@ -54,6 +53,8 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                levelController.TryBuyLevel(levelRepository.GetCurrentLevel().Price);
+
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
 

@@ -47,19 +47,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
-        public void TryBuyLevel()
+        public void TryBuyLevel(int price)
         {
-            // _levelDto is not needed Dto?
-            if (_walletController.CanUnlockLevel(_levelDTO))
-            {
-                _walletController.SpendCoins();
-                return;
-            }
-            else
-            {
-                _walletController.LookAdvertisement();
-                return;
-            }
+            if (!_walletController.CanBuy(price))
+                _walletController.EarnCoins(price);
+
+            _walletController.SpendCoins(price);
         }
 
         private void OnSuccessEnded()
@@ -75,7 +68,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             {
                 FinishedOrders = finishedLevels,
                 CurrentOrder = currentLevel.Order + 1
-                //LevelCost = _saveService.Load<PlayerWalletDto>().WalletValue // ?
             });
         }
 

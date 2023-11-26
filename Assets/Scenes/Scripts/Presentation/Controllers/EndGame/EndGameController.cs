@@ -59,7 +59,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             var currentLevel = _levelRepository.GetCurrentLevel();
             currentLevel.Win();
 
-            _walletController.EarnCoins();
+            _walletController.EarnCoins(currentLevel.Reward);
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
