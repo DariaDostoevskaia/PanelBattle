@@ -7,7 +7,5 @@ namespace LegoBattaleRoyal.App.DTO.Level
         public int CurrentOrder { get; set; } = 1;
 
         public int[] FinishedOrders { get; set; } = Array.Empty<int>();
-
-        public int LevelCost { get; set; }
     }
 }
