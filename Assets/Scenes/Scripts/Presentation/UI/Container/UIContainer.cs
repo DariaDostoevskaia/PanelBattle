@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
+using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.UI.Container

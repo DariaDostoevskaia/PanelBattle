@@ -3,6 +3,7 @@ using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -31,7 +32,6 @@ namespace LegoBattaleRoyal.App
             var levelController = new LevelController(levelRepository, saveService);
 
             levelController.CreateLevels(levelsSO);
-            var currentLevel = levelRepository.GetCurrentLevel();
 
             var menuController = new MenuController(_uiContainer.MenuView);
             menuController.OnGameStarted += StartGame;
@@ -40,23 +40,20 @@ namespace LegoBattaleRoyal.App
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(settingsPopup, _soundController);
 
-            var topbarPanel = _uiContainer.TopbarScreenPanel;
-            var topbarController = new TopbarController(settingsPopup);
-
-            //_uiContainer.SettingsPopupButton.gameObject.SetActive(true);
-            //_uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
+            var topbarPopup = _uiContainer.TopbarScreenPanel;
+            var topbarController = new TopbarController(settingsController, topbarPopup);
+            topbarController.ShowTopbar();
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
 
-                //_uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
-
-                menuController.Dispose();
                 saveService.Dispose();
                 levelController.Dispose();
+                menuController.Dispose();
                 settingsController.Dispose();
+                topbarController.Dispose();
             };
 
             void StartGame()

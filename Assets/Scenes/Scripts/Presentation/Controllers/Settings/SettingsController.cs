@@ -15,6 +15,11 @@ public class SettingsController : IDisposable
         _settingsPopup.OnSoundVolumeChanged += _soundController.SetSoundVolume;
     }
 
+    public void ShowSettings()
+    {
+        _settingsPopup.Show();
+    }
+
     public void Dispose()
     {
         _settingsPopup.OnMusicVolumeChanged -= _soundController.SetMusicVolume;

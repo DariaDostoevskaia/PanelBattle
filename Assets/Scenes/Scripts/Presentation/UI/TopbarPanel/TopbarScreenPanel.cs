@@ -1,9 +1,30 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TopbarScreenPanel : MonoBehaviour
+namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 {
-    [SerializeField] private Button _settingsPopupButton;
+    public class TopbarScreenPanel : MonoBehaviour
+    {
+        public event Action OnOpenSettings;
 
-    public Button SettingsPopupButton => _settingsPopupButton;
+        [SerializeField] private Button _settingsPopupButton;
+
+        private void Start()
+        {
+            _settingsPopupButton.onClick.AddListener(() => OnOpenSettings?.Invoke());
+        }
+
+        public void Show()
+        {
+            _settingsPopupButton.gameObject.SetActive(true);
+        }
+
+        private void OnDestroy()
+        {
+            OnOpenSettings = null;
+
+            _settingsPopupButton.onClick.RemoveAllListeners();
+        }
+    }
 }
