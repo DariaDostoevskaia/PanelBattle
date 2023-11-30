@@ -6,25 +6,25 @@ namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 {
     public class TopbarScreenPanel : MonoBehaviour
     {
-        public event Action OnOpenSettings;
+        public event Action OnSettingsButtonClicked;
 
-        [SerializeField] private Button _settingsPopupButton;
+        [SerializeField] private Button _topbarScreenPanel;
 
         private void Start()
         {
-            _settingsPopupButton.onClick.AddListener(() => OnOpenSettings?.Invoke());
+            _topbarScreenPanel.onClick.AddListener(() => OnSettingsButtonClicked?.Invoke());
         }
 
         public void Show()
         {
-            _settingsPopupButton.gameObject.SetActive(true);
+            _topbarScreenPanel.gameObject.SetActive(true);
         }
 
         private void OnDestroy()
         {
-            OnOpenSettings = null;
+            OnSettingsButtonClicked = null;
 
-            _settingsPopupButton.onClick.RemoveAllListeners();
+            _topbarScreenPanel.onClick.RemoveAllListeners();
         }
     }
 }

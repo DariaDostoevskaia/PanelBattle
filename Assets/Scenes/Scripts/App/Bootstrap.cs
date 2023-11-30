@@ -37,11 +37,11 @@ namespace LegoBattaleRoyal.App
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
-            var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(settingsPopup, _soundController);
-
             var topbarPopup = _uiContainer.TopbarScreenPanel;
-            var topbarController = new TopbarController(settingsController, topbarPopup);
+            var topbarController = new TopbarController(topbarPopup);
+
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
             topbarController.ShowTopbar();
 
             OnDisposed += () =>

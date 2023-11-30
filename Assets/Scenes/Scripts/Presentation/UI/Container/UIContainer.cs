@@ -39,6 +39,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _settingsPopup.OnHomeClicked += _audioSource.Play;
             _settingsPopup.OnCloseClicked += _audioSource.Play;
 
+            _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
+
             _settingsPopup.OnHomeClicked += GoHome;
 
             _audioSource.loop = false;
@@ -68,6 +70,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _settingsPopup.OnOkClicked -= _audioSource.Play;
             _settingsPopup.OnHomeClicked -= _audioSource.Play;
             _settingsPopup.OnCloseClicked -= _audioSource.Play;
+
+            _topbarScreenPanel.OnSettingsButtonClicked -= _audioSource.Play;
 
             _settingsPopup.OnHomeClicked -= GoHome;
         }
