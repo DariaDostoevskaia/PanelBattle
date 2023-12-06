@@ -12,13 +12,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         [SerializeField] private AudioMixer _audioMixer;
 
         private AudioSource _audioSource;
+
         private static readonly float Multiplier = 20f;
 
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
-
-            _audioSource.loop = true;
+            OnLoop();
 
             var volumeValue = PlayerPrefs.GetFloat(MusicVolume, 0f);
             SetMusicVolume(volumeValue);
@@ -28,6 +28,16 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         {
             _audioSource.clip = audioClip;
             _audioSource.Play();
+        }
+
+        public void OffLoop()
+        {
+            _audioSource.loop = false;
+        }
+
+        public void OnLoop()
+        {
+            _audioSource.loop = true;
         }
 
         public void SetMusicVolume(float volume)
