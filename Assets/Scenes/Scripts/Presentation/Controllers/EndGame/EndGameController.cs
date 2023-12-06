@@ -25,15 +25,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             ILevelRepository levelRepository, GameSettingsSO gameSettingsSO)
         {
             _endGamePopup = endGamePopup;
-
             _characterRepository = characterRepository;
             _levelRepository = levelRepository;
-
             _gameSettingsSO = gameSettingsSO;
 
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
+
+            _audioSource.loop = false;
         }
 
         private void ExitMainMenu()
@@ -95,7 +95,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private void PlaySound(AudioClip audioClip)
         {
             _audioSource.clip = audioClip;
-            _audioSource.loop = false;
             _audioSource.Play();
         }
 

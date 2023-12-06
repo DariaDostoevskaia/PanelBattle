@@ -109,7 +109,7 @@ namespace LegoBattaleRoyal.App
             characterRepository.Add(characterModel);
 
             var characterView = Instantiate(characterSO.ViewPrefab);
-            //characterView.Mute();
+
             var playerColor = characterModel.Id.ToColor();
 
             characterView.SetColor(playerColor);
