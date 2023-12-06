@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
+using LegoBattaleRoyal.Infrastructure.Unity;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
@@ -21,6 +22,9 @@ namespace LegoBattaleRoyal.App
         private void Start()
         {
             _uiContainer.CloseAll();
+
+            var adsProvider = new UnityAdsProvider();
+            adsProvider.InitializeAds();
 
             var levelsSO = _gameSettingsSO.Levels;
 

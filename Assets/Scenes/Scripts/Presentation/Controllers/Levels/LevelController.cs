@@ -50,7 +50,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
         public void TryBuyLevel(int price)
         {
             if (!_walletController.CanBuy(price))
-                _walletController.EarnCoins(price);
+                _walletController.EarnCoins(price); //return false; spend после просм рекл
 
             _walletController.SpendCoins(price);
         }
