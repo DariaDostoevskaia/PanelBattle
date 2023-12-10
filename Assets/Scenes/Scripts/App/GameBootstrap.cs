@@ -35,9 +35,7 @@ namespace LegoBattaleRoyal.App
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
-            Presentation.Controllers.Wallet.WalletController walletController)
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
-            UIContainer uiContainer, SoundController soundController)
+            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController)
         {
             var characterSO = gameSettingsSO.CharacterSO;
             var currentLevel = levelRepository.GetCurrentLevel();
@@ -54,8 +52,7 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, walletController);
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, gameSettingsSO, soundController);
+            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
