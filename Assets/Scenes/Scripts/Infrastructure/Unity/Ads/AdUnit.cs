@@ -2,112 +2,115 @@ using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdUnit : IUnityAdsLoadListener, IUnityAdsShowListener, IDisposable
+namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 {
-    public event Action<bool> OnLoaded;
-
-    public event Action OnSuccesShown;
-
-    public event Action OnFailedShown;
-
-    private readonly string _adUnitId;
-
-    public bool IsReady { get; private set; }
-
-    public AdUnit(string adUnitId)
+    public class AdUnit : IUnityAdsLoadListener, IUnityAdsShowListener, IDisposable
     {
-        _adUnitId = adUnitId;
-    }
+        public event Action<bool> OnLoaded;
 
-    public void LoadAd()
-    {
-        // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
-        Debug.Log("Loading Ad: " + _adUnitId);
-        Advertisement.Load(_adUnitId, this);
-    }
+        public event Action OnSuccesShown;
 
-    // If the ad successfully loads, add a listener to the button and enable it:
-    public void OnUnityAdsAdLoaded(string adUnitId)
-    {
-        Debug.Log("Ad Loaded: " + adUnitId);
+        public event Action OnFailedShown;
 
-        if (adUnitId.Equals(_adUnitId))
+        private readonly string _adUnitId;
+
+        public bool IsReady { get; private set; }
+
+        public AdUnit(string adUnitId)
         {
-            IsReady = true;
-            OnLoaded?.Invoke(true);
-        }
-    }
-
-    // Implement a method to execute when the user clicks the button:
-    public void ShowAd()
-    {
-        // Then show the ad:
-        Advertisement.Show(_adUnitId, this);
-    }
-
-    // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
-    public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
-    {
-        if (!adUnitId.Equals(_adUnitId))
-            return;
-
-        if (showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
-        {
-            OnSuccesShown?.Invoke();
-            Debug.Log("Unity Ads Rewarded Ad Completed");
-        }
-        else
-        {
-            OnFailedShown?.Invoke();
+            _adUnitId = adUnitId;
         }
 
-        ReLoad();
-    }
+        public void LoadAd()
+        {
+            // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
+            Debug.Log("Loading Ad: " + _adUnitId);
+            Advertisement.Load(_adUnitId, this);
+        }
 
-    // Implement Load and Show Listener error callbacks:
-    public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
-    {
-        if (!adUnitId.Equals(_adUnitId))
-            return;
+        // If the ad successfully loads, add a listener to the button and enable it:
+        public void OnUnityAdsAdLoaded(string adUnitId)
+        {
+            Debug.Log("Ad Loaded: " + adUnitId);
 
-        Debug.Log($"Error loading Ad Unit {adUnitId}: {error.ToString()} - {message}");
-        // Use the error details to determine whether to try to load another ad.
+            if (adUnitId.Equals(_adUnitId))
+            {
+                IsReady = true;
+                OnLoaded?.Invoke(true);
+            }
+        }
 
-        ReLoad();
-    }
+        // Implement a method to execute when the user clicks the button:
+        public void ShowAd()
+        {
+            // Then show the ad:
+            Advertisement.Show(_adUnitId, this);
+        }
 
-    public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
-    {
-        if (!adUnitId.Equals(_adUnitId))
-            return;
+        // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
+        public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
+        {
+            if (!adUnitId.Equals(_adUnitId))
+                return;
 
-        Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
-        // Use the error details to determine whether to try to load another ad.
+            if (showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
+            {
+                OnSuccesShown?.Invoke();
+                Debug.Log("Unity Ads Rewarded Ad Completed");
+            }
+            else
+            {
+                OnFailedShown?.Invoke();
+            }
 
-        ReLoad();
-    }
+            ReLoad();
+        }
 
-    private void ReLoad()
-    {
-        IsReady = false;
-        OnLoaded?.Invoke(false);
-        LoadAd();
-    }
+        // Implement Load and Show Listener error callbacks:
+        public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
+        {
+            if (!adUnitId.Equals(_adUnitId))
+                return;
 
-    public void Dispose()
-    {
-        OnLoaded = null;
-        OnFailedShown = null;
-        OnSuccesShown = null;
-    }
+            Debug.Log($"Error loading Ad Unit {adUnitId}: {error.ToString()} - {message}");
+            // Use the error details to determine whether to try to load another ad.
 
-    public void OnUnityAdsShowStart(string placementId)
-    {
-        Debug.Log($"Start show unity ads {placementId}");
-    }
+            ReLoad();
+        }
 
-    public void OnUnityAdsShowClick(string placementId)
-    {
-        Debug.Log($"Click unity ads {placementId}");
+        public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
+        {
+            if (!adUnitId.Equals(_adUnitId))
+                return;
+
+            Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
+            // Use the error details to determine whether to try to load another ad.
+
+            ReLoad();
+        }
+
+        private void ReLoad()
+        {
+            IsReady = false;
+            OnLoaded?.Invoke(false);
+            LoadAd();
+        }
+
+        public void OnUnityAdsShowStart(string placementId)
+        {
+            Debug.Log($"Start show unity ads {placementId}");
+        }
+
+        public void OnUnityAdsShowClick(string placementId)
+        {
+            Debug.Log($"Click unity ads {placementId}");
+        }
+
+        public void Dispose()
+        {
+            OnLoaded = null;
+            OnFailedShown = null;
+            OnSuccesShown = null;
+        }
     }
 }

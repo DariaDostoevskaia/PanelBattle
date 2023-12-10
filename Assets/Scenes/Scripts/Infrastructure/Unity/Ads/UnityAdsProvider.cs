@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace LegoBattaleRoyal.Infrastructure.Unity
+namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 {
     public class UnityAdsProvider : IUnityAdsInitializationListener, IDisposable
     {
@@ -23,13 +23,18 @@ namespace LegoBattaleRoyal.Infrastructure.Unity
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
 
-            //_rewardedPlacement.OnSuccesShown+=OnUnityAdsShow на его подписать ui и выдать игроку монеты
-            //если реклама не доступна - откл кнопку
-            //если из гл меню - не
+            _rewardedPlacement.OnSuccesShown += OnUnityAdsShow;
 
             // добавить межстраничную рекламу intrestitial
 
             //_rewardedPlacement.OnFailed+= ?
+        }
+
+        private void OnUnityAdsShow()
+        {
+            //на его подписать ui и выдать игроку монеты
+            //если реклама не доступна - откл кнопку
+            //если из гл меню - не
         }
 
         public void ShowRewareded()
