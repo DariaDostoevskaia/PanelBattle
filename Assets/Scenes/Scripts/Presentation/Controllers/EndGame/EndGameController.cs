@@ -52,9 +52,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
 
-            var loseMusic = _gameSettingsSO.LoseGameMusic;
-            _soundController.Play(loseMusic);
-            _soundController.OffLoop();
+            _soundController.PlayLoseGameMusic();
 
             _endGamePopup.Show();
         }
@@ -74,9 +72,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
 
-            var winMusic = _gameSettingsSO.WinGameMusic;
-            _soundController.Play(winMusic);
-            _soundController.OffLoop();
+            _soundController.PLayWinGameMusic();
 
             if (!isLastLevel)
             {
