@@ -2,6 +2,8 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -16,11 +18,13 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
+        [SerializeField] private SoundController _soundController;
 
         private void Start()
         {
             _uiContainer.CloseAll();
 
+            _soundController.Play(_gameSettingsSO.MainMusic);
             var levelsSO = _gameSettingsSO.Levels;
 
             var levelRepository = new LevelRepository();
@@ -28,22 +32,28 @@ namespace LegoBattaleRoyal.App
             var levelController = new LevelController(levelRepository, saveService);
 
             levelController.CreateLevels(levelsSO);
-            var currentLevel = levelRepository.GetCurrentLevel();
 
             var menuController = new MenuController(_uiContainer.MenuView);
-
             menuController.OnGameStarted += StartGame;
-
             menuController.ShowMenu();
+
+            var topbarPopup = _uiContainer.TopbarScreenPanel;
+            var topbarController = new TopbarController(topbarPopup);
+
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+            topbarController.ShowTopbar();
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
 
-                menuController.Dispose();
                 saveService.Dispose();
                 levelController.Dispose();
+                menuController.Dispose();
+                settingsController.Dispose();
+                topbarController.Dispose();
             };
 
             void StartGame()
@@ -54,7 +64,7 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, _soundController);
             }
         }
 
