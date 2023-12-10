@@ -1,6 +1,6 @@
 using System;
 
-namespace LegoBattaleRoyal.App.DTO
+namespace LegoBattaleRoyal.App.DTO.Level
 {
     public class LevelDTO
     {

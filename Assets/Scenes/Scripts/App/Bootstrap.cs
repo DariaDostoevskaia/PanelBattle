@@ -2,6 +2,7 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.UI.Container;
@@ -29,9 +30,14 @@ namespace LegoBattaleRoyal.App
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-            var levelController = new LevelController(levelRepository, saveService);
+
+            var walletController = new WalletController(saveService, _gameSettingsSO);
+
+            var levelController = new LevelController(levelRepository, saveService, walletController);
 
             levelController.CreateLevels(levelsSO);
+
+            walletController.LoadWalletData();
 
             var menuController = new MenuController(_uiContainer.MenuView);
             menuController.OnGameStarted += StartGame;
@@ -58,12 +64,16 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                levelController.TryBuyLevel(levelRepository.GetCurrentLevel().Price);
+
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
 
                 _gameBootstrap.OnRestarted += StartGame;
+
                 _uiContainer.MenuView.Close();
 
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, _soundController);
             }
         }

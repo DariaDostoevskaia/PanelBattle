@@ -30,5 +30,5 @@ MonoBehaviour:
   - 0
   - 0
   _spacing: 10
-  _price: 0
-  _reward: 0
+  _price: 8
+  _reward: 9
