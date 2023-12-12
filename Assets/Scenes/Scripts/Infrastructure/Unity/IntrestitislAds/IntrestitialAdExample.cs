@@ -49,12 +49,12 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
         // Optionally execute code if the Ad Unit fails to show, such as loading another ad.
     }
 
-    public void OnUnityAdsShowStart(string _adUnitId)
+    public void OnUnityAdsShowStart(string adUnitId)
     { }
 
-    public void OnUnityAdsShowClick(string _adUnitId)
+    public void OnUnityAdsShowClick(string adUnitId)
     { }
 
-    public void OnUnityAdsShowComplete(string _adUnitId, UnityAdsShowCompletionState showCompletionState)
+    public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
     { }
 }
