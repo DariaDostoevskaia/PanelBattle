@@ -50,6 +50,9 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
+
+                    transform.Rotate(movePoint.x, movePoint.y, Time.deltaTime);
+
                     PlaySound(_jumpAudioClip);
                     OnJumped?.Invoke(false);
                 });
