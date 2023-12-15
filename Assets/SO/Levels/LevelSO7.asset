@@ -29,6 +29,6 @@ MonoBehaviour:
   _startedPosition:
   - 0
   - 0
-  _spacing: 0.1
+  _spacing: 1
   _price: 6
   _reward: 7
