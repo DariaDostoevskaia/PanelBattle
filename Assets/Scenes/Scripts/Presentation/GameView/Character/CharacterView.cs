@@ -51,7 +51,7 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
                 {
                     transform.position = movePoint;
 
-                    transform.Rotate(movePoint.x, movePoint.y, Time.deltaTime);
+                    transform.rotation = Quaternion.Euler(movePoint.x, movePoint.y, transform.rotation.z);
 
                     PlaySound(_jumpAudioClip);
                     OnJumped?.Invoke(false);

@@ -37,7 +37,9 @@ namespace LegoBattaleRoyal.App
             UIContainer uiContainer, SoundController soundController)
         {
             var characterSO = gameSettingsSO.CharacterSO;
+
             var currentLevel = levelRepository.GetCurrentLevel();
+            Debug.Log($"Level: {currentLevel}");
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var music = levelSO.LevelMusic;
