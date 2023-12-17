@@ -44,14 +44,14 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
 
             OnJumped?.Invoke(true);
 
+            transform.LookAt(movePoint);
+
             _move = _rigidbody
                 .DOJump(movePoint, _jumpHeight, 1, _moveDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
-
-                    transform.rotation = Quaternion.Euler(movePoint.x, movePoint.y, transform.rotation.z);
 
                     PlaySound(_jumpAudioClip);
                     OnJumped?.Invoke(false);
