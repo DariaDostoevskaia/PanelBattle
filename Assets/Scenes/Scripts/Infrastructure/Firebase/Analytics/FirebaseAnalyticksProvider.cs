@@ -1,9 +1,14 @@
 using Firebase;
+using Firebase.Analytics;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Infrastructure.Firebase.Analytics
 {
-    public class FirebaseAnalyticksProvider
+    public class FirebaseAnalyticksProvider : IAnalyticsProvider
     {
+        private bool _isInit;
+
         public void Init()
         {
             FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
@@ -11,13 +16,25 @@ namespace LegoBattaleRoyal.Infrastructure.Firebase.Analytics
                 var dependencyStatus = task.Result;
                 if (dependencyStatus == DependencyStatus.Available)
                 {
-                    UnityEngine.Debug.Log($"Resolve all Firebase dependencies: {dependencyStatus}");
+                    _isInit = true;
+                    Debug.Log($"Resolve all Firebase dependencies: {dependencyStatus}");
                 }
                 else
                 {
-                    UnityEngine.Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+                    Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
                 }
             });
+        }
+
+        public void SendEvent(string eventKey)
+        {
+            if (!_isInit)
+                return;
+
+            //TODO Init() async moment
+
+            FirebaseAnalytics.LogEvent(eventKey);
+            Debug.Log($"{GetType().Name} {nameof(SendEvent)} {eventKey}");
         }
     }
 }

@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
@@ -23,6 +24,10 @@ namespace LegoBattaleRoyal.App
 
         private void Start()
         {
+            var analyticsProvider = new FirebaseAnalyticksProvider();
+            analyticsProvider.Init();
+            // TODO
+
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
@@ -39,7 +44,7 @@ namespace LegoBattaleRoyal.App
 
             walletController.LoadWalletData();
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
