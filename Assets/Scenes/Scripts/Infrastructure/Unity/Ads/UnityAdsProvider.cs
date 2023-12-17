@@ -12,11 +12,14 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _iOSGameId = "5493302";
 #if UNITY_IOS
         private static readonly string _rewardedPlacementId = "Rewarded_iOS" ;
+        private static readonly string _intrestitialPlacementId = "Interstitial_Android";
 #elif UNITY_ANDROID || UNITY_EDITOR
         private static readonly string _rewardedPlacementId = "Rewarded_Android";
+        private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #endif
         private bool _testMode;
         private AdUnit _rewardedPlacement;
+        private AdUnit _intrestitialPlacement;
 
         public UnityAdsProvider()
         {
@@ -25,6 +28,8 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
             _rewardedPlacement.OnSuccesShown += OnUnityAdsShow;
 
+            _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
+            //_intrestitialPlacement.OnL
             // добавить межстраничную рекламу intrestitial
 
             //_rewardedPlacement.OnFailed+= ?
