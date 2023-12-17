@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 1160906271520517804, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Name
-      value: IcyLandPanelView
+      value: CobblestonePanelView
       objectReference: {fileID: 0}
     - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7659229185233088805, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: _ownerHoverRenderer
+      value: 
+      objectReference: {fileID: 1644519483317723020}
     - target: {fileID: 8596067461244923263, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -78,3 +83,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2f94afbb6360e64a9fdf7be02fd12e4, type: 3}
+--- !u!23 &1644519483317723020 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8596067461244923263, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7032894246500741875}
+  m_PrefabAsset: {fileID: 0}

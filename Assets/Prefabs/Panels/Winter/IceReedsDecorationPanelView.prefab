@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hoverRenderer: {fileID: 3903757432914331625}
+  _ownerHoverRenderer: {fileID: 8596067461244923263}
 --- !u!1 &6059446442257236823
 GameObject:
   m_ObjectHideFlags: 0

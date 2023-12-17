@@ -94,7 +94,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         public void Capture()
         {
             PlaySound(_capturePanelsAudioClip);
-            _animator.SetTrigger("Jump"); //TODO animation const .cs
+
+            _animator.SetTrigger(AnimationConstants.JumpTriggerHash);
         }
 
         private void OnDestroy()

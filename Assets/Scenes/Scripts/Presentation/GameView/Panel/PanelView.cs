@@ -15,25 +15,24 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
         public event Action<PanelView> OnDestoyed;
 
         [SerializeField] private MeshRenderer _hoverRenderer;
-        private MeshRenderer _renderer;
+        [SerializeField] private MeshRenderer _ownerHoverRenderer;
 
         private Color _defaultColor;
 
         private void Awake()
         {
-            _renderer = GetComponent<MeshRenderer>();
-            _defaultColor = _renderer.material.color;
+            _defaultColor = _ownerHoverRenderer.material.color;
             CancelHighlight();
         }
 
         public void SetColor(Color color)
         {
-            _renderer.material.color = color;
+            _ownerHoverRenderer.material.color = color;
         }
 
         public void ResetColor()
         {
-            _renderer.material.color = _defaultColor;
+            _ownerHoverRenderer.material.color = _defaultColor;
         }
 
         public void Highlight(Color color)
