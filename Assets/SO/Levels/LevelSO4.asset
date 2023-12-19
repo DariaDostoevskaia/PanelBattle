@@ -15,6 +15,7 @@ MonoBehaviour:
   _music: {fileID: 8300000, guid: 458dd8822518c4f37bc3edba9b6c57d9, type: 3}
   _panelSettings:
   - {fileID: 11400000, guid: 906a9ae3039d70240bd64ac600bd5dfa, type: 2}
+  - {fileID: 11400000, guid: 906a9ae3039d70240bd64ac600bd5dfa, type: 2}
   - {fileID: 11400000, guid: 701d6b562f9be024496d1792b878a457, type: 2}
   - {fileID: 11400000, guid: 29b90818abafab14dbe69ab9d8f1d69e, type: 2}
   - {fileID: 11400000, guid: 86b4efb4815a66a41819f5bcd23d56b8, type: 2}

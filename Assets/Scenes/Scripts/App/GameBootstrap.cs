@@ -39,7 +39,7 @@ namespace LegoBattaleRoyal.App
             var characterSO = gameSettingsSO.CharacterSO;
 
             var currentLevel = levelRepository.GetCurrentLevel();
-            Debug.Log($"Level: {currentLevel}");
+            Debug.Log($"Level: {currentLevel.Order}");
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var music = levelSO.LevelMusic;
@@ -111,9 +111,8 @@ namespace LegoBattaleRoyal.App
             characterRepository.Add(characterModel);
 
             var characterView = Instantiate(characterSO.ViewPrefab);
-            //characterView.Mute();
-            var playerColor = characterModel.Id.ToColor();
 
+            var playerColor = characterModel.Id.ToColor();
             characterView.SetColor(playerColor);
 
             characterView.SetJumpHeight(characterSO.JumpHeight);

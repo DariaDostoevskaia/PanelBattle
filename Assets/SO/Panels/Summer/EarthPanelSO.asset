@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37b539f20b6f61d4291a44e8de775a4f, type: 3}
-  m_Name: EarthPanelSO 3
+  m_Name: EarthPanelSO
   m_EditorClassIdentifier: 
   _panelViewPrefab: {fileID: 2088445532471831807, guid: 93cdd244c8951694d814ae743435dbeb,
     type: 3}
