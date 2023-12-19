@@ -73,11 +73,6 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
             _moveDuration = moveDuration;
         }
 
-        public void SetColor(Color newColor)
-        {
-            //_meshRenderer.material.color = newColor;
-        }
-
         private void PlaySound(AudioClip audioClip)
         {
             if (audioClip == null)

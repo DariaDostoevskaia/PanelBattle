@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -10,7 +11,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         public static readonly string SoundVolume = nameof(SoundVolume);
 
         [SerializeField] private AudioMixer _audioMixer;
-
+        [SerializeField] private GameSettingsSO _gameSettingsSO;
         private AudioSource _audioSource;
         private static readonly float Multiplier = 20f;
 
@@ -28,6 +29,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         {
             _audioSource.clip = audioClip;
             _audioSource.Play();
+        }
+
+        public void PlayWinGame()
+        {
+            _audioSource.loop = false;
+            Play(_gameSettingsSO.WinGameMusic);
+        }
+
+        public void PlayLoseGame()
+        {
+            _audioSource.loop = false;
+            Play(_gameSettingsSO.LoseGameMusic);
         }
 
         public void SetMusicVolume(float volume)

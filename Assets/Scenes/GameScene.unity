@@ -2576,6 +2576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: 5e1fb2a21bdedbc46919686926f566eb, type: 2}
+  _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
 --- !u!82 &1048069293
 AudioSource:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -19,10 +20,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly GamePanelUI _endGamePopup;
 
         private readonly GameSettingsSO _gameSettingsSO;
+        private readonly SoundController _soundController;
         private readonly AudioSource _audioSource;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository, GameSettingsSO gameSettingsSO)
+            ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, Sound.SoundController soundController)
         {
             _endGamePopup = endGamePopup;
 
@@ -30,7 +32,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _levelRepository = levelRepository;
 
             _gameSettingsSO = gameSettingsSO;
-
+            _soundController = soundController;
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
@@ -54,8 +56,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
 
-            var loseMusic = _gameSettingsSO.LoseGameMusic;
-            PlaySound(loseMusic);
+            _soundController.PlayWinGame();
 
             _endGamePopup.Show();
         }
@@ -75,8 +76,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
 
-            var winMusic = _gameSettingsSO.WinGameMusic;
-            PlaySound(winMusic);
+            _soundController.PlayLoseGame();
 
             if (!isLastLevel)
             {
@@ -90,13 +90,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _endGamePopup.Show();
             return true;
-        }
-
-        private void PlaySound(AudioClip audioClip)
-        {
-            _audioSource.clip = audioClip;
-            _audioSource.loop = false;
-            _audioSource.Play();
         }
 
         public void Dispose()
