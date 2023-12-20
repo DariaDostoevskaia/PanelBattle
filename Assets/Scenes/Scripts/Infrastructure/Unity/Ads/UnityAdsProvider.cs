@@ -25,18 +25,20 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
-
             _rewardedPlacement.OnSuccesShown += OnUnityAdsShow;
 
             _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
-            //_intrestitialPlacement.OnL
-            // добавить межстраничную рекламу intrestitial
+            _intrestitialPlacement.OnLoaded += OnAdsLoaded;
+            _intrestitialPlacement.OnSuccesShown += OnUnityAdsShow;
 
             //_rewardedPlacement.OnFailed+= ?
         }
 
         private void OnUnityAdsShow()
         {
+            if (!_testMode)
+                return;
+
             //на его подписать ui и выдать игроку монеты
             //если реклама не доступна - откл кнопку
             //если из гл меню - не

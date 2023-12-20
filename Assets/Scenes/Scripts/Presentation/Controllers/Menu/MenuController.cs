@@ -7,9 +7,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        private readonly MainMenuPanel _menuView;
+        private readonly MainMenuPanelUI _menuView;
 
-        public MenuController(MainMenuPanel menuView)
+        public MenuController(MainMenuPanelUI menuView)
         {
             _menuView = menuView;
             _menuView.OnStartGameClicked += StartGame;

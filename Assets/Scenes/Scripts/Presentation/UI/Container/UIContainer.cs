@@ -7,11 +7,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
     public class UIContainer : MonoBehaviour
     {
         [SerializeField] private GamePanelUI _gamePanel;
-        [SerializeField] private MainMenuPanel _menuPanel;
+        [SerializeField] private MainMenuPanelUI _menuPanel;
 
         public GamePanelUI EndGamePopup => _gamePanel;
 
-        public MainMenuPanel MenuView => _menuPanel;
+        public MainMenuPanelUI MenuView => _menuPanel;
 
         public void CloseAll()
         {
