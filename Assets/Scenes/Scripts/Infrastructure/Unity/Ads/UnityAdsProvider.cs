@@ -18,6 +18,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #endif
         private bool _testMode;
+
         private AdUnit _rewardedPlacement;
         private AdUnit _intrestitialPlacement;
 
@@ -49,6 +50,11 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             _rewardedPlacement.ShowAd();
         }
 
+        public void ShowInterstitial()
+        {
+            _intrestitialPlacement.ShowAd();
+        }
+
         private void OnAdsLoaded(bool isLoaded)
         {
             OnUnityAdsLoaded?.Invoke(isLoaded);
@@ -65,7 +71,8 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 #elif UNITY_ANDROID || UNITY_EDITOR
             var gameId = _androidGameId;
 #endif
-            if (!Advertisement.isInitialized && Advertisement.isSupported)
+            if (!Advertisement.isInitialized
+                && Advertisement.isSupported)
             {
                 Advertisement.Initialize(gameId, _testMode, this);
             }
@@ -85,7 +92,14 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         {
             OnUnityAdsLoaded = null;
 
+            _rewardedPlacement.OnLoaded -= OnAdsLoaded;
+            _rewardedPlacement.OnSuccesShown -= OnUnityAdsShow;
+
+            _intrestitialPlacement.OnLoaded -= OnAdsLoaded;
+            _intrestitialPlacement.OnSuccesShown -= OnUnityAdsShow;
+
             _rewardedPlacement.Dispose();
+            _intrestitialPlacement.Dispose();
         }
     }
 }

@@ -32,17 +32,13 @@ namespace LegoBattaleRoyal.App
             var saveService = new SaveService();
 
             var walletController = new WalletController(saveService, _gameSettingsSO);
-
-            var levelController = new LevelController(levelRepository, saveService, walletController);
+            var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
 
             levelController.CreateLevels(levelsSO);
-
             walletController.LoadWalletData();
 
             var menuController = new MenuController(_uiContainer.MenuView);
-
             menuController.OnGameStarted += StartGame;
-
             menuController.ShowMenu();
 
             OnDisposed += () =>
@@ -57,14 +53,12 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                levelController.TryBuyLevel(levelRepository.GetCurrentLevel().Price);
+                var level = levelRepository.GetCurrentLevel();
+                levelController.TryBuyLevel(level.Price);
 
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
-
                 _gameBootstrap.OnRestarted += StartGame;
-
-                _uiContainer.MenuView.Close();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
             }
