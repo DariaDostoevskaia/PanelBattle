@@ -55,12 +55,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
         public void TryBuyLevel(int price)
         {
+            var isBoughtLevel = false;
             if (!_walletController.CanBuy(price))
             {
                 _adsProvider.ShowRewareded();
                 _walletController.EarnCoins(price);
+                isBoughtLevel = true;
             }
             _walletController.SpendCoins(price);
+
+            var currentLevel = _levelRepository.GetCurrentLevel();
+
+            if (currentLevel.Order % 3 == 0
+                && !isBoughtLevel)
+                _adsProvider.ShowInterstitial();
         }
 
         private void OnSuccessEnded()

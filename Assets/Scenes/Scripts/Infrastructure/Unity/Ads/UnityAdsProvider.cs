@@ -31,8 +31,6 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
             _intrestitialPlacement.OnLoaded += OnAdsLoaded;
             _intrestitialPlacement.OnSuccesShown += OnUnityAdsShow;
-
-            //_rewardedPlacement.OnFailed+= ?
         }
 
         private void OnUnityAdsShow()
@@ -40,6 +38,16 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             if (!_testMode)
                 return;
 
+            if (!_rewardedPlacement.IsReady)
+            {
+                //выкл интерактивность кнопки
+                return;
+            }
+            if (!_intrestitialPlacement.IsReady)
+            {
+                //выкл интерактивность кнопки
+                return;
+            }
             //на его подписать ui и выдать игроку монеты
             //если реклама не доступна - откл кнопку
             //если из гл меню - не
