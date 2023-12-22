@@ -23,6 +23,8 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
+        public event Action OnRewarded;
+
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -50,6 +52,7 @@ namespace LegoBattaleRoyal.App
 
             _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
+            _endGameController.OnAdsPlayed += OnRewarded;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -85,6 +88,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 _endGameController.OnGameRestarted -= OnRestarted;
+                _endGameController.OnAdsPlayed -= OnRewarded;
 
                 foreach (var pair in pairs)
                 {

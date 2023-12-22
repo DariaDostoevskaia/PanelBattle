@@ -53,14 +53,19 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var level = levelRepository.GetCurrentLevel();
-                levelController.TryBuyLevel(level.Price);
+                _gameBootstrap.OnRewarded += PlayAds;
 
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
-
+                menuController.CloseMenu();
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
+            }
+
+            void PlayAds()
+            {
+                var level = levelRepository.GetCurrentLevel();
+                levelController.TryBuyLevel(level.Price);
             }
         }
 
