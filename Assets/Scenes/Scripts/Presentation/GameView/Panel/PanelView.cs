@@ -14,13 +14,14 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
 
         public event Action<PanelView> OnDestoyed;
 
-        [SerializeField] private MeshRenderer _hoverRenderer;
+        private QuickOutline _hoverOutline;
         [SerializeField] private MeshRenderer _ownerHoverRenderer;
 
         private Color _defaultColor;
 
         private void Awake()
         {
+            _hoverOutline = GetComponent<QuickOutline>();
             _defaultColor = _ownerHoverRenderer.material.color;
             CancelHighlight();
         }
@@ -37,13 +38,13 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
 
         public void Highlight(Color color)
         {
-            _hoverRenderer.material.color = color;
-            _hoverRenderer.gameObject.SetActive(true);
+            _hoverOutline.OutlineColor = color;
+            _hoverOutline.enabled = true;
         }
 
         public void CancelHighlight()
         {
-            _hoverRenderer.gameObject.SetActive(false);
+            _hoverOutline.enabled = false;
         }
 
         public void OnPointerClick(PointerEventData eventData)

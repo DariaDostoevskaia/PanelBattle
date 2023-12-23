@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8596067461244923263}
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
+  - component: {fileID: 8348433209423044530}
   m_Layer: 0
   m_Name: ReedsDecorationPanelView
   m_TagString: Untagged
@@ -120,8 +121,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e514464026b026846aba38621885e3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hoverRenderer: {fileID: 3903757432914331625}
-  _ownerHoverRenderer: {fileID: 8596067461244923263}
+  _ownerHoverRenderer: {fileID: 3903757432914331625}
+--- !u!114 &8348433209423044530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160906271520517804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 6
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6059446442257236823
 GameObject:
   m_ObjectHideFlags: 0
