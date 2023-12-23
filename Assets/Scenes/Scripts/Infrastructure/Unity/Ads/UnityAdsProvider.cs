@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -26,11 +27,9 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
-            _rewardedPlacement.OnSuccesShown += OnUnityAdsShow;
 
             _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
             _intrestitialPlacement.OnLoaded += OnAdsLoaded;
-            _intrestitialPlacement.OnSuccesShown += OnUnityAdsShow;
         }
 
         private void OnUnityAdsShow()
@@ -56,6 +55,38 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         public void ShowRewareded()
         {
             _rewardedPlacement.ShowAd();
+        }
+
+        public async UniTask<bool> ShowRewarededAsync()
+        {
+            _rewardedPlacement.OnFailedShown += OnFailedShown;
+            _rewardedPlacement.OnSuccesShown += OnSuccesShown;
+
+            var wait = true;
+            var result = false;
+
+            _rewardedPlacement.ShowAd();
+
+            await UniTask.WaitWhile(() => wait);
+            return result;
+
+            void OnSuccesShown()
+            {
+                result = true;
+                EndShow();
+            }
+
+            void OnFailedShown()
+            {
+                EndShow();
+            }
+
+            void EndShow()
+            {
+                _rewardedPlacement.OnFailedShown -= OnFailedShown;
+                _rewardedPlacement.OnSuccesShown -= OnSuccesShown;
+                wait = false;
+            }
         }
 
         public void ShowInterstitial()

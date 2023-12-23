@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
@@ -5,6 +6,7 @@ using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
+using LegoBattaleRoyal.Presentation.UI.General;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
@@ -53,19 +55,41 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                _gameBootstrap.OnRewarded += PlayAds;
+                GeneralPopup generalPopup = null;
+                var level = levelRepository.GetCurrentLevel();
+                if (!levelController.TryBuyLevel(level.Price))
+                {
+                    var button = generalPopup.CreateButton("Show Ads");
+                    button.onClick.AddListener(() =>
+                    {
+                        button.interactable = false;
+                        ShowRewardedAdsAsync().Forget();
+                    });
+                    generalPopup.SetText("");
+                    generalPopup.SetTitle("");
+
+                    generalPopup.Show();
+                    return;
+                }
 
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
+
                 _gameBootstrap.OnRestarted += StartGame;
                 menuController.CloseMenu();
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
-            }
 
-            void PlayAds()
-            {
-                var level = levelRepository.GetCurrentLevel();
-                levelController.TryBuyLevel(level.Price);
+                async UniTask ShowRewardedAdsAsync()
+                {
+                    var result = await adsProvider.ShowRewarededAsync();
+                    generalPopup.Close();
+                    if (!result)
+                        return;
+
+                    levelController.EarnCoins(level.Price);
+
+                    StartGame();
+                }
             }
         }
 

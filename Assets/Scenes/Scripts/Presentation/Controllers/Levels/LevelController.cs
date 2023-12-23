@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.DTO.Level;
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
@@ -53,22 +54,24 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
-        public void TryBuyLevel(int price)
+        public bool TryBuyLevel(int price)
         {
-            var isBoughtLevel = false;
             if (!_walletController.CanBuy(price))
-            {
-                _adsProvider.ShowRewareded();
-                _walletController.EarnCoins(price);
-                isBoughtLevel = true;
-            }
+                return false;
             _walletController.SpendCoins(price);
 
-            var currentLevel = _levelRepository.GetCurrentLevel();
+            //var currentLevel = _levelRepository.GetCurrentLevel();
 
-            if (currentLevel.Order % 3 == 0
-                && !isBoughtLevel)
-                _adsProvider.ShowInterstitial();
+            //if (currentLevel.Order % 3 == 0
+            //    && !isBoughtLevel)
+            //    _adsProvider.ShowInterstitial();
+
+            return true;
+        }
+
+        public void EarnCoins(int price)
+        {
+            _walletController.EarnCoins(price);
         }
 
         private void OnSuccessEnded()
