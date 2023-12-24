@@ -1,12 +1,4 @@
-﻿//
-//  Outline.cs
-//  QuickOutline
-//
-//  Created by Chris Nolet on 3/30/18.
-//  Copyright © 2018 Chris Nolet. All rights reserved.
-//
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -89,20 +81,16 @@ public class QuickOutline : MonoBehaviour
 
     private void Awake()
     {
-        // Cache renderers
         renderers = GetComponentsInChildren<Renderer>();
 
-        // Instantiate outline materials
         outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
         outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
 
         outlineMaskMaterial.name = "OutlineMask (Instance)";
         outlineFillMaterial.name = "OutlineFill (Instance)";
 
-        // Retrieve or generate smooth normals
         LoadSmoothNormals();
 
-        // Apply material properties immediately
         needsUpdate = true;
     }
 
@@ -110,7 +98,6 @@ public class QuickOutline : MonoBehaviour
     {
         foreach (var renderer in renderers)
         {
-            // Append outline shaders
             var materials = renderer.sharedMaterials.ToList();
 
             materials.Add(outlineMaskMaterial);
@@ -122,17 +109,14 @@ public class QuickOutline : MonoBehaviour
 
     private void OnValidate()
     {
-        // Update material properties
         needsUpdate = true;
 
-        // Clear cache when baking is disabled or corrupted
         if (!precomputeOutline && bakeKeys.Count != 0 || bakeKeys.Count != bakeValues.Count)
         {
             bakeKeys.Clear();
             bakeValues.Clear();
         }
 
-        // Generate smooth normals when baking is enabled
         if (precomputeOutline && bakeKeys.Count == 0)
         {
             Bake();
@@ -153,7 +137,6 @@ public class QuickOutline : MonoBehaviour
     {
         foreach (var renderer in renderers)
         {
-            // Remove outline shaders
             var materials = renderer.sharedMaterials.ToList();
 
             materials.Remove(outlineMaskMaterial);
@@ -163,27 +146,17 @@ public class QuickOutline : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        // Destroy material instances
-        Destroy(outlineMaskMaterial);
-        Destroy(outlineFillMaterial);
-    }
-
     private void Bake()
     {
-        // Generate smooth normals for each mesh
         var bakedMeshes = new HashSet<Mesh>();
 
         foreach (var meshFilter in GetComponentsInChildren<MeshFilter>())
         {
-            // Skip duplicates
             if (!bakedMeshes.Add(meshFilter.sharedMesh))
             {
                 continue;
             }
 
-            // Serialize smooth normals
             var smoothNormals = SmoothNormals(meshFilter.sharedMesh);
 
             bakeKeys.Add(meshFilter.sharedMesh);
@@ -193,23 +166,18 @@ public class QuickOutline : MonoBehaviour
 
     private void LoadSmoothNormals()
     {
-        // Retrieve or generate smooth normals
         foreach (var meshFilter in GetComponentsInChildren<MeshFilter>())
         {
-            // Skip if smooth normals have already been adopted
             if (!registeredMeshes.Add(meshFilter.sharedMesh))
             {
                 continue;
             }
 
-            // Retrieve or generate smooth normals
             var index = bakeKeys.IndexOf(meshFilter.sharedMesh);
             var smoothNormals = (index >= 0) ? bakeValues[index].data : SmoothNormals(meshFilter.sharedMesh);
 
-            // Store smooth normals in UV3
             meshFilter.sharedMesh.SetUVs(3, smoothNormals);
 
-            // Combine submeshes
             var renderer = meshFilter.GetComponent<Renderer>();
 
             if (renderer != null)
@@ -218,41 +186,32 @@ public class QuickOutline : MonoBehaviour
             }
         }
 
-        // Clear UV3 on skinned mesh renderers
         foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>())
         {
-            // Skip if UV3 has already been reset
             if (!registeredMeshes.Add(skinnedMeshRenderer.sharedMesh))
             {
                 continue;
             }
 
-            // Clear UV3
             skinnedMeshRenderer.sharedMesh.uv4 = new Vector2[skinnedMeshRenderer.sharedMesh.vertexCount];
 
-            // Combine submeshes
             CombineSubmeshes(skinnedMeshRenderer.sharedMesh, skinnedMeshRenderer.sharedMaterials);
         }
     }
 
     private List<Vector3> SmoothNormals(Mesh mesh)
     {
-        // Group vertices by location
         var groups = mesh.vertices.Select((vertex, index) => new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
 
-        // Copy normals to a new list
         var smoothNormals = new List<Vector3>(mesh.normals);
 
-        // Average normals for grouped vertices
         foreach (var group in groups)
         {
-            // Skip single vertices
             if (group.Count() == 1)
             {
                 continue;
             }
 
-            // Calculate the average normal
             var smoothNormal = Vector3.zero;
 
             foreach (var pair in group)
@@ -262,7 +221,6 @@ public class QuickOutline : MonoBehaviour
 
             smoothNormal.Normalize();
 
-            // Assign smooth normal to each vertex
             foreach (var pair in group)
             {
                 smoothNormals[pair.Value] = smoothNormal;
@@ -274,26 +232,22 @@ public class QuickOutline : MonoBehaviour
 
     private void CombineSubmeshes(Mesh mesh, Material[] materials)
     {
-        // Skip meshes with a single submesh
         if (mesh.subMeshCount == 1)
         {
             return;
         }
 
-        // Skip if submesh count exceeds material count
         if (mesh.subMeshCount > materials.Length)
         {
             return;
         }
 
-        // Append combined submesh
         mesh.subMeshCount++;
         mesh.SetTriangles(mesh.triangles, mesh.subMeshCount - 1);
     }
 
     private void UpdateMaterialProperties()
     {
-        // Apply properties according to mode
         outlineFillMaterial.SetColor("_OutlineColor", outlineColor);
 
         switch (outlineMode)
@@ -328,5 +282,11 @@ public class QuickOutline : MonoBehaviour
                 outlineFillMaterial.SetFloat("_OutlineWidth", 0f);
                 break;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(outlineMaskMaterial);
+        Destroy(outlineFillMaterial);
     }
 }

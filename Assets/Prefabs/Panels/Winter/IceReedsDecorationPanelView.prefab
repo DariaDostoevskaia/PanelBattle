@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 3, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6899914381920561307}
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160906271520517804}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &8596067461244923263
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -133,9 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
+  outlineMode: 3
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 6
+  outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -155,17 +155,17 @@ PrefabInstance:
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 6
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
@@ -175,12 +175,12 @@ PrefabInstance:
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}

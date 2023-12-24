@@ -56,7 +56,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
 
-            _soundController.PlayWinGame();
+            _soundController.PlayLoseGame();
 
             _endGamePopup.Show();
         }
@@ -76,7 +76,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRestartButton(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
 
-            _soundController.PlayLoseGame();
+            _soundController.PlayWinGame();
 
             if (!isLastLevel)
             {

@@ -13,6 +13,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: IcyLandPanelView
       objectReference: {fileID: 0}
+    - target: {fileID: 2986923045873706976, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112,9 +132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
+  outlineMode: 3
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 6
+  outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
