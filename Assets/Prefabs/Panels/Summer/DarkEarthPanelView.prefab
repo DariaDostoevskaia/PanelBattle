@@ -20,9 +20,14 @@ PrefabInstance:
       objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 3903757432914331625, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903757432914331625, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 453f35a746c8c9b45beef8ca3b0cd8db, type: 2}
     - target: {fileID: 4332688210431700001, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_LocalScale.x
