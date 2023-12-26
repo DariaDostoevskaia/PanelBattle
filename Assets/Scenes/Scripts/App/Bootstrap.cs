@@ -6,7 +6,6 @@ using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
-using LegoBattaleRoyal.Presentation.UI.General;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
@@ -55,8 +54,9 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                GeneralPopup generalPopup = null;
                 var level = levelRepository.GetCurrentLevel();
+                var generalPopup = _uiContainer.GeneralPopup;
+
                 if (!levelController.TryBuyLevel(level.Price))
                 {
                     var button = generalPopup.CreateButton("Show Ads");
@@ -65,8 +65,8 @@ namespace LegoBattaleRoyal.App
                         button.interactable = false;
                         ShowRewardedAdsAsync().Forget();
                     });
-                    generalPopup.SetText("");
-                    generalPopup.SetTitle("");
+                    generalPopup.SetTitle("Not enough energy.");
+                    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
 
                     generalPopup.Show();
                     return;
