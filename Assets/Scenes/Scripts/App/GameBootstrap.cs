@@ -24,6 +24,8 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
+        public event Action OnRemove;
+
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -53,8 +55,9 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, gameSettingsSO, soundController);
+            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController);
             _endGameController.OnGameRestarted += OnRestarted;
+            _endGameController.OnRemoveProgress += OnRemove;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -88,6 +91,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 _endGameController.OnGameRestarted -= OnRestarted;
+                _endGameController.OnRemoveProgress -= OnRemove;
 
                 foreach (var pair in pairs)
                 {

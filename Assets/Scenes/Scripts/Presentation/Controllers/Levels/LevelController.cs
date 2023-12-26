@@ -43,6 +43,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
+        public void RemoveAllProgress()
+        {
+            _saveService.DeleteAllLocal();
+        }
+
         private void OnSuccessEnded()
         {
             var currentLevel = _levelRepository.GetCurrentLevel();

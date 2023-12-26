@@ -1,3 +1,4 @@
+using EasyButtons;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
@@ -18,6 +19,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
+        private LevelController _levelController;
 
         private void Start()
         {
@@ -32,9 +34,9 @@ namespace LegoBattaleRoyal.App
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-            var levelController = new LevelController(levelRepository, saveService);
+            _levelController = new LevelController(levelRepository, saveService);
 
-            levelController.CreateLevels(levelsSO);
+            _levelController.CreateLevels(levelsSO);
             var currentLevel = levelRepository.GetCurrentLevel();
 
             var menuController = new MenuController(_uiContainer.MenuView);
@@ -44,18 +46,27 @@ namespace LegoBattaleRoyal.App
             _uiContainer.SettingsPopupButton.gameObject.SetActive(true);
             _uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
 
+            _gameBootstrap.OnRemove += RemoveProgress;
+
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
+                _gameBootstrap.OnRemove += RemoveProgress;
 
                 _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
 
                 menuController.Dispose();
                 saveService.Dispose();
-                levelController.Dispose();
+                _levelController.Dispose();
                 settingsController.Dispose();
             };
+
+            void RemoveProgress()
+            {
+                _levelController.RemoveAllProgress();
+                _uiContainer.MenuView.Show();
+            }
 
             void StartGame()
             {
@@ -74,5 +85,15 @@ namespace LegoBattaleRoyal.App
             OnDisposed?.Invoke();
             OnDisposed = null;
         }
+
+#if DEBUG
+
+        [Button]
+        private void RemoveProgress()
+        {
+            _levelController.RemoveAllProgress();
+        }
+
+#endif
     }
 }
