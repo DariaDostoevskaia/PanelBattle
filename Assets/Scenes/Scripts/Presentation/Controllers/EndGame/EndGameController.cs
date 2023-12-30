@@ -12,8 +12,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnAdsPlayed;
-
         private readonly ILevelRepository _levelRepository;
         private readonly CharacterRepository _characterRepository;
         private readonly WalletController _walletController;
@@ -31,13 +29,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
-
-            _endGamePopup.OnPlayAdsClicked += PlayAds;
-        }
-
-        private void PlayAds()
-        {
-            OnAdsPlayed?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -95,13 +86,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
-            OnAdsPlayed = null;
 
             _endGamePopup.OnRestartClicked -= RestartGame;
             _endGamePopup.OnNextLevelClicked -= RestartGame;
             _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
-
-            _endGamePopup.OnPlayAdsClicked -= PlayAds;
         }
     }
 }

@@ -24,6 +24,8 @@ namespace LegoBattaleRoyal.App
         {
             _uiContainer.CloseAll();
 
+            PlayerPrefs.SetInt("StartInt", 0);
+
             var adsProvider = new UnityAdsProvider();
             adsProvider.InitializeAds();
 
@@ -40,6 +42,7 @@ namespace LegoBattaleRoyal.App
 
             var menuController = new MenuController(_uiContainer.MenuView);
             menuController.OnGameStarted += StartGame;
+
             menuController.ShowMenu();
 
             OnDisposed += () =>
@@ -54,10 +57,11 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                //int value = PlayerPrefs.GetInt();
                 var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
 
-                if (!levelController.TryBuyLevel(level.Price))
+                if (!levelController.TryBuyLevel(level.Price) /*&& PlayerPrefs.GetInt("StartInt", 3) */ )
                 {
                     var button = generalPopup.CreateButton("Show Ads");
                     button.onClick.AddListener(() =>

@@ -21,6 +21,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         {
             _gamePanel.Close();
             _menuPanel.Close();
+            _generalPopup.Close();
         }
     }
 }
