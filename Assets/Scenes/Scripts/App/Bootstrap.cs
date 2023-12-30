@@ -65,6 +65,7 @@ namespace LegoBattaleRoyal.App
             void RemoveProgress()
             {
                 _levelController.RemoveAllProgress();
+                _uiContainer.EndGamePopup.Close();
                 _uiContainer.MenuView.Show();
             }
 
