@@ -1985,6 +1985,7 @@ MonoBehaviour:
   _titleText: {fileID: 509530015}
   _restartGameButton: {fileID: 1460520743}
   _nextLevelGameButton: {fileID: 473717875}
+  _removeAllProgressGameButton: {fileID: 0}
   _exitMainMenuGameButton: {fileID: 2008850988}
 --- !u!1 &794871325
 GameObject:
