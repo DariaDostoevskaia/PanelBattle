@@ -26,6 +26,38 @@ namespace LegoBattaleRoyal.Infrastructure.Firebase.Analytics
             });
         }
 
+        //if (!levelController.TryBuyLevel(level.Price) /*&& PlayerPrefs.GetInt("StartInt", 3) */ )
+        //{
+        //    var button = generalPopup.CreateButton("Show Ads");
+        //    button.onClick.AddListener(() =>
+        //    {
+        //        button.interactable = false;
+        //        ShowRewardedAdsAsync().Forget();
+        //    });
+        //    generalPopup.SetTitle("Not enough energy.");
+        //    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
+
+        //    generalPopup.Show();
+        //    return;
+        //}
+
+        //async UniTask ShowRewardedAdsAsync()
+        //{
+        //    var result = await adsProvider.ShowRewarededAsync();
+        //    generalPopup.Close();
+        //    if (!result)
+        //        return;
+
+        //    levelController.EarnCoins(level.Price);
+
+        //    StartGame();
+        //}
+
+        //private async UniTask DoSomething()
+        //{
+        //await UniTask.Init();
+        //}
+
         public void SendEvent(string eventKey)
         {
             if (!_isInit)
