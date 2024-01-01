@@ -14,7 +14,7 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private Button _buttonPrefab;
 
-        private List<Button> _buttons = new();
+        private readonly List<Button> _buttons = new();
 
         private void Start()
         {

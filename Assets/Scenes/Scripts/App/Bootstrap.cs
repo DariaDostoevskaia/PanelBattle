@@ -16,6 +16,8 @@ namespace LegoBattaleRoyal.App
     {
         private event Action OnDisposed;
 
+        private const string _numberInputs = "NumberInputs";
+
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
@@ -23,8 +25,6 @@ namespace LegoBattaleRoyal.App
         private void Start()
         {
             _uiContainer.CloseAll();
-
-            PlayerPrefs.SetInt("StartInt", 0);
 
             var adsProvider = new UnityAdsProvider();
             adsProvider.InitializeAds();
@@ -56,25 +56,45 @@ namespace LegoBattaleRoyal.App
             };
 
             void StartGame()
+
             {
-                //int value = PlayerPrefs.GetInt();
                 var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
 
-                if (!levelController.TryBuyLevel(level.Price) /*&& PlayerPrefs.GetInt("StartInt", 3) */ )
+                if (!levelController.TryBuyLevel(level.Price))
                 {
-                    var button = generalPopup.CreateButton("Show Ads");
-                    button.onClick.AddListener(() =>
+                    var showButton = generalPopup.CreateButton("Show Ads");
+                    showButton.onClick.AddListener(() =>
                     {
-                        button.interactable = false;
+                        showButton.interactable = false;
                         ShowRewardedAdsAsync().Forget();
                     });
+
                     generalPopup.SetTitle("Not enough energy.");
                     generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
-
                     generalPopup.Show();
+
+                    //var exitButton = generalPopup.CreateButton("Exit");
+                    //exitButton.onClick.AddListener(() =>
+                    //{
+                    //    showButton.interactable = false;
+                    //    generalPopup.Close();
+                    //});
                     return;
                 }
+
+                generalPopup.Close();
+
+                int numberInputs = PlayerPrefs.GetInt(_numberInputs);
+                numberInputs++;
+
+                PlayerPrefs.SetInt(_numberInputs, numberInputs);
+                PlayerPrefs.Save();
+
+                Debug.Log(_numberInputs + " " + numberInputs);
+
+                if (numberInputs % 4 == 0)
+                    adsProvider.ShowInterstitial();
 
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
@@ -87,6 +107,7 @@ namespace LegoBattaleRoyal.App
                 {
                     var result = await adsProvider.ShowRewarededAsync();
                     generalPopup.Close();
+
                     if (!result)
                         return;
 
