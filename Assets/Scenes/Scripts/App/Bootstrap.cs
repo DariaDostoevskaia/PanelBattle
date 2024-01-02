@@ -74,15 +74,8 @@ namespace LegoBattaleRoyal.App
                     generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
                     generalPopup.Show();
 
-                    //var exitButton = generalPopup.CreateButton("Exit");
-                    //exitButton.onClick.AddListener(() =>
-                    //{
-                    //    showButton.interactable = false;
-                    //    generalPopup.Close();
-                    //});
                     return;
                 }
-
                 generalPopup.Close();
 
                 int numberInputs = PlayerPrefs.GetInt(_numberInputs);
@@ -90,17 +83,17 @@ namespace LegoBattaleRoyal.App
 
                 PlayerPrefs.SetInt(_numberInputs, numberInputs);
                 PlayerPrefs.Save();
-
                 Debug.Log(_numberInputs + " " + numberInputs);
+
+                _gameBootstrap.Dispose();
+
+                // subscribe again after dispose
+                _gameBootstrap.OnRestarted += StartGame;
+                menuController.CloseMenu();
 
                 if (numberInputs % 4 == 0)
                     adsProvider.ShowInterstitial();
 
-                _gameBootstrap.Dispose();
-                // subscribe again after dispose
-
-                _gameBootstrap.OnRestarted += StartGame;
-                menuController.CloseMenu();
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
 
                 async UniTask ShowRewardedAdsAsync()
