@@ -26,9 +26,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             CharacterModel characterModel, CharacterView characterView,
             CapturePathController capturePathController)
         {
+            _pairs = pairs;
             _characterModel = characterModel;
             _characterView = characterView;
-            _pairs = pairs;
             _capturePathController = capturePathController;
         }
 

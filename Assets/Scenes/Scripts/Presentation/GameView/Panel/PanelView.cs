@@ -14,8 +14,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
 
         public event Action<PanelView> OnDestoyed;
 
-        private QuickOutline _hoverOutline;
         [SerializeField] private MeshRenderer _ownerHoverRenderer;
+        private QuickOutline _hoverOutline;
 
         private Color _defaultColor;
 
