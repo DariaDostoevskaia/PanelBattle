@@ -11,7 +11,7 @@ namespace LegoBattaleRoyal.Infrastructure.Firebase.Analytics
 
         public void Init()
         {
-            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(async task =>
             {
                 var dependencyStatus = task.Result;
                 if (dependencyStatus == DependencyStatus.Available)
@@ -26,36 +26,46 @@ namespace LegoBattaleRoyal.Infrastructure.Firebase.Analytics
             });
         }
 
-        //if (!levelController.TryBuyLevel(level.Price) /*&& PlayerPrefs.GetInt("StartInt", 3) */ )
+        //public async Task InitAsync()
         //{
-        //    var button = generalPopup.CreateButton("Show Ads");
-        //    button.onClick.AddListener(() =>
+        //    var tcs = new TaskCompletionSource<bool>();
+
+        //    FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         //    {
-        //        button.interactable = false;
-        //        ShowRewardedAdsAsync().Forget();
+        //        var dependencyStatus = task.Result;
+        //        if (dependencyStatus == DependencyStatus.Available)
+        //        {
+        //            _isInit = true;
+        //            Debug.Log($"Resolve all Firebase dependencies: {dependencyStatus}");
+        //            tcs.SetResult(true);
+        //        }
+        //        else
+        //        {
+        //            Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+        //            tcs.SetResult(false);
+        //        }
         //    });
-        //    generalPopup.SetTitle("Not enough energy.");
-        //    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
 
-        //    generalPopup.Show();
-        //    return;
+        //    // Ожидание изменения значения _isInit на true
+        //    await tcs.Task;
+
+        //    // Вызов следующего метода после инициализации
+        //    // TODO: Call the next method
         //}
 
-        //async UniTask ShowRewardedAdsAsync()
+        //public async UniTask InitAsync()
         //{
-        //    var result = await adsProvider.ShowRewarededAsync();
-        //    generalPopup.Close();
-        //    if (!result)
-        //        return;
-
-        //    levelController.EarnCoins(level.Price);
-
-        //    StartGame();
-        //}
-
-        //private async UniTask DoSomething()
-        //{
-        //await UniTask.Init();
+        //    var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
+        //    if (dependencyStatus == DependencyStatus.Available)
+        //    {
+        //        _isInit = true;
+        //        Debug.Log($"Resolve all Firebase dependencies: {dependencyStatus}");
+        //        NextMethod(); // Вызов следующего метода после инициализации
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+        //    }
         //}
 
         public void SendEvent(string eventKey)
