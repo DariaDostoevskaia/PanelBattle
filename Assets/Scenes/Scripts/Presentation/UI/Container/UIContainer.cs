@@ -12,6 +12,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private MainMenuPanel _menuPanel;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
+        [SerializeField] private GameObject _loadingScreen;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -24,6 +25,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         public SettingsPopup SettingsPopup => _settingsPopup;
 
         public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
+
+        public GameObject LoadingScreen => _loadingScreen;
 
         private void Start()
         {

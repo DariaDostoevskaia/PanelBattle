@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
@@ -24,9 +25,15 @@ namespace LegoBattaleRoyal.App
 
         private void Start()
         {
-            var analyticsProvider = new FirebaseAnalyticksProvider();
-            analyticsProvider.Init();
-            // TODO
+            ConfigureAsync().Forget();
+        }
+
+        private async UniTaskVoid ConfigureAsync()
+        {
+            _uiContainer.LoadingScreen.SetActive(true);
+
+            var analyticsProvider = new FirebaseAnalyticsProvider();
+            await analyticsProvider.InitAsync();
 
             _uiContainer.CloseAll();
 
@@ -54,6 +61,7 @@ namespace LegoBattaleRoyal.App
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
             topbarController.ShowTopbar();
+            _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
             {
@@ -76,6 +84,7 @@ namespace LegoBattaleRoyal.App
 
                 _gameBootstrap.OnRestarted += StartGame;
 
+                _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
