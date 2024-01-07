@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
@@ -23,6 +25,16 @@ namespace LegoBattaleRoyal.App
 
         private void Start()
         {
+            ConfigureAsync().Forget();
+        }
+
+        private async UniTaskVoid ConfigureAsync()
+        {
+            _uiContainer.LoadingScreen.SetActive(true);
+
+            var analyticsProvider = new FirebaseAnalyticsProvider();
+            await analyticsProvider.InitAsync();
+
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
@@ -39,7 +51,7 @@ namespace LegoBattaleRoyal.App
 
             walletController.LoadWalletData();
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
@@ -49,6 +61,7 @@ namespace LegoBattaleRoyal.App
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
             topbarController.ShowTopbar();
+            _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
             {
@@ -71,6 +84,7 @@ namespace LegoBattaleRoyal.App
 
                 _gameBootstrap.OnRestarted += StartGame;
 
+                _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
