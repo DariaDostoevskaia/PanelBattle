@@ -16,7 +16,7 @@ namespace LegoBattaleRoyal.App
     {
         private event Action OnDisposed;
 
-        private const string _numberInputs = "NumberInputs";
+        private static readonly string NumberInputs = nameof(NumberInputsPlayer);
 
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
@@ -56,7 +56,6 @@ namespace LegoBattaleRoyal.App
             };
 
             void StartGame()
-
             {
                 var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
@@ -76,23 +75,23 @@ namespace LegoBattaleRoyal.App
 
                     return;
                 }
+
+                if (!adsProvider.SuccesShown())
+                    StartGame();
+
                 generalPopup.Close();
 
-                int numberInputs = PlayerPrefs.GetInt(_numberInputs);
-                numberInputs++;
+                var numberInputs = NumberInputsPlayer();
 
-                PlayerPrefs.SetInt(_numberInputs, numberInputs);
-                PlayerPrefs.Save();
-                Debug.Log(_numberInputs + " " + numberInputs);
+                if (numberInputs % 4 == 0
+                    && levelController.TryBuyLevel(level.Price))
+                    adsProvider.ShowInterstitial();
 
                 _gameBootstrap.Dispose();
 
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
                 menuController.CloseMenu();
-
-                if (numberInputs % 4 == 0)
-                    adsProvider.ShowInterstitial();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
 
@@ -109,6 +108,17 @@ namespace LegoBattaleRoyal.App
                     StartGame();
                 }
             }
+        }
+
+        private int NumberInputsPlayer()
+        {
+            int numberInputs = PlayerPrefs.GetInt(NumberInputs);
+            numberInputs++;
+
+            PlayerPrefs.SetInt(NumberInputs, numberInputs);
+            PlayerPrefs.Save();
+            Debug.Log(NumberInputs + " " + numberInputs);
+            return numberInputs;
         }
 
         private void OnDestroy()

@@ -14,7 +14,6 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
         public event Action OnExitMainMenuClicked;
 
         [SerializeField] private TextMeshProUGUI _titleText;
-
         [SerializeField] private Button _restartGameButton;
         [SerializeField] private Button _nextLevelGameButton;
         [SerializeField] private Button _exitMainMenuGameButton;
@@ -43,8 +42,8 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 
         public void ShowLastLevel()
         {
-            Show();
             SetTitle("You won and completed the game!");
+            Show();
         }
 
         public void Show()

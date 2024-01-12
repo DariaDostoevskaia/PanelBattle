@@ -60,12 +60,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
                 return false;
             _walletController.SpendCoins(price);
 
-            //var currentLevel = _levelRepository.GetCurrentLevel();
-
-            //if (currentLevel.Order % 3 == 0
-            //    && !isBoughtLevel)
-            //    _adsProvider.ShowInterstitial();
-
             return true;
         }
 

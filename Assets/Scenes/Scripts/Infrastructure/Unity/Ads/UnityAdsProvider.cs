@@ -20,8 +20,8 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 #endif
         private bool _testMode;
 
-        private AdUnit _rewardedPlacement;
-        private AdUnit _intrestitialPlacement;
+        private readonly AdUnit _rewardedPlacement;
+        private readonly AdUnit _intrestitialPlacement;
 
         public UnityAdsProvider()
         {
@@ -36,25 +36,6 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         {
             if (!_testMode)
                 return;
-
-            if (!_rewardedPlacement.IsReady)
-            {
-                //выкл интерактивность кнопки
-                return;
-            }
-            if (!_intrestitialPlacement.IsReady)
-            {
-                //выкл интерактивность кнопки
-                return;
-            }
-            //на его подписать ui и выдать игроку монеты
-            //если реклама не доступна - откл кнопку
-            //если из гл меню - не
-        }
-
-        public void ShowRewareded()
-        {
-            _rewardedPlacement.ShowAd();
         }
 
         public async UniTask<bool> ShowRewarededAsync()
@@ -65,7 +46,9 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             var wait = true;
             var result = false;
 
-            _rewardedPlacement.ShowAd();
+            ShowRewareded();
+
+            var shown = SuccesShown();
 
             await UniTask.WaitWhile(() => wait);
             return result;
@@ -73,11 +56,15 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             void OnSuccesShown()
             {
                 result = true;
+
+                shown = true;
+
                 EndShow();
             }
 
             void OnFailedShown()
             {
+                shown = false;
                 EndShow();
             }
 
@@ -87,6 +74,16 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
                 _rewardedPlacement.OnSuccesShown -= OnSuccesShown;
                 wait = false;
             }
+        }
+
+        public bool SuccesShown()
+        {
+            return false;
+        }
+
+        public void ShowRewareded()
+        {
+            _rewardedPlacement.ShowAd();
         }
 
         public void ShowInterstitial()

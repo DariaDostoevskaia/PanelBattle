@@ -1,9 +1,7 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
-using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
-using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -18,13 +16,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly CharacterRepository _characterRepository;
         private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
-        private readonly MainMenuPanelUI _menuPopup;
 
-        public EndGameController(UIContainer uiContainer, CharacterRepository characterRepository,
+        public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
             ILevelRepository levelRepository, WalletController walletController)
         {
-            _endGamePopup = uiContainer.EndGamePopup;
-            _menuPopup = uiContainer.MenuView;
+            _endGamePopup = endGamePopup;
 
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -79,11 +75,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 currentLevel.Exit();
                 nextLevel.Launch();
 
-                _endGamePopup.ShowLastLevel();
                 return true;
             }
 
-            _endGamePopup.Show();
+            _endGamePopup.ShowLastLevel();
             return true;
         }
 
