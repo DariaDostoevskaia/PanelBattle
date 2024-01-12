@@ -12,7 +12,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnRemoveProgress;
+        public event Action OnProgressRemoved;
 
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
@@ -37,7 +37,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         {
             _endGamePopup.Close();
 
-            OnRemoveProgress?.Invoke();
+            OnProgressRemoved?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -100,6 +100,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
+            OnProgressRemoved = null;
 
             _endGamePopup.OnRestartClicked -= RestartGame;
             _endGamePopup.OnNextLevelClicked -= RestartGame;

@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.Presentation.GameView.Panel
 {
+    [RequireComponent(typeof(MeshRenderer), typeof(QuickOutline))]
     public class PanelView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<PanelView> OnClicked;

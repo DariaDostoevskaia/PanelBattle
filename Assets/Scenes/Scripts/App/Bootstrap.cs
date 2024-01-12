@@ -46,13 +46,13 @@ namespace LegoBattaleRoyal.App
             _uiContainer.SettingsPopupButton.gameObject.SetActive(true);
             _uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
 
-            _gameBootstrap.OnRemove += RemoveProgress;
+            _gameBootstrap.OnRemoved += RemoveProgress;
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
-                _gameBootstrap.OnRemove += RemoveProgress;
+                _gameBootstrap.OnRemoved += RemoveProgress;
 
                 _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
 
