@@ -23,8 +23,12 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
         private void Awake()
         {
             _hoverOutline = GetComponent<QuickOutline>();
+            _ownerHoverRenderer = GetComponent<MeshRenderer>();
+
             _defaultColor = _ownerHoverRenderer.material.color;
+
             _ownerHoverRenderer.enabled = false;
+
             CancelHighlight();
         }
 

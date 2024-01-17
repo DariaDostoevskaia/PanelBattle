@@ -226,6 +226,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed?.Invoke();
             OnDisposed = null;
             OnRestarted = null;
+            OnRemoved = null;
         }
 
         private void OnDestroy()
