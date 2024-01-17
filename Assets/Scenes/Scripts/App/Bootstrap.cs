@@ -67,6 +67,7 @@ namespace LegoBattaleRoyal.App
                 _levelController.RemoveAllProgress();
                 _uiContainer.EndGamePopup.Close();
                 _uiContainer.MenuView.Show();
+                StartGame();
             }
 
             void StartGame()

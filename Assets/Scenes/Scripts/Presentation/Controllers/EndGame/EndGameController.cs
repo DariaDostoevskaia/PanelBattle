@@ -89,10 +89,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 nextLevel.Launch();
 
                 _endGamePopup.Show();
-                _endGamePopup.SetActiveRemoveAllProgress(true);
                 return true;
             }
 
+            _endGamePopup.SetTitle("You Won this game!");
+            _endGamePopup.SetActiveRemoveAllProgress(true);
             _endGamePopup.Show();
             return true;
         }
