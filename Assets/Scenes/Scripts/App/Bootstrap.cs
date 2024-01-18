@@ -51,8 +51,8 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
+                _gameBootstrap.OnRemoved -= RemoveProgress;
                 _gameBootstrap.OnRestarted -= StartGame;
-                _gameBootstrap.OnRemoved += RemoveProgress;
 
                 _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
 
@@ -67,7 +67,6 @@ namespace LegoBattaleRoyal.App
                 _levelController.RemoveAllProgress();
                 _uiContainer.EndGamePopup.Close();
                 _uiContainer.MenuView.Show();
-                StartGame();
             }
 
             void StartGame()

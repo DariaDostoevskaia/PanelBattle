@@ -17,5 +17,5 @@ MonoBehaviour:
   _jumpLenght: 1
   _viewPrefab: {fileID: -6734683602693275040, guid: 4a5e9688a1e272844ac264c1408f995f,
     type: 3}
-  _blocksToCapture: 5
-  _difficulty: 1
+  _blocksToCapture: 2
+  _difficulty: 2
