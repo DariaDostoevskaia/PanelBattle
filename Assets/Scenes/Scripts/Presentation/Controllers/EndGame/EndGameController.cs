@@ -75,6 +75,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 currentLevel.Exit();
                 nextLevel.Launch();
 
+                _endGamePopup.Show();
+
                 return true;
             }
 

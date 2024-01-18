@@ -48,7 +48,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
             ShowRewareded();
 
-            var shown = SuccesShown();
+            var shown = RewardedSuccesShown();
 
             await UniTask.WaitWhile(() => wait);
             return result;
@@ -76,7 +76,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             }
         }
 
-        public bool SuccesShown()
+        public bool RewardedSuccesShown()
         {
             return false;
         }
