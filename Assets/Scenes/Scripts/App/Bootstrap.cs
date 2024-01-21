@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
@@ -48,7 +49,6 @@ namespace LegoBattaleRoyal.App
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-
             var walletController = new WalletController(saveService, _gameSettingsSO);
             var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
 
@@ -64,7 +64,9 @@ namespace LegoBattaleRoyal.App
 
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+
             topbarController.ShowTopbar();
+
             _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
@@ -124,8 +126,9 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
-          
+                analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
+         
                 async UniTask ShowIntrestitialAdsAsync()
                 {
                     var result = await adsProvider.ShowIntrestitialAsync();
