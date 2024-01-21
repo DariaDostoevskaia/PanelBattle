@@ -19,11 +19,13 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #endif
         private bool _testMode;
+        private bool _wait = true;
+        private bool _result = false;
 
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
 
-        public UnityAdsProvider()
+        public UnityAdsProvider(/*analyticsProvider*/)
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
@@ -40,55 +42,83 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
         public async UniTask<bool> ShowRewarededAsync()
         {
-            _rewardedPlacement.OnFailedShown += OnFailedShown;
-            _rewardedPlacement.OnSuccesShown += OnSuccesShown;
+            _rewardedPlacement.OnFailedShown += RewardedFailedShown;
+            _rewardedPlacement.OnSuccesShown += RewardedSuccesShown;
 
-            var wait = true;
-            var result = false;
+            ShowRewarded();
 
-            ShowRewareded();
-
-            var shown = RewardedSuccesShown();
-
-            await UniTask.WaitWhile(() => wait);
-            return result;
-
-            void OnSuccesShown()
-            {
-                result = true;
-
-                shown = true;
-
-                EndShow();
-            }
-
-            void OnFailedShown()
-            {
-                shown = false;
-                EndShow();
-            }
-
-            void EndShow()
-            {
-                _rewardedPlacement.OnFailedShown -= OnFailedShown;
-                _rewardedPlacement.OnSuccesShown -= OnSuccesShown;
-                wait = false;
-            }
+            await UniTask.WaitWhile(() => _wait);
+            return _result;
         }
 
-        public bool RewardedSuccesShown()
+        public async UniTask<bool> ShowIntrestitialAsync()
         {
-            return false;
+            _intrestitialPlacement.OnFailedShown += InterstitialFailedShown;
+            _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
+
+            ShowInterstitial();
+
+            await UniTask.WaitWhile(() => _wait);
+            return _result;
         }
 
-        public void ShowRewareded()
+        private void RewardedFailedShown()
+        {
+            OnFailedShown();
+            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
+        }
+
+        private void RewardedSuccesShown()
+        {
+            OnSuccesShown();
+            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
+        }
+
+        private void InterstitialFailedShown()
+        {
+            OnFailedShown();
+            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
+        }
+
+        private void InterstitialSuccesShown()
+        {
+            OnSuccesShown();
+            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
+        }
+
+        private void OnSuccesShown()
+        {
+            _result = true;
+
+            EndShow();
+        }
+
+        private void OnFailedShown()
+        {
+            EndShow();
+        }
+
+        private void EndShow()
+        {
+            _rewardedPlacement.OnFailedShown -= RewardedFailedShown;
+            _rewardedPlacement.OnSuccesShown -= RewardedSuccesShown;
+
+            _intrestitialPlacement.OnFailedShown -= InterstitialFailedShown;
+            _intrestitialPlacement.OnSuccesShown -= InterstitialSuccesShown;
+
+            _wait = false;
+        }
+
+        private void ShowRewarded()
         {
             _rewardedPlacement.ShowAd();
+            //analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
         }
 
-        public void ShowInterstitial()
+        private void ShowInterstitial()
         {
             _intrestitialPlacement.ShowAd();
+            //analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
         }
 
         private void OnAdsLoaded(bool isLoaded)
