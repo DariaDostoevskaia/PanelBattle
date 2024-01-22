@@ -25,6 +25,10 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
 
+        public bool IsRewardedSuccesShown { get; private set; }
+
+        public bool IsIntrestitialSuccesShown { get; private set; }
+
         public UnityAdsProvider(/*analyticsProvider*/)
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
@@ -66,24 +70,28 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         {
             OnFailedShown();
             //analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
+            IsRewardedSuccesShown = false;
         }
 
         private void RewardedSuccesShown()
         {
             OnSuccesShown();
             //analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
+            IsRewardedSuccesShown = true;
         }
 
         private void InterstitialFailedShown()
         {
             OnFailedShown();
             //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
+            IsIntrestitialSuccesShown = false;
         }
 
         private void InterstitialSuccesShown()
         {
             OnSuccesShown();
             //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
+            IsIntrestitialSuccesShown = true;
         }
 
         private void OnSuccesShown()

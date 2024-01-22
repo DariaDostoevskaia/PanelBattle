@@ -86,8 +86,8 @@ namespace LegoBattaleRoyal.App
 
                     if (numberInputs % 4 == 0)
                     {
-                        ShowIntrestitialAdsAsync().Forget();
                         //analyticsProvider.SendEvent(AnalyticsEvents.NeedIntrestitial);
+                        ShowIntrestitialAdsAsync().Forget();
                     }
                 }
 
@@ -112,12 +112,10 @@ namespace LegoBattaleRoyal.App
                 {
                     var result = await adsProvider.ShowRewarededAsync();
 
-                    //if (!adsProvider.succesShown)          //  ???
-                    //    return;
-
-                    //generalPopup.Close();       // I moved it down
-
                     if (!result)
+                        return;
+
+                    if (!adsProvider.IsRewardedSuccesShown)
                         return;
 
                     generalPopup.Close();
