@@ -208,7 +208,8 @@ namespace LegoBattaleRoyal.App
         }
 
         public void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
-            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController, Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController,
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             var aiController = new AIController(panelController, pairs, characterModel);
             roundController.OnRoundChanged += aiController.ProcessRound;

@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -24,18 +26,21 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
+        private readonly FirebaseAnalyticsProvider _analyticsProvider;
 
         public bool IsRewardedSuccesShown { get; private set; }
 
         public bool IsIntrestitialSuccesShown { get; private set; }
 
-        public UnityAdsProvider(/*analyticsProvider*/)
+        public UnityAdsProvider(Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
 
             _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
             _intrestitialPlacement.OnLoaded += OnAdsLoaded;
+
+            _analyticsProvider = analyticsProvider;
         }
 
         private void OnUnityAdsShow()
@@ -69,28 +74,28 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private void RewardedFailedShown()
         {
             OnFailedShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
+            _analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
             IsRewardedSuccesShown = false;
         }
 
         private void RewardedSuccesShown()
         {
             OnSuccesShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
+            _analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
             IsRewardedSuccesShown = true;
         }
 
         private void InterstitialFailedShown()
         {
             OnFailedShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
+            _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
             IsIntrestitialSuccesShown = false;
         }
 
         private void InterstitialSuccesShown()
         {
             OnSuccesShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
+            _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
             IsIntrestitialSuccesShown = true;
         }
 
@@ -120,13 +125,13 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private void ShowRewarded()
         {
             _rewardedPlacement.ShowAd();
-            //analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
         }
 
         private void ShowInterstitial()
         {
             _intrestitialPlacement.ShowAd();
-            //analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
         }
 
         private void OnAdsLoaded(bool isLoaded)

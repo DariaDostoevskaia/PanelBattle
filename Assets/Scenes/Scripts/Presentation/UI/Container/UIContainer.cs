@@ -11,11 +11,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
     {
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanelUI _menuPanel;
+        [SerializeField] private GeneralPopup _generalPopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
-        [SerializeField] private GameObject _loadingScreen;
-         [SerializeField] private GeneralPopup _generalPopup;
 
+        [SerializeField] private GameObject _loadingScreen;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 

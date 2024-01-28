@@ -24,8 +24,8 @@ namespace LegoBattaleRoyal.App
 
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-        [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
+        [SerializeField] private UIContainer _uiContainer;
 
         private void Start()
         {
@@ -42,7 +42,7 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
-            var adsProvider = new UnityAdsProvider(/*analyticsProvider*/);
+            var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
 
             var levelsSO = _gameSettingsSO.Levels;
@@ -91,7 +91,7 @@ namespace LegoBattaleRoyal.App
 
                 if (!isTryBuyLevel)
                 {
-                    //analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
+                    analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
                     var showButton = generalPopup.CreateButton("Show Ads");
                     showButton.onClick.AddListener(() =>
                     {
@@ -112,7 +112,7 @@ namespace LegoBattaleRoyal.App
 
                     if (numberInputs % 4 == 0)
                     {
-                        //analyticsProvider.SendEvent(AnalyticsEvents.NeedIntrestitial);
+                        analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                         ShowIntrestitialAdsAsync().Forget();
                     }
                 }
@@ -128,7 +128,7 @@ namespace LegoBattaleRoyal.App
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
-         
+
                 async UniTask ShowIntrestitialAdsAsync()
                 {
                     var result = await adsProvider.ShowIntrestitialAsync();
