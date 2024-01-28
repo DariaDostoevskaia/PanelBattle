@@ -8,10 +8,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        private readonly  MainMenuPanelUI _menuView;
+        private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanel menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
