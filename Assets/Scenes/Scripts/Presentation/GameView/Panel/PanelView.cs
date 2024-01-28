@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.Presentation.GameView.Panel
 {
-    [RequireComponent(typeof(MeshRenderer), typeof(QuickOutline))]
+    [RequireComponent(typeof(QuickOutline))]
     public class PanelView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<PanelView> OnClicked;
@@ -23,7 +23,6 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
         private void Awake()
         {
             _hoverOutline = GetComponent<QuickOutline>();
-            _ownerHoverRenderer = GetComponent<MeshRenderer>();
 
             _defaultColor = _ownerHoverRenderer.material.color;
 
