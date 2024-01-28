@@ -23,6 +23,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Character
             _characterView = characterView;
             _capturePathController = capturePathController;
             _characterRepository = characterRepository;
+
             _characterView.OnJumped += OnCharacterMoved;
         }
 
@@ -46,8 +47,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Character
 
         public void KillCharacter()
         {
+            _characterView.Die();
             _characterRepository.Remove(_characterModel.Id);
             _characterView.DestroyGameObject();
+
             Dispose();
         }
 

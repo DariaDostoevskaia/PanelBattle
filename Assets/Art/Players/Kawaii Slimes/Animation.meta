@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Players/Kawaii Slimes/Animator.meta
+guid: 79caf1f1fa5055c40b3a80be393ba76d
+========
 guid: 6df577302bffd684b91ddef1e1f746ea
+>>>>>>>> master:Assets/Art/Players/Kawaii Slimes/Animation.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

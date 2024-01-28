@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -7,11 +8,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        private readonly MainMenuPanelUI _menuView;
+        private readonly  MainMenuPanelUI _menuView;
+        private readonly IAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanelUI menuView)
+        public MenuController(MainMenuPanel menuView, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
+            _analyticsProvider = analyticsProvider;
             _menuView.OnStartGameClicked += StartGame;
         }
 
@@ -23,6 +26,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void ShowMenu()
         {
             _menuView.Show();
+            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void CloseMenu()

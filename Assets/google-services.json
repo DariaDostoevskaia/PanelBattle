@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "164998306039",
+    "project_id": "panel-battle-73b8f",
+    "storage_bucket": "panel-battle-73b8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164998306039:android:be9bf04f2cc62b92e7dbf2",
+        "android_client_info": {
+          "package_name": "com.DDost.PanelBattle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgdrJ7m04YBrq5ltiKJe3ZZ_RHgOBVM_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

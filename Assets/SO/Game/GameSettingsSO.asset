@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: GameSettingsSO
   m_EditorClassIdentifier: 
   _characterSO: {fileID: 11400000, guid: 93b417e1bf99e4c44b44373929faf783, type: 2}
+  _aICharacterSO:
+  - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
+  _panelSettings:
+  - {fileID: 11400000, guid: e150eb798991e234cbb2f1cb9122a345, type: 2}
+  - {fileID: 11400000, guid: c8a7bb1f559bc214ca7fa0a3576ec1aa, type: 2}
+  - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
+  _gridPanelSettings: {fileID: 11400000, guid: 874d8cdb0053dca4b9292d6aa1332e1f, type: 2}
   _capturePathViewPrefab: {fileID: 3423781268855496717, guid: 11e6d7102cc4cc046850e843e208c8b1,
     type: 3}
   _levels:
@@ -36,3 +43,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5c2106efb9e8004e80bc9486c3aad4b, type: 2}
   - {fileID: 11400000, guid: b73d84e9ea538ce4faf8de8c56f4c4c5, type: 2}
   - {fileID: 11400000, guid: fe040481efd96bf46b3dca6c7a06fee0, type: 2}
+  _mainMusic: {fileID: 8300000, guid: 3fc26869a512b4e5187c9be6310ad8c2, type: 3}
+  _loseMusic: {fileID: 8300000, guid: 36fd10c2ade9bc64dbc5805a3b207372, type: 3}
+  _winMusic: {fileID: 8300000, guid: 6163b9986e07bd34e83c9039ee0ba9f5, type: 3}
+  _losePanels: {fileID: 8300000, guid: 005fd9880949689419641c0fdad7fec3, type: 3}
+  _capturePanels: {fileID: 8300000, guid: 34339a88fd761d34b99f013b23633cc3, type: 3}

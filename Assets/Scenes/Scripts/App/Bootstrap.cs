@@ -1,9 +1,12 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
@@ -21,11 +24,23 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
+        [SerializeField] private SoundController _soundController;
 
         private void Start()
         {
+            ConfigureAsync().Forget();
+        }
+
+        private async UniTaskVoid ConfigureAsync()
+        {
+            _uiContainer.LoadingScreen.SetActive(true);
+
+            var analyticsProvider = new FirebaseAnalyticsProvider();
+            await analyticsProvider.InitAsync();
+
             _uiContainer.CloseAll();
 
+            _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(/*analyticsProvider*/);
             adsProvider.InitializeAds();
 
@@ -40,19 +55,28 @@ namespace LegoBattaleRoyal.App
             levelController.CreateLevels(levelsSO);
             walletController.LoadWalletData();
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
-
             menuController.ShowMenu();
+
+            var topbarPopup = _uiContainer.TopbarScreenPanel;
+            var topbarController = new TopbarController(topbarPopup);
+
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+            topbarController.ShowTopbar();
+            _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
                 _gameBootstrap.OnRestarted -= StartGame;
 
-                menuController.Dispose();
                 saveService.Dispose();
                 levelController.Dispose();
+                menuController.Dispose();
+                settingsController.Dispose();
+                topbarController.Dispose();
                 adsProvider.Dispose();
             };
 
@@ -96,10 +120,12 @@ namespace LegoBattaleRoyal.App
 
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
-                menuController.CloseMenu();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController);
+                _uiContainer.LoadingScreen.SetActive(false);
+                _uiContainer.MenuView.Close();
 
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
+          
                 async UniTask ShowIntrestitialAdsAsync()
                 {
                     var result = await adsProvider.ShowIntrestitialAsync();

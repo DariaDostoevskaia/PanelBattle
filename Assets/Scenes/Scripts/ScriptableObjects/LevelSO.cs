@@ -17,6 +17,8 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private int _price;
         [SerializeField] private int _reward;
 
+        public AudioClip LevelMusic => _music;
+
         public PanelSO[] PanelSettings => _panelSettings;
 
         public AICharacterSO[] AICharactersSO => _aICharacterSO;

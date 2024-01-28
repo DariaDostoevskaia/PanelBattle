@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e6bf42e5b1ccb4e9d25bed11e2f073, type: 3}
   m_Name: LevelSO19
   m_EditorClassIdentifier: 
-  _music: {fileID: 0}
+  _music: {fileID: 8300000, guid: eb7f10105313640a18ce7926041a4d76, type: 3}
   _panelSettings:
   - {fileID: 11400000, guid: e150eb798991e234cbb2f1cb9122a345, type: 2}
   - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
@@ -24,7 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
-  _rect: 0d0000000d000000
+  _rect: 0c0000000c000000
   _startedPosition:
   - 0
   - 0

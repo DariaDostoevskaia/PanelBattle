@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
@@ -16,15 +17,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly CharacterRepository _characterRepository;
         private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
+        private readonly SoundController _soundController;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository, WalletController walletController)
+            ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
         {
             _endGamePopup = endGamePopup;
 
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
             _walletController = walletController;
+            _soundController = soundController;
 
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
@@ -48,6 +51,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetTitle("You Lose!");
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
+
+            _soundController.PlayLoseGameMusic();
+
             _endGamePopup.Show();
         }
 
@@ -68,6 +74,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetTitle("You Win!");
             _endGamePopup.SetActiveRestartButton(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
+
+            _soundController.PLayWinGameMusic();
 
             if (!isLastLevel)
             {

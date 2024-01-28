@@ -9,6 +9,7 @@ using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
+using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
@@ -34,11 +35,14 @@ namespace LegoBattaleRoyal.App
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
-            Presentation.Controllers.Wallet.WalletController walletController)
+            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController)
         {
             var characterSO = gameSettingsSO.CharacterSO;
             var currentLevel = levelRepository.GetCurrentLevel();
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
+
+            var music = levelSO.LevelMusic;
+            soundController.Play(music);
 
             var gridFactory = new GridFactory(levelSO);
 
@@ -48,7 +52,7 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, walletController);
+            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
@@ -121,7 +125,7 @@ namespace LegoBattaleRoyal.App
 
             var capturePathController = new CapturePathController(capturePathView);
 
-            var panelController = new PanelController(pairs, characterModel, capturePathController);
+            var panelController = new PanelController(pairs, characterModel, characterView, capturePathController);
 
             var characterController = new Presentation.Controllers.Character.CharacterController
                 (characterModel, characterView, capturePathController, characterRepository);
@@ -138,6 +142,7 @@ namespace LegoBattaleRoyal.App
             else
             {
                 CreateMainPlayerModule(panelController, roundController, endGameController);
+
                 _cinemachineCamera.Follow = characterView.transform;
                 _cinemachineCamera.LookAt = characterView.transform;
             }
@@ -168,6 +173,7 @@ namespace LegoBattaleRoyal.App
                 panelController.UnscribeOnCallBack();
 
                 panelController.OnMoveSelected -= characterController.MoveCharacter;
+
                 panelController.OnCharacterLoss -= OnCharacterLoss;
             }
         }
