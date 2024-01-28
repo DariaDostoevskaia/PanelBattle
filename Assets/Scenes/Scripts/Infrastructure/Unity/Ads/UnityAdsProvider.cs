@@ -19,17 +19,11 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #endif
         private bool _testMode;
-        private bool _wait = true;
-        private bool _result = false;
 
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
 
-        public bool IsRewardedSuccesShown { get; private set; }
-
-        public bool IsIntrestitialSuccesShown { get; private set; }
-
-        public UnityAdsProvider(/*analyticsProvider*/)
+        public UnityAdsProvider()
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
@@ -46,88 +40,62 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
         public async UniTask<bool> ShowRewarededAsync()
         {
-            _rewardedPlacement.OnFailedShown += RewardedFailedShown;
-            _rewardedPlacement.OnSuccesShown += RewardedSuccesShown;
+            _rewardedPlacement.OnFailedShown += OnFailedShown;
+            _rewardedPlacement.OnSuccesShown += OnSuccesShown;
 
+            var wait = true;
+            var result = false;
             ShowRewarded();
 
-            await UniTask.WaitWhile(() => _wait);
-            return _result;
+            await UniTask.WaitWhile(() => wait);
+            return result;
+
+            void OnSuccesShown()
+            {
+                result = true;
+                EndShow();
+            }
+            void OnFailedShown()
+            {
+                EndShow();
+            }
+            void EndShow()
+            {
+                _rewardedPlacement.OnFailedShown -= OnFailedShown;
+                _rewardedPlacement.OnSuccesShown -= OnSuccesShown;
+                wait = false;
+            }
         }
 
-        public async UniTask<bool> ShowIntrestitialAsync()
-        {
-            _intrestitialPlacement.OnFailedShown += InterstitialFailedShown;
-            _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
+        //private void InterstitialFailedShown()
+        //{
+        //    OnFailedShown();
+        //}
 
-            ShowInterstitial();
+        //private void InterstitialSuccesShown()
+        //{
+        //    OnSuccesShown();
+        //}
 
-            await UniTask.WaitWhile(() => _wait);
-            return _result;
-        }
+        //private void EndShow()
+        //{
+        //    _intrestitialPlacement.OnFailedShown -= InterstitialFailedShown;
+        //    _intrestitialPlacement.OnSuccesShown -= InterstitialSuccesShown;
 
-        private void RewardedFailedShown()
-        {
-            OnFailedShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
-            IsRewardedSuccesShown = false;
-        }
-
-        private void RewardedSuccesShown()
-        {
-            OnSuccesShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
-            IsRewardedSuccesShown = true;
-        }
-
-        private void InterstitialFailedShown()
-        {
-            OnFailedShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
-            IsIntrestitialSuccesShown = false;
-        }
-
-        private void InterstitialSuccesShown()
-        {
-            OnSuccesShown();
-            //analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
-            IsIntrestitialSuccesShown = true;
-        }
-
-        private void OnSuccesShown()
-        {
-            _result = true;
-
-            EndShow();
-        }
-
-        private void OnFailedShown()
-        {
-            EndShow();
-        }
-
-        private void EndShow()
-        {
-            _rewardedPlacement.OnFailedShown -= RewardedFailedShown;
-            _rewardedPlacement.OnSuccesShown -= RewardedSuccesShown;
-
-            _intrestitialPlacement.OnFailedShown -= InterstitialFailedShown;
-            _intrestitialPlacement.OnSuccesShown -= InterstitialSuccesShown;
-
-            _wait = false;
-        }
+        //}
 
         private void ShowRewarded()
         {
             _rewardedPlacement.ShowAd();
-            //analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
         }
 
-        private void ShowInterstitial()
-        {
-            _intrestitialPlacement.ShowAd();
-            //analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
-        }
+        //public void ShowInterstitial()
+        //{
+        //    _intrestitialPlacement.OnFailedShown += InterstitialFailedShown;
+        //    _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
+
+        //    _intrestitialPlacement.ShowAd();
+        //}
 
         private void OnAdsLoaded(bool isLoaded)
         {

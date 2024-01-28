@@ -41,7 +41,7 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
-            var adsProvider = new UnityAdsProvider(/*analyticsProvider*/);
+            var adsProvider = new UnityAdsProvider();
             adsProvider.InitializeAds();
 
             var levelsSO = _gameSettingsSO.Levels;
@@ -85,11 +85,8 @@ namespace LegoBattaleRoyal.App
                 var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
 
-                var isTryBuyLevel = IsTryBuyLevel();
-
-                if (!isTryBuyLevel)
+                if (!levelController.TryBuyLevel(level.Price))
                 {
-                    //analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
                     var showButton = generalPopup.CreateButton("Show Ads");
                     showButton.onClick.AddListener(() =>
                     {
@@ -104,16 +101,15 @@ namespace LegoBattaleRoyal.App
 
                     return;
                 }
-                if (isTryBuyLevel == true)
-                {
-                    var numberInputs = NumberInputsPlayer();
+                //if (isTryBuyLevel == true)
+                //{
+                //    var numberInputs = NumberInputsPlayer();
 
-                    if (numberInputs % 4 == 0)
-                    {
-                        //analyticsProvider.SendEvent(AnalyticsEvents.NeedIntrestitial);
-                        ShowIntrestitialAdsAsync().Forget();
-                    }
-                }
+                //    if (numberInputs % 4 == 0)
+                //    {
+                //        adsProvider.ShowInterstitial();
+                //    }
+                //}
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -125,14 +121,6 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.MenuView.Close();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
-          
-                async UniTask ShowIntrestitialAdsAsync()
-                {
-                    var result = await adsProvider.ShowIntrestitialAsync();
-
-                    if (!result)
-                        return;
-                }
 
                 async UniTask ShowRewardedAdsAsync()
                 {
@@ -141,19 +129,14 @@ namespace LegoBattaleRoyal.App
                     if (!result)
                         return;
 
-                    if (!adsProvider.IsRewardedSuccesShown)
-                        return;
+                    //if (!adsProvider.IsRewardedSuccesShown)
+                    //    return;
 
                     generalPopup.Close();
 
                     levelController.EarnCoins(level.Price);
 
                     StartGame();
-                }
-
-                bool IsTryBuyLevel()
-                {
-                    return levelController.TryBuyLevel(level.Price);
                 }
             }
         }
