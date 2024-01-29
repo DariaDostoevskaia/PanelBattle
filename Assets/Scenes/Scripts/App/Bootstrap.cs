@@ -82,8 +82,10 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
+
+                var level = levelRepository.GetCurrentLevel();
+                var numberEntriesGame = NumberInputsPlayer();
 
                 if (!levelController.TryBuyLevel(level.Price))
                 {
@@ -101,15 +103,9 @@ namespace LegoBattaleRoyal.App
 
                     return;
                 }
-                //if (isTryBuyLevel == true)
-                //{
-                //    var numberInputs = NumberInputsPlayer();
 
-                //    if (numberInputs % 4 == 0)
-                //    {
-                //        adsProvider.ShowInterstitial();
-                //    }
-                //}
+                if (numberEntriesGame % 4 == 0)
+                    adsProvider.ShowInterstitial();
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -129,12 +125,10 @@ namespace LegoBattaleRoyal.App
                     if (!result)
                         return;
 
-                    //if (!adsProvider.IsRewardedSuccesShown)
-                    //    return;
-
                     generalPopup.Close();
 
                     levelController.EarnCoins(level.Price);
+                    numberEntriesGame--;
 
                     StartGame();
                 }
