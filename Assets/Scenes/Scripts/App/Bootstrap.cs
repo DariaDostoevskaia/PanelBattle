@@ -24,6 +24,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
+
         private LevelController _levelController;
 
         private void Start()
@@ -51,6 +52,7 @@ namespace LegoBattaleRoyal.App
             var levelController = new LevelController(levelRepository, saveService, walletController);
 
             levelController.CreateLevels(levelsSO);
+            _levelController = levelController;
 
             walletController.LoadWalletData();
 
@@ -64,6 +66,7 @@ namespace LegoBattaleRoyal.App
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
             topbarController.ShowTopbar();
+
             _uiContainer.LoadingScreen.SetActive(false);
 
             _gameBootstrap.OnRemoved += RemoveProgress;
@@ -83,7 +86,7 @@ namespace LegoBattaleRoyal.App
 
             void RemoveProgress()
             {
-                _levelController.RemoveAllProgress();
+                levelController.RemoveAllProgress();
 
                 var nextLevel = levelRepository.GetNextLevel();
                 nextLevel = levelRepository.GetAll().ToList().First();

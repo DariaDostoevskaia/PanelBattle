@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Art/Panels/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_2_Pre.prefab.meta
-guid: fc999304cf7615e4eae8aa18db691118
+<<<<<<<< HEAD:Assets/Art/Panels/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_1_Pre.prefab.meta
+guid: 9a8f146293f64494cbb286394cdfe338
 PrefabImporter:
 ========
-guid: c2fba135a8825c04b9f2c1d6cef0f66b
+guid: 6f3ada2625c14c848945332372ac080f
 TextScriptImporter:
->>>>>>>> master:Assets/StreamingAssets/google-services-desktop.json.meta
+>>>>>>>> master:Assets/google-services.json.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
