@@ -7,6 +7,7 @@ using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.App
@@ -65,6 +66,10 @@ namespace LegoBattaleRoyal.App
             void RemoveProgress()
             {
                 _levelController.RemoveAllProgress();
+
+                var nextLevel = levelRepository.GetNextLevel();
+                nextLevel = levelRepository.GetAll().ToList().First();
+
                 _uiContainer.EndGamePopup.Close();
                 _uiContainer.MenuView.Show();
             }
