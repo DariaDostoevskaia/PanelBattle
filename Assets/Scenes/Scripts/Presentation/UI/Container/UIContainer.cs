@@ -1,8 +1,8 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
+using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.Container
 {
@@ -11,10 +11,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanel _menuPanel;
         [SerializeField] private SettingsPopup _settingsPopup;
-
-        [SerializeField] private Button _settingsPopupButton;
+        [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
+        [SerializeField] private GameObject _loadingScreen;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
+
         private AudioSource _audioSource;
 
         public GamePanelUI EndGamePopup => _gamePanel;
@@ -23,7 +24,9 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public SettingsPopup SettingsPopup => _settingsPopup;
 
-        public Button SettingsPopupButton => _settingsPopupButton;
+        public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
+
+        public GameObject LoadingScreen => _loadingScreen;
 
         private void Start()
         {
@@ -38,6 +41,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _settingsPopup.OnOkClicked += _audioSource.Play;
             _settingsPopup.OnHomeClicked += _audioSource.Play;
             _settingsPopup.OnCloseClicked += _audioSource.Play;
+
+            _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
 
             _settingsPopup.OnHomeClicked += GoHome;
 
@@ -68,6 +73,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _settingsPopup.OnOkClicked -= _audioSource.Play;
             _settingsPopup.OnHomeClicked -= _audioSource.Play;
             _settingsPopup.OnCloseClicked -= _audioSource.Play;
+
+            _topbarScreenPanel.OnSettingsButtonClicked -= _audioSource.Play;
 
             _settingsPopup.OnHomeClicked -= GoHome;
         }

@@ -33,10 +33,11 @@ namespace LegoBattaleRoyal.App
 
         private EndGameController _endGameController;
         private CharacterRepository _characterRepository;
+
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
-            UIContainer uiContainer, SoundController soundController)
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
+            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController)
         {
             var characterSO = gameSettingsSO.CharacterSO;
 
@@ -55,15 +56,17 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController);
+            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
             _endGameController.OnProgressRemoved += OnRemoved;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
-                CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
+                CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController,
+                    _endGameController, gameSettingsSO);
             }
-            CreatePlayer(characterSO, _characterRepository, pairs, roundController, _endGameController, gameSettingsSO);
+            CreatePlayer(characterSO, _characterRepository, pairs, roundController,
+                _endGameController, gameSettingsSO);
 
             _characterRepository
                 .GetAll()
@@ -137,7 +140,8 @@ namespace LegoBattaleRoyal.App
 
             if (characterModel is AICharacterModel)
             {
-                CreateAIPlayerModule(panelController, pairs, (AICharacterModel)characterModel, roundController, endGameController);
+                CreateAIPlayerModule(panelController, pairs, (AICharacterModel)characterModel,
+                    roundController, endGameController);
             }
             else
             {

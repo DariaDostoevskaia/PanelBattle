@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
@@ -16,15 +17,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
+        private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
         private readonly SoundController _soundController;
 
         public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository, SoundController soundController)
+            ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
         {
             _endGamePopup = endGamePopup;
             _characterRepository = characterRepository;
             _levelRepository = levelRepository;
+            _walletController = walletController;
             _soundController = soundController;
 
             _endGamePopup.OnRestartClicked += RestartGame;
@@ -59,7 +62,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveNextLevelButton(false);
             _endGamePopup.SetActiveRemoveAllProgress(false);
 
-            _soundController.PlayLoseGame();
+            _soundController.PlayLoseGameMusic();
 
             _endGamePopup.Show();
         }
@@ -73,6 +76,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             var currentLevel = _levelRepository.GetCurrentLevel();
             currentLevel.Win();
+
+            _walletController.EarnCoins(currentLevel.Reward);
+
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
             _endGamePopup.SetTitle("You Win!");
@@ -80,7 +86,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetActiveRemoveAllProgress(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
 
-            _soundController.PlayWinGame();
+            _soundController.PLayWinGameMusic();
 
             if (!isLastLevel)
             {

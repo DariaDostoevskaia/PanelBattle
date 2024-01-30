@@ -1,9 +1,13 @@
+using Cysharp.Threading.Tasks;
 using EasyButtons;
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Topbar;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -24,28 +28,43 @@ namespace LegoBattaleRoyal.App
 
         private void Start()
         {
+            ConfigureAsync().Forget();
+        }
+
+        private async UniTaskVoid ConfigureAsync()
+        {
+            _uiContainer.LoadingScreen.SetActive(true);
+
+            var analyticsProvider = new FirebaseAnalyticsProvider();
+            await analyticsProvider.InitAsync();
+
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
-            var settingsPopup = _uiContainer.SettingsPopup;
-
-            var settingsController = new SettingsController(settingsPopup, _soundController);
-
             var levelsSO = _gameSettingsSO.Levels;
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-            _levelController = new LevelController(levelRepository, saveService);
 
-            _levelController.CreateLevels(levelsSO);
-            var currentLevel = levelRepository.GetCurrentLevel();
+            var walletController = new WalletController(saveService, _gameSettingsSO);
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var levelController = new LevelController(levelRepository, saveService, walletController);
+
+            levelController.CreateLevels(levelsSO);
+
+            walletController.LoadWalletData();
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
-            _uiContainer.SettingsPopupButton.gameObject.SetActive(true);
-            _uiContainer.SettingsPopupButton.onClick.AddListener(settingsController.OpenSettings);
+            var topbarPopup = _uiContainer.TopbarScreenPanel;
+            var topbarController = new TopbarController(topbarPopup);
+
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+            topbarController.ShowTopbar();
+            _uiContainer.LoadingScreen.SetActive(false);
 
             _gameBootstrap.OnRemoved += RemoveProgress;
 
@@ -55,12 +74,11 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRemoved -= RemoveProgress;
                 _gameBootstrap.OnRestarted -= StartGame;
 
-                _uiContainer.SettingsPopupButton.onClick.RemoveAllListeners();
-
-                menuController.Dispose();
                 saveService.Dispose();
-                _levelController.Dispose();
+                levelController.Dispose();
+                menuController.Dispose();
                 settingsController.Dispose();
+                topbarController.Dispose();
             };
 
             void RemoveProgress()
@@ -76,13 +94,17 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                levelController.TryBuyLevel(levelRepository.GetCurrentLevel().Price);
+
                 _gameBootstrap.Dispose();
                 // subscribe again after dispose
 
                 _gameBootstrap.OnRestarted += StartGame;
+
+                _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, _soundController);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
             }
         }
 

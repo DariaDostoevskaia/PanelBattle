@@ -19,10 +19,11 @@ namespace LegoBattaleRoyal.Core.Characters.Models
                     break;
 
                 case Difficulty.Medium:
-                    _aiMovementStrategy = new MediumAIMovement(blocksToCapture, CurrentPosition, panelModels, Id);
+                    _aiMovementStrategy = new MediumAIMovementStrategy(blocksToCapture, CurrentPosition, panelModels, Id);
                     break;
 
                 case Difficulty.Hard:
+                    _aiMovementStrategy = new HardAIMovementStrategy(blocksToCapture, CurrentPosition, panelModels, Id);
                     break;
             }
         }

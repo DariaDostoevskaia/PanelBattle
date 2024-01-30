@@ -10,6 +10,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
         [SerializeField] private CapturePathView _capturePathViewPrefab;
         [SerializeField] private LevelSO[] _levels;
 
+        [SerializeField] private int _money = 0;
         [SerializeField] private AudioClip _mainMusic;
         [SerializeField] private AudioClip _loseMusic;
         [SerializeField] private AudioClip _winMusic;
@@ -20,6 +21,7 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         public CapturePathView CapturePathViewPrefab => _capturePathViewPrefab;
 
+        public int Money => _money;
         public AudioClip MainMusic => _mainMusic;
 
         public AudioClip LoseGameMusic => _loseMusic;
