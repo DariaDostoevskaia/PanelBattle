@@ -39,7 +39,6 @@ namespace LegoBattaleRoyal.App
             await analyticsProvider.InitAsync();
 
             _uiContainer.CloseAll();
-
             _soundController.Play(_gameSettingsSO.MainMusic);
 
             var adsProvider = new UnityAdsProvider();
@@ -56,17 +55,14 @@ namespace LegoBattaleRoyal.App
             levelController.CreateLevels(levelsSO);
             walletController.LoadWalletData();
 
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
+            topbarController.ShowTopbar();
+
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
-            var topbarPopup = _uiContainer.TopbarScreenPanel;
-            var topbarController = new TopbarController(topbarPopup);
-
-            var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
-
-            topbarController.ShowTopbar();
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
             _uiContainer.LoadingScreen.SetActive(false);
 
