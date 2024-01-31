@@ -11,11 +11,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
     {
         [SerializeField] private GamePanelUI _gamePanel;
         [SerializeField] private MainMenuPanelUI _menuPanel;
+        [SerializeField] private GeneralPopup _generalPopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
-        [SerializeField] private GameObject _loadingScreen;
-         [SerializeField] private GeneralPopup _generalPopup;
 
+        [SerializeField] private GameObject _loadingScreen;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -37,11 +37,13 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         {
             _audioSource = GetComponent<AudioSource>();
 
-            _menuPanel.OnStartGameClicked += _audioSource.Play;
-
             _gamePanel.OnRestartClicked += _audioSource.Play;
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
+
+            _menuPanel.OnStartGameClicked += _audioSource.Play;
+
+            _generalPopup.OnGeneralButtonClicked += _audioSource.Play;
 
             _settingsPopup.OnOkClicked += _audioSource.Play;
             _settingsPopup.OnHomeClicked += _audioSource.Play;
@@ -57,7 +59,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         private void GoHome()
         {
-            _gamePanel.Close();
+            CloseAll();
             _menuPanel.Show();
         }
 
@@ -65,16 +67,23 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         {
             _gamePanel.Close();
             _menuPanel.Close();
+
             _generalPopup.Close();
+            _settingsPopup.Close();
+            _topbarScreenPanel.Close();
+
+            _loadingScreen.SetActive(false);
         }
 
         private void OnDestroy()
         {
-            _menuPanel.OnStartGameClicked -= _audioSource.Play;
-
             _gamePanel.OnRestartClicked -= _audioSource.Play;
             _gamePanel.OnNextLevelClicked -= _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked -= _audioSource.Play;
+
+            _menuPanel.OnStartGameClicked -= _audioSource.Play;
+
+            _generalPopup.OnGeneralButtonClicked -= _audioSource.Play;
 
             _settingsPopup.OnOkClicked -= _audioSource.Play;
             _settingsPopup.OnHomeClicked -= _audioSource.Play;

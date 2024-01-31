@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Extensions;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 {
     public class GeneralPopup : MonoBehaviour
     {
+        public event Action OnGeneralButtonClicked;
+
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private RectTransform _buttonContainer;
@@ -68,7 +71,16 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             button.GetComponentInChildren<TextMeshProUGUI>().SetText(nameButton);
 
             _buttons.Add(button);
+            _buttons.ForEach(button => button.onClick.AddListener(() => OnGeneralButtonClicked?.Invoke()));
+
             return button;
+        }
+
+        private void OnDestroy()
+        {
+            OnGeneralButtonClicked = null;
+
+            _buttons.ForEach(button => button.onClick.RemoveAllListeners());
         }
     }
 }

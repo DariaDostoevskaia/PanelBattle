@@ -41,6 +41,7 @@ namespace LegoBattaleRoyal.App
             _uiContainer.CloseAll();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
+
             var adsProvider = new UnityAdsProvider();
             adsProvider.InitializeAds();
 
@@ -64,7 +65,9 @@ namespace LegoBattaleRoyal.App
 
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+
             topbarController.ShowTopbar();
+
             _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
