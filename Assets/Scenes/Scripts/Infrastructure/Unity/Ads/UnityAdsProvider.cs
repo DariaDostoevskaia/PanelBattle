@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using System;
 using UnityEngine;
@@ -26,7 +25,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private readonly AdUnit _intrestitialPlacement;
         private readonly FirebaseAnalyticsProvider _analyticsProvider;
 
-        public UnityAdsProvider()
+        public UnityAdsProvider(FirebaseAnalyticsProvider analyticsProvider)
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;

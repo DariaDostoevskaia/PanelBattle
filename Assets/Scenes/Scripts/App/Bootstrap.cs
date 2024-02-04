@@ -105,10 +105,9 @@ namespace LegoBattaleRoyal.App
 
                 if (numberEntriesGame % 4 == 0)
                 {
-                
-                  analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                     adsProvider.ShowInterstitial();
-}
+                }
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -119,8 +118,8 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
-  analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
+                analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
 
                 async UniTask ShowRewardedAdsAsync()
                 {
