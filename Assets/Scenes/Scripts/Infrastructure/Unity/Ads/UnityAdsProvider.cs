@@ -126,12 +126,6 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             OnUnityAdsLoaded?.Invoke(isLoaded);
         }
 
-        private void OnUnityAdsShow()
-        {
-            if (!_testMode)
-                return;
-        }
-
         public void Dispose()
         {
             OnUnityAdsLoaded = null;
