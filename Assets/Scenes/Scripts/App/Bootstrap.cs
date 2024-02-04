@@ -40,7 +40,6 @@ namespace LegoBattaleRoyal.App
             await analyticsProvider.InitAsync();
 
             _uiContainer.CloseAll();
-
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
@@ -55,17 +54,14 @@ namespace LegoBattaleRoyal.App
             levelController.CreateLevels(levelsSO);
             walletController.LoadWalletData();
 
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
+            topbarController.ShowTopbar();
+
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
-            var topbarPopup = _uiContainer.TopbarScreenPanel;
-            var topbarController = new TopbarController(topbarPopup);
-
-            var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
-
-            topbarController.ShowTopbar();
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
             _uiContainer.LoadingScreen.SetActive(false);
 
@@ -84,12 +80,12 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var level = levelRepository.GetCurrentLevel();
                 var generalPopup = _uiContainer.GeneralPopup;
 
-                var isTryBuyLevel = IsTryBuyLevel();
+                var level = levelRepository.GetCurrentLevel();
+                var numberEntriesGame = NumberInputsPlayer();
 
-                if (!isTryBuyLevel)
+                if (!levelController.TryBuyLevel(level.Price))
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
                     var showButton = generalPopup.CreateButton("Show Ads");
@@ -106,16 +102,13 @@ namespace LegoBattaleRoyal.App
 
                     return;
                 }
-                if (isTryBuyLevel == true)
-                {
-                    var numberInputs = NumberInputsPlayer();
 
-                    if (numberInputs % 4 == 0)
-                    {
-                        analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
-                        ShowIntrestitialAdsAsync().Forget();
-                    }
-                }
+                if (numberEntriesGame % 4 == 0)
+                {
+                
+                  analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                    adsProvider.ShowInterstitial();
+}
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -126,16 +119,8 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.MenuView.Close();
 
-                analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
-
-                async UniTask ShowIntrestitialAdsAsync()
-                {
-                    var result = await adsProvider.ShowIntrestitialAsync();
-
-                    if (!result)
-                        return;
-                }
+  analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
 
                 async UniTask ShowRewardedAdsAsync()
                 {
@@ -144,19 +129,12 @@ namespace LegoBattaleRoyal.App
                     if (!result)
                         return;
 
-                    if (!adsProvider.IsRewardedSuccesShown)
-                        return;
-
                     generalPopup.Close();
 
                     levelController.EarnCoins(level.Price);
+                    numberEntriesGame--;
 
                     StartGame();
-                }
-
-                bool IsTryBuyLevel()
-                {
-                    return levelController.TryBuyLevel(level.Price);
                 }
             }
         }

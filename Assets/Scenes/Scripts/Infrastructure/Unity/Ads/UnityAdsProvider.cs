@@ -21,18 +21,12 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #endif
         private bool _testMode;
-        private bool _wait = true;
-        private bool _result = false;
 
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
         private readonly FirebaseAnalyticsProvider _analyticsProvider;
 
-        public bool IsRewardedSuccesShown { get; private set; }
-
-        public bool IsIntrestitialSuccesShown { get; private set; }
-
-        public UnityAdsProvider(Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+        public UnityAdsProvider()
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
@@ -41,102 +35,6 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             _intrestitialPlacement.OnLoaded += OnAdsLoaded;
 
             _analyticsProvider = analyticsProvider;
-        }
-
-        private void OnUnityAdsShow()
-        {
-            if (!_testMode)
-                return;
-        }
-
-        public async UniTask<bool> ShowRewarededAsync()
-        {
-            _rewardedPlacement.OnFailedShown += RewardedFailedShown;
-            _rewardedPlacement.OnSuccesShown += RewardedSuccesShown;
-
-            ShowRewarded();
-
-            await UniTask.WaitWhile(() => _wait);
-            return _result;
-        }
-
-        public async UniTask<bool> ShowIntrestitialAsync()
-        {
-            _intrestitialPlacement.OnFailedShown += InterstitialFailedShown;
-            _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
-
-            ShowInterstitial();
-
-            await UniTask.WaitWhile(() => _wait);
-            return _result;
-        }
-
-        private void RewardedFailedShown()
-        {
-            OnFailedShown();
-            _analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
-            IsRewardedSuccesShown = false;
-        }
-
-        private void RewardedSuccesShown()
-        {
-            OnSuccesShown();
-            _analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
-            IsRewardedSuccesShown = true;
-        }
-
-        private void InterstitialFailedShown()
-        {
-            OnFailedShown();
-            _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
-            IsIntrestitialSuccesShown = false;
-        }
-
-        private void InterstitialSuccesShown()
-        {
-            OnSuccesShown();
-            _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
-            IsIntrestitialSuccesShown = true;
-        }
-
-        private void OnSuccesShown()
-        {
-            _result = true;
-
-            EndShow();
-        }
-
-        private void OnFailedShown()
-        {
-            EndShow();
-        }
-
-        private void EndShow()
-        {
-            _rewardedPlacement.OnFailedShown -= RewardedFailedShown;
-            _rewardedPlacement.OnSuccesShown -= RewardedSuccesShown;
-
-            _intrestitialPlacement.OnFailedShown -= InterstitialFailedShown;
-            _intrestitialPlacement.OnSuccesShown -= InterstitialSuccesShown;
-
-            _wait = false;
-        }
-
-        private void ShowRewarded()
-        {
-            _rewardedPlacement.ShowAd();
-            _analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
-        }
-
-        private void ShowInterstitial()
-        {
-            _intrestitialPlacement.ShowAd();
-            _analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
-        }
-
-        private void OnAdsLoaded(bool isLoaded)
-        {
-            OnUnityAdsLoaded?.Invoke(isLoaded);
         }
 
         public void InitializeAds()
@@ -167,15 +65,84 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
         }
 
+        public async UniTask<bool> ShowRewarededAsync()
+        {
+            _rewardedPlacement.OnFailedShown += OnFailedShown;
+            _rewardedPlacement.OnSuccesShown += OnSuccesShown;
+
+            var wait = true;
+            var result = false;
+
+            ShowRewarded();
+
+            await UniTask.WaitWhile(() => wait);
+            return result;
+
+            void OnSuccesShown()
+            {
+                result = true;
+                EndShow();
+            }
+
+            void OnFailedShown()
+            {
+                EndShow();
+            }
+
+            void EndShow()
+            {
+                _rewardedPlacement.OnFailedShown -= OnFailedShown;
+                _rewardedPlacement.OnSuccesShown -= OnSuccesShown;
+                wait = false;
+            }
+        }
+
+        public void ShowInterstitial()
+        {
+            _intrestitialPlacement.OnFailedShown += InterstitialFailedShown;
+            _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
+
+            _intrestitialPlacement.ShowAd();
+
+            void InterstitialSuccesShown()
+            {
+                EndIntrestitialShow();
+            }
+
+            void InterstitialFailedShown()
+            {
+                EndIntrestitialShow();
+            }
+
+            void EndIntrestitialShow()
+            {
+                _intrestitialPlacement.OnSuccesShown -= InterstitialSuccesShown;
+                _intrestitialPlacement.OnFailedShown -= InterstitialFailedShown;
+            }
+        }
+
+        private void ShowRewarded()
+        {
+            _rewardedPlacement.ShowAd();
+        }
+
+        private void OnAdsLoaded(bool isLoaded)
+        {
+            OnUnityAdsLoaded?.Invoke(isLoaded);
+        }
+
+        private void OnUnityAdsShow()
+        {
+            if (!_testMode)
+                return;
+        }
+
         public void Dispose()
         {
             OnUnityAdsLoaded = null;
 
             _rewardedPlacement.OnLoaded -= OnAdsLoaded;
-            _rewardedPlacement.OnSuccesShown -= OnUnityAdsShow;
-
             _intrestitialPlacement.OnLoaded -= OnAdsLoaded;
-            _intrestitialPlacement.OnSuccesShown -= OnUnityAdsShow;
 
             _rewardedPlacement.Dispose();
             _intrestitialPlacement.Dispose();
