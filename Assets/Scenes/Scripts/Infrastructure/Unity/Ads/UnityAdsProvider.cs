@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using System;
 using UnityEngine;
@@ -81,11 +82,13 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             {
                 result = true;
                 EndShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
             }
 
             void OnFailedShown()
             {
                 EndShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
             }
 
             void EndShow()
@@ -102,15 +105,18 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
 
             _intrestitialPlacement.ShowAd();
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
 
             void InterstitialSuccesShown()
             {
                 EndIntrestitialShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
             }
 
             void InterstitialFailedShown()
             {
                 EndIntrestitialShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
             }
 
             void EndIntrestitialShow()
@@ -123,6 +129,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private void ShowRewarded()
         {
             _rewardedPlacement.ShowAd();
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
         }
 
         private void OnAdsLoaded(bool isLoaded)
