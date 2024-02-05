@@ -24,7 +24,6 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-        public event Action OnRemoved;
 
         private event Action OnDisposed;
 
@@ -58,7 +57,6 @@ namespace LegoBattaleRoyal.App
 
             _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
-            _endGameController.OnProgressRemoved += OnRemoved;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -94,7 +92,6 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 _endGameController.OnGameRestarted -= OnRestarted;
-                _endGameController.OnProgressRemoved -= OnRemoved;
 
                 foreach (var pair in pairs)
                 {
@@ -231,7 +228,6 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed = null;
             OnRestarted = null;
-            OnRemoved = null;
         }
 
         private void OnDestroy()
