@@ -71,7 +71,7 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             button.GetComponentInChildren<TextMeshProUGUI>().SetText(nameButton);
 
             _buttons.Add(button);
-            _buttons.ForEach(button => button.onClick.AddListener(() => OnGeneralButtonClicked?.Invoke()));
+            button.onClick.AddListener(() => OnGeneralButtonClicked?.Invoke());
 
             return button;
         }
@@ -79,8 +79,6 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         private void OnDestroy()
         {
             OnGeneralButtonClicked = null;
-
-            _buttons.ForEach(button => button.onClick.RemoveAllListeners());
         }
     }
 }
