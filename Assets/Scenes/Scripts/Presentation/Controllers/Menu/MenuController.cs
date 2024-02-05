@@ -8,6 +8,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
+        public event Action OnGameProgressRemoved;
+
         private readonly MainMenuPanel _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
 
@@ -15,7 +17,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
+
             _menuView.OnStartGameClicked += StartGame;
+            _menuView.OnRemoveProgressGameClicked += RemoveGameProgress;
+        }
+
+        private void RemoveGameProgress()
+        {
+            OnGameProgressRemoved?.Invoke();
         }
 
         private void StartGame()
@@ -32,6 +41,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void Dispose()
         {
             OnGameStarted = null;
+            OnGameProgressRemoved = null;
 
             _menuView.OnStartGameClicked -= StartGame;
         }

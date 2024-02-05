@@ -55,6 +55,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             _walletController.SpendCoins(price);
         }
 
+        public void RemoveAllProgress()
+        {
+            _saveService.DeleteAllLocal();
+        }
+
         private void OnSuccessEnded()
         {
             var currentLevel = _levelRepository.GetCurrentLevel();

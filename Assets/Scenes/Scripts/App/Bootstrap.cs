@@ -10,6 +10,7 @@ using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.App
@@ -53,6 +54,7 @@ namespace LegoBattaleRoyal.App
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
+            menuController.OnGameProgressRemoved += RemoveProgress;
             menuController.ShowMenu();
 
             var topbarPopup = _uiContainer.TopbarScreenPanel;
@@ -66,6 +68,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
+                menuController.OnGameProgressRemoved -= RemoveProgress;
                 _gameBootstrap.OnRestarted -= StartGame;
 
                 saveService.Dispose();
@@ -88,6 +91,17 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.MenuView.Close();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
+            }
+
+            void RemoveProgress()
+            {
+                var nextLevel = levelRepository.GetNextLevel();
+                nextLevel = levelRepository.GetAll().ToList().First();
+
+                levelController.RemoveAllProgress();
+
+                _uiContainer.EndGamePopup.Close();
+                menuController.ShowMenu();
             }
         }
 
