@@ -104,7 +104,10 @@ namespace LegoBattaleRoyal.App
                 }
 
                 if (entriesGameNumber % 4 == 0)
+                {
                     adsProvider.ShowInterstitial();
+                    Debug.Log("Intrestitial show.");
+                }
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();

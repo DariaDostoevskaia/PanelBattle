@@ -40,12 +40,6 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
             _nextLevelGameButton.gameObject.SetActive(value);
         }
 
-        public void ShowLastLevel()
-        {
-            SetTitle("You won and completed the game!");
-            Show();
-        }
-
         public void Show()
         {
             gameObject.SetActive(true);
