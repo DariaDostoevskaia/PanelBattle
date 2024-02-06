@@ -13,8 +13,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
+        private readonly CharacterRepository _characterRepository;
         private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
         private readonly SoundController _soundController;
@@ -23,8 +23,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
         {
             _endGamePopup = endGamePopup;
-            _characterRepository = characterRepository;
+
             _levelRepository = levelRepository;
+            _characterRepository = characterRepository;
             _walletController = walletController;
             _soundController = soundController;
 
@@ -83,6 +84,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 nextLevel.Launch();
 
                 _endGamePopup.Show();
+
                 return true;
             }
 
