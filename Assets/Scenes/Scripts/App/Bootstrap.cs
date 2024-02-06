@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.App.AppService;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
@@ -23,8 +24,8 @@ namespace LegoBattaleRoyal.App
 
         [SerializeField] private GameBootstrap _gameBootstrap;
         [SerializeField] private GameSettingsSO _gameSettingsSO;
-        [SerializeField] private UIContainer _uiContainer;
         [SerializeField] private SoundController _soundController;
+        [SerializeField] private UIContainer _uiContainer;
 
         private void Start()
         {
@@ -40,15 +41,13 @@ namespace LegoBattaleRoyal.App
 
             _uiContainer.CloseAll();
             _soundController.Play(_gameSettingsSO.MainMusic);
-
-            var adsProvider = new UnityAdsProvider();
+            var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
 
             var levelsSO = _gameSettingsSO.Levels;
 
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
-
             var walletController = new WalletController(saveService, _gameSettingsSO);
             var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
 
@@ -88,6 +87,7 @@ namespace LegoBattaleRoyal.App
 
                 if (!levelController.TryBuyLevel(level.Price))
                 {
+                    analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
                     var showButton = generalPopup.CreateButton("Show Ads");
                     showButton.onClick.AddListener(() =>
                     {
@@ -107,6 +107,7 @@ namespace LegoBattaleRoyal.App
                 {
                     adsProvider.ShowInterstitial();
                     Debug.Log("Intrestitial show.");
+                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                 }
 
                 generalPopup.Close();
@@ -118,7 +119,8 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.LoadingScreen.SetActive(false);
                 menuController.CloseMenu();
 
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
+                analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
 
                 async UniTask ShowRewardedAdsAsync()
                 {

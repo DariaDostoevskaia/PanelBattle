@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -22,14 +24,17 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
 
         private readonly AdUnit _rewardedPlacement;
         private readonly AdUnit _intrestitialPlacement;
+        private readonly FirebaseAnalyticsProvider _analyticsProvider;
 
-        public UnityAdsProvider()
+        public UnityAdsProvider(FirebaseAnalyticsProvider analyticsProvider)
         {
             _rewardedPlacement = new AdUnit(_rewardedPlacementId);
             _rewardedPlacement.OnLoaded += OnAdsLoaded;
 
             _intrestitialPlacement = new AdUnit(_intrestitialPlacementId);
             _intrestitialPlacement.OnLoaded += OnAdsLoaded;
+
+            _analyticsProvider = analyticsProvider;
         }
 
         public void InitializeAds()
@@ -77,11 +82,13 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             {
                 result = true;
                 EndShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.RewardedSucces);
             }
 
             void OnFailedShown()
             {
                 EndShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.RewardedError);
             }
 
             void EndShow()
@@ -98,15 +105,18 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             _intrestitialPlacement.OnSuccesShown += InterstitialSuccesShown;
 
             _intrestitialPlacement.ShowAd();
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowInterstitial);
 
             void InterstitialSuccesShown()
             {
                 EndIntrestitialShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSucces);
             }
 
             void InterstitialFailedShown()
             {
                 EndIntrestitialShow();
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
             }
 
             void EndIntrestitialShow()
@@ -119,6 +129,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private void ShowRewarded()
         {
             _rewardedPlacement.ShowAd();
+            _analyticsProvider.SendEvent(AnalyticsEvents.ShowRewarded);
         }
 
         private void OnAdsLoaded(bool isLoaded)
