@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using EasyButtons;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
@@ -27,6 +28,8 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
 
+        private LevelController _levelController;
+
         private void Start()
         {
             ConfigureAsync().Forget();
@@ -52,6 +55,8 @@ namespace LegoBattaleRoyal.App
             var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
 
             levelController.CreateLevels(levelsSO);
+            _levelController = levelController;
+
             walletController.LoadWalletData();
 
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
@@ -61,7 +66,10 @@ namespace LegoBattaleRoyal.App
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
+            var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+
+            topbarController.ShowTopbar();
 
             _uiContainer.LoadingScreen.SetActive(false);
 
@@ -162,5 +170,15 @@ namespace LegoBattaleRoyal.App
             OnDisposed?.Invoke();
             OnDisposed = null;
         }
+
+#if DEBUG
+
+        [Button]
+        private void RemoveProgress()
+        {
+            _levelController.RemoveAllProgress();
+        }
+
+#endif
     }
 }

@@ -54,6 +54,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
+        public void RemoveAllProgress()
+        {
+            _saveService.DeleteAllLocal();
+        }
+
         public bool TryBuyLevel(int price)
         {
             if (!_walletController.CanBuy(price))

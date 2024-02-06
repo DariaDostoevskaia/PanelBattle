@@ -25,6 +25,7 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
+
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -40,7 +41,9 @@ namespace LegoBattaleRoyal.App
             Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             var characterSO = gameSettingsSO.CharacterSO;
+
             var currentLevel = levelRepository.GetCurrentLevel();
+            Debug.Log($"Level: {currentLevel.Order}");
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var music = levelSO.LevelMusic;
@@ -117,8 +120,6 @@ namespace LegoBattaleRoyal.App
             var characterView = Instantiate(characterSO.ViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
-
-            characterView.SetColor(playerColor);
 
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
@@ -230,6 +231,7 @@ namespace LegoBattaleRoyal.App
         public void Dispose()
         {
             OnDisposed?.Invoke();
+
             OnDisposed = null;
             OnRestarted = null;
         }
