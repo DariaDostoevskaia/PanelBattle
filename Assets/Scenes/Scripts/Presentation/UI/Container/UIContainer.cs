@@ -33,6 +33,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _audioSource = GetComponent<AudioSource>();
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
+            _menuPanel.OnRemoveProgressGameClicked += _audioSource.Play;
 
             _gamePanel.OnRestartClicked += _audioSource.Play;
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
@@ -65,6 +66,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         private void OnDestroy()
         {
             _menuPanel.OnStartGameClicked -= _audioSource.Play;
+            _menuPanel.OnRemoveProgressGameClicked -= _audioSource.Play;
 
             _gamePanel.OnRestartClicked -= _audioSource.Play;
             _gamePanel.OnNextLevelClicked -= _audioSource.Play;

@@ -10,7 +10,6 @@ using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.App
@@ -95,9 +94,6 @@ namespace LegoBattaleRoyal.App
 
             void RemoveProgress()
             {
-                var nextLevel = levelRepository.GetNextLevel();
-                nextLevel = levelRepository.GetAll().ToList().First();
-
                 levelController.RemoveAllProgress();
 
                 _uiContainer.EndGamePopup.Close();
