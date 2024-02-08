@@ -52,7 +52,7 @@ namespace LegoBattaleRoyal.App
 
             var roundController = new RoundController();
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
+            _endGameController = new EndGameController(uiContainer, _characterRepository, levelRepository, soundController, walletController);
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)

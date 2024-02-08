@@ -2,7 +2,9 @@ using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
+using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.Presentation.UI.GamePanel;
+using LegoBattaleRoyal.Presentation.UI.General;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -14,15 +16,19 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public event Action OnGameRestarted;
 
         private readonly ILevelRepository _levelRepository;
+        private readonly UIContainer _uiContainer;
         private readonly CharacterRepository _characterRepository;
         private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
+        private readonly GeneralPopup _generalPopup;
         private readonly SoundController _soundController;
 
-        public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
+        public EndGameController(UIContainer uiContainer, CharacterRepository characterRepository,
             ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
         {
-            _endGamePopup = endGamePopup;
+            _uiContainer = uiContainer;
+            _endGamePopup = _uiContainer.EndGamePopup;
+            _generalPopup = _uiContainer.GeneralPopup;
 
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;

@@ -83,12 +83,50 @@ namespace LegoBattaleRoyal.App
             {
                 var generalPopup = _uiContainer.GeneralPopup;
 
-                ShowEconomicAndAward();
-
                 var level = levelRepository.GetCurrentLevel();
                 var numberEntriesGame = NumberInputsPlayer();
 
-                TryBuyLevel();
+                // TODO
+
+                //var continueButton = generalPopup.CreateButton("Continue");
+                //continueButton.onClick.AddListener(() =>
+                //{
+                //    continueButton.interactable = false;
+                //    generalPopup.Close();
+                //});
+
+                //var exitButton = generalPopup.CreateButton("Exit");
+                //exitButton.onClick.AddListener(() =>
+                //{
+                //    exitButton.interactable = false;
+                //    generalPopup.Close();
+                //    menuController.ShowMenu();
+                //});
+
+                //generalPopup.SetTitle("Economic and awards.");
+                //generalPopup.SetText($"There are {_gameSettingsSO.Money} energy in your wallet. " +
+                //    $"The reward for the next level is {level.Reward} energy.");
+
+                //generalPopup.Show();
+
+                //TODO
+
+                if (!levelController.TryBuyLevel(level.Price))
+                {
+                    var showButton = generalPopup.CreateButton("Show Ads");
+                    showButton.onClick.AddListener(() =>
+                    {
+                        showButton.interactable = false;
+                        ShowRewardedAdsAsync().Forget();
+                    });
+
+                    generalPopup.SetTitle("Not enough energy.");
+                    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
+
+                    generalPopup.Show();
+
+                    return;
+                }
 
                 if (numberEntriesGame % 4 == 0)
                     adsProvider.ShowInterstitial();
@@ -121,46 +159,6 @@ namespace LegoBattaleRoyal.App
 
                 void ShowEconomicAndAward()
                 {
-                    var continueButton = generalPopup.CreateButton("Continue");
-                    continueButton.onClick.AddListener(() =>
-                    {
-                        continueButton.interactable = false;
-                        generalPopup.Close();
-                        return;
-                    });
-
-                    var exitButton = generalPopup.CreateButton("Exit");
-                    exitButton.onClick.AddListener(() =>
-                    {
-                        exitButton.interactable = false;
-                    });
-
-                    generalPopup.SetTitle("Economic and awards.");
-                    generalPopup.SetText("There are 7 energy in your wallet. The reward for the next level is 8 energy.");
-
-                    generalPopup.Show();
-
-                    return;
-                }
-
-                void TryBuyLevel()
-                {
-                    if (!levelController.TryBuyLevel(level.Price))
-                    {
-                        var showButton = generalPopup.CreateButton("Show Ads");
-                        showButton.onClick.AddListener(() =>
-                        {
-                            showButton.interactable = false;
-                            ShowRewardedAdsAsync().Forget();
-                        });
-
-                        generalPopup.SetTitle("Not enough energy.");
-                        generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
-
-                        generalPopup.Show();
-
-                        return;
-                    }
                 }
             }
         }
