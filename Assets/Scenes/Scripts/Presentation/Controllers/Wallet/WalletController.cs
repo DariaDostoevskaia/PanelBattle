@@ -2,14 +2,15 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.App.DTO.Wallet;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
+using System.Diagnostics;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
 {
     public class WalletController
     {
         private WalletModel _walletModel;
-        private SaveService _saveService;
-        private GameSettingsSO _gameSettingsSO;
+        private readonly SaveService _saveService;
+        private readonly GameSettingsSO _gameSettingsSO;
 
         public WalletController(SaveService saveService, GameSettingsSO gameSettingsSO)
         {
@@ -34,13 +35,16 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
             SaveWalletData();
         }
 
-        public void LoadWalletData()
+        public int LoadWalletData()
         {
             var initValue = _saveService.Exists<PlayerWalletDto>()
                  ? _saveService.Load<PlayerWalletDto>().WalletValue
                  : _gameSettingsSO.Money;
 
             _walletModel = new WalletModel(initValue);
+
+            Debug.WriteLine(initValue);
+            return initValue;
         }
 
         public void SaveWalletData()

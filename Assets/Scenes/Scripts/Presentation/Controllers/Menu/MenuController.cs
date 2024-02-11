@@ -29,6 +29,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
+        public void CloseMenu()
+        {
+            _menuView.Close();
+        }
+
         public void Dispose()
         {
             OnGameStarted = null;
