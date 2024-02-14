@@ -19,7 +19,7 @@ namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 
         public void Show()
         {
-            _settingsButton.gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
 
         public void SetText(int count)

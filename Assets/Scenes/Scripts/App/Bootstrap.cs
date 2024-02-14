@@ -49,14 +49,13 @@ namespace LegoBattaleRoyal.App
             var levelController = new LevelController(levelRepository, saveService, walletController);
 
             levelController.CreateLevels(levelsSO);
-
             var initValue = walletController.LoadWalletData();
 
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+
             _uiContainer.TopbarScreenPanel.SetText(initValue);
             topbarController.ShowTopbar();
-
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
