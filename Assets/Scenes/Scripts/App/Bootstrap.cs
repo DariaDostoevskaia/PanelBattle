@@ -37,7 +37,7 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
-            _uiContainer.LoadingScreen.SetActive(true);
+            _uiContainer.LoadingScreen.Show();
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
@@ -71,7 +71,7 @@ namespace LegoBattaleRoyal.App
 
             topbarController.ShowTopbar();
 
-            _uiContainer.LoadingScreen.SetActive(false);
+            _uiContainer.LoadingScreen.Close();
 
             OnDisposed += () =>
             {
@@ -124,7 +124,7 @@ namespace LegoBattaleRoyal.App
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
 
-                _uiContainer.LoadingScreen.SetActive(false);
+                _uiContainer.LoadingScreen.Close();
                 menuController.CloseMenu();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);

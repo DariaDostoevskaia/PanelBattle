@@ -888,10 +888,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1761845159}
   m_HandleRect: {fileID: 1169253865}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 0.001
+  m_MaxValue: 0.85
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.8
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2496,8 +2496,9 @@ GameObject:
   - component: {fileID: 900949135}
   - component: {fileID: 900949137}
   - component: {fileID: 900949136}
+  - component: {fileID: 900949138}
   m_Layer: 5
-  m_Name: LoadingScreen
+  m_Name: LoadingScreenPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2564,6 +2565,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900949134}
   m_CullTransparentMesh: 1
+--- !u!114 &900949138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900949134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370075d441f487941a9bd5e20cc9cec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loadingScreen: {fileID: 389313832}
 --- !u!1 &910900887
 GameObject:
   m_ObjectHideFlags: 0
@@ -3738,7 +3752,7 @@ MonoBehaviour:
   _generalPopup: {fileID: 466716323}
   _settingsPopup: {fileID: 1900428916}
   _topbarScreenPanel: {fileID: 7952805255275187596}
-  _loadingScreen: {fileID: 900949134}
+  _loadingScreen: {fileID: 900949138}
   _buttonsClickAudio: {fileID: 8300000, guid: 80d3799791748ac42b3ec097c17a2383, type: 3}
 --- !u!222 &1642433176
 CanvasRenderer:
@@ -4261,7 +4275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.3999939, y: 0}
+  m_AnchoredPosition: {x: -1.4000244, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761845160
@@ -4724,7 +4738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -9.657013, y: 0}
+  m_AnchoredPosition: {x: -9.656982, y: 0}
   m_SizeDelta: {x: -10.686, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1900428915 stripped
