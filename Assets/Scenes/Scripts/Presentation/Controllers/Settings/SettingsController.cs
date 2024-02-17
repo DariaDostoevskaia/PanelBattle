@@ -8,8 +8,7 @@ public class SettingsController : IDisposable
     private readonly SettingsPopup _settingsPopup;
     private readonly SoundController _soundController;
 
-    public SettingsController(TopbarController topbarController, SettingsPopup settingsPopup, SettingsPopup gameSettingsPopup,
-        SoundController soundController)
+    public SettingsController(TopbarController topbarController, SettingsPopup settingsPopup, SoundController soundController)
     {
         _topbarController = topbarController;
         _settingsPopup = settingsPopup;

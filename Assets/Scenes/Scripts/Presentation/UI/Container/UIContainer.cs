@@ -23,7 +23,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public MainMenuPanel MenuView => _menuPanel;
 
-        public SettingsPopup MainMenuSettingsPopup => _mainMenuSettingsPopup;
+        //public SettingsPopup MainMenuSettingsPopup => _mainMenuSettingsPopup;
 
         public SettingsPopup GameSettingsPopup => _gameSettingsPopup;
 
@@ -41,13 +41,13 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
 
-            _settingsPopup.OnOkClicked += _audioSource.Play;
-            _settingsPopup.OnHomeClicked += _audioSource.Play;
-            _settingsPopup.OnCloseClicked += _audioSource.Play;
+            _gameSettingsPopup.OnOkClicked += _audioSource.Play;
+            _gameSettingsPopup.OnHomeClicked += _audioSource.Play;
+            _gameSettingsPopup.OnCloseClicked += _audioSource.Play;
 
             _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
 
-            _settingsPopup.OnHomeClicked += GoHome;
+            _gameSettingsPopup.OnHomeClicked += GoHome;
 
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
@@ -73,13 +73,13 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _gamePanel.OnNextLevelClicked -= _audioSource.Play;
             _gamePanel.OnExitMainMenuClicked -= _audioSource.Play;
 
-            _settingsPopup.OnOkClicked -= _audioSource.Play;
-            _settingsPopup.OnHomeClicked -= _audioSource.Play;
-            _settingsPopup.OnCloseClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnOkClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnHomeClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnCloseClicked -= _audioSource.Play;
 
             _topbarScreenPanel.OnSettingsButtonClicked -= _audioSource.Play;
 
-            _settingsPopup.OnHomeClicked -= GoHome;
+            _gameSettingsPopup.OnHomeClicked -= GoHome;
         }
     }
 }
