@@ -3,6 +3,7 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
@@ -60,6 +61,9 @@ namespace LegoBattaleRoyal.App
             var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
             topbarController.ShowTopbar();
 
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
+            levelSelectController.ShowLevelSelect();
+
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
@@ -88,6 +92,7 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
 
                 _uiContainer.LoadingScreen.SetActive(false);
+                levelSelectController.CloseLevelSelect();
                 _uiContainer.MenuView.Close();
                 _uiContainer.Background.SetActive(false);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
