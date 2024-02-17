@@ -58,8 +58,9 @@ namespace LegoBattaleRoyal.App
             var topbarPopup = _uiContainer.TopbarScreenPanel;
             var topbarController = new TopbarController(topbarPopup);
 
-            var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(topbarController, settingsPopup, _soundController);
+            var mainSettingsPopup = _uiContainer.MainMenuSettingsPopup;
+            var gameSettingsPopup = _uiContainer.GameSettingsPopup;
+            var settingsController = new SettingsController(topbarController, mainSettingsPopup, gameSettingsPopup, _soundController);
             topbarController.ShowTopbar();
             _uiContainer.LoadingScreen.SetActive(false);
 
