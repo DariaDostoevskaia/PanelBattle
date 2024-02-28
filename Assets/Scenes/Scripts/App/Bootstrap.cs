@@ -3,6 +3,7 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
@@ -30,6 +31,8 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
+            _uiContainer.Background.SetActive(true);
+            _uiContainer.TopbarScreenPanel.Show();
             _uiContainer.LoadingScreen.SetActive(true);
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
@@ -51,10 +54,6 @@ namespace LegoBattaleRoyal.App
 
             walletController.LoadWalletData();
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
-            menuController.OnGameStarted += StartGame;
-            menuController.ShowMenu();
-
             var topbarPopup = _uiContainer.TopbarScreenPanel;
             var topbarController = new TopbarController(topbarPopup);
 
@@ -62,6 +61,14 @@ namespace LegoBattaleRoyal.App
             var gameSettingsPopup = _uiContainer.GameSettingsPopup;
             var settingsController = new SettingsController(topbarController, gameSettingsPopup, _soundController);
             topbarController.ShowTopbar();
+
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
+            levelSelectController.ShowLevelSelect();
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            menuController.OnGameStarted += StartGame;
+            menuController.ShowMenu();
+
             _uiContainer.LoadingScreen.SetActive(false);
 
             OnDisposed += () =>
@@ -86,8 +93,9 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
 
                 _uiContainer.LoadingScreen.SetActive(false);
+                levelSelectController.CloseLevelSelect();
                 _uiContainer.MenuView.Close();
-
+                _uiContainer.Background.SetActive(false);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
             }
         }
