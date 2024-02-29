@@ -57,15 +57,13 @@ namespace LegoBattaleRoyal.App
             var topbarPopup = _uiContainer.TopbarScreenPanel;
             var topbarController = new TopbarController(topbarPopup);
 
-            //var mainSettingsPopup = _uiContainer.MainMenuSettingsPopup;
             var gameSettingsPopup = _uiContainer.GameSettingsPopup;
             var settingsController = new SettingsController(topbarController, gameSettingsPopup, _soundController);
-            topbarController.ShowTopbar();
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
             levelSelectController.ShowLevelSelect();
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, _uiContainer.MainMenuSettingsPopup);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
@@ -92,10 +90,13 @@ namespace LegoBattaleRoyal.App
 
                 _gameBootstrap.OnRestarted += StartGame;
 
+                topbarController.ShowTopbar();
+
                 _uiContainer.LoadingScreen.SetActive(false);
                 levelSelectController.CloseLevelSelect();
                 _uiContainer.MenuView.Close();
                 _uiContainer.Background.SetActive(false);
+
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
             }
         }
