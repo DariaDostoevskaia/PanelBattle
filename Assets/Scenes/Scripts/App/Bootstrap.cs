@@ -90,13 +90,12 @@ namespace LegoBattaleRoyal.App
 
                 _gameBootstrap.OnRestarted += StartGame;
 
-                topbarController.ShowTopbar();
-
                 _uiContainer.LoadingScreen.SetActive(false);
                 levelSelectController.CloseLevelSelect();
                 _uiContainer.MenuView.Close();
                 _uiContainer.Background.SetActive(false);
 
+                topbarController.ShowTopbar();
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
             }
         }
