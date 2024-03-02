@@ -1,4 +1,3 @@
-using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,56 +8,39 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
     {
         public event Action OnStartGameClicked;
 
+        public event Action<bool> SettingsRequested;
+
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _endGameButton;
 
         [SerializeField] private Toggle _levelSelectToggle;
         [SerializeField] private Toggle _settingsToggle;
 
-        [SerializeField] private SettingsPopup _settingsPopup;
-        [SerializeField] private GameObject _settingsButtonsPanel;
-
-        [SerializeField] private GameObject _levelSettingsPanel;
+        [SerializeField] private RectTransform _levelSettingsPanel;
 
         private void Start()
         {
-            _settingsPopup.gameObject.SetActive(false);
-
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
 
             _endGameButton.onClick.AddListener(EndGame);
 
-            _levelSelectToggle.onValueChanged.AddListener((isOn) =>
-            {
-                if (isOn)
-                {
-                    ShowLevelSettingsPanel();
-                }
-            });
-
             _settingsToggle.onValueChanged.AddListener((isOn) =>
             {
-                if (isOn)
-                {
-                    ShowSettingsPanel();
-                }
+                SettingsRequested?.Invoke(isOn);
+            });
+
+            _levelSelectToggle.onValueChanged.AddListener((isOn) =>
+            {
+                _levelSettingsPanel.gameObject.SetActive(isOn);
             });
         }
 
-        private void ShowSettingsPanel()
+        public void SetActiveLevelToggleWithoutNotify()
         {
-            _settingsPopup.gameObject.SetActive(true);
-            _settingsButtonsPanel.SetActive(true);
+            _settingsToggle.SetIsOnWithoutNotify(false);
 
-            _levelSettingsPanel.SetActive(false);
-        }
-
-        private void ShowLevelSettingsPanel()
-        {
-            _levelSettingsPanel.SetActive(true);
-
-            _settingsPopup.gameObject.SetActive(false);
-            _settingsButtonsPanel.SetActive(false);
+            _levelSelectToggle.SetIsOnWithoutNotify(true);
+            _levelSettingsPanel.gameObject.SetActive(true);
         }
 
         public void Show()
@@ -83,7 +65,6 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
             _startGameButton.onClick.RemoveAllListeners();
             _endGameButton.onClick.RemoveAllListeners();
 
-            _levelSelectToggle.onValueChanged.RemoveAllListeners();
             _settingsToggle.onValueChanged.RemoveAllListeners();
         }
     }

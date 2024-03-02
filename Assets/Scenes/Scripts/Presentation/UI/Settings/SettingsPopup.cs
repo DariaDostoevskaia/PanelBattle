@@ -13,6 +13,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 
         public event Action OnHomeClicked;
 
+        public event Action Closed;
+
         public event Action<float> OnMusicVolumeChanged;
 
         public event Action<float> OnSoundVolumeChanged;
@@ -23,6 +25,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         [SerializeField] private Button _okButton;
         [SerializeField] private Button _homeButton;
         [SerializeField] private Button _closeButton;
+
+        [SerializeField] private RectTransform[] _parts;
 
         private void Start()
         {
@@ -35,7 +39,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 PlayerPrefs.SetFloat(SoundController.SoundVolume, _soundSlider.value);
                 PlayerPrefs.Save();
 
-                gameObject.SetActive(false);
+                Close();
 
                 OnOkClicked?.Invoke();
             });
@@ -44,16 +48,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             {
                 LoadPrefs();
 
-                gameObject.SetActive(false);
+                Close();
 
                 OnHomeClicked?.Invoke();
             });
 
-            _closeButton.onClick.AddListener(() =>
+            if (_closeButton != null)
+                _closeButton.onClick.AddListener(() =>
             {
                 LoadPrefs();
 
-                gameObject.SetActive(false);
+                Close();
 
                 OnCloseClicked?.Invoke();
             });
@@ -68,6 +73,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         public void Show()
         {
             gameObject.SetActive(true);
+            foreach (var part in _parts)
+            {
+                part.gameObject.SetActive(true);
+            }
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
+            foreach (var part in _parts)
+            {
+                part.gameObject.SetActive(false);
+            }
+            Closed?.Invoke();
         }
 
         private void LoadPrefs()
@@ -87,6 +106,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             OnOkClicked = null;
             OnHomeClicked = null;
             OnCloseClicked = null;
+            Closed = null;
 
             OnMusicVolumeChanged = null;
             OnSoundVolumeChanged = null;
@@ -96,7 +116,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 
             _okButton.onClick.RemoveAllListeners();
             _homeButton.onClick.RemoveAllListeners();
-            _closeButton.onClick.RemoveAllListeners();
+
+            if (_closeButton != null)
+                _closeButton.onClick.RemoveAllListeners();
         }
     }
 }

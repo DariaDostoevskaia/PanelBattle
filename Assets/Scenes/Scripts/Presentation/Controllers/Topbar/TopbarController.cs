@@ -5,20 +5,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
 {
     public class TopbarController : IDisposable
     {
-        public event Action OnButtonClicked;
-
         private readonly TopbarScreenPanel _topbarPopup;
+        private readonly SettingsController _settingsController;
 
-        public TopbarController(TopbarScreenPanel topbarPopup)
+        public TopbarController(TopbarScreenPanel topbarPopup, SettingsController settingsController)
         {
             _topbarPopup = topbarPopup;
+            _settingsController = settingsController;
 
             _topbarPopup.OnSettingsButtonClicked += OnSettingsButtonClicked;
         }
 
         public void OnSettingsButtonClicked()
         {
-            OnButtonClicked?.Invoke();
+            _settingsController.ShowSettings();
         }
 
         public void ShowTopbar()
@@ -28,8 +28,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
 
         public void Dispose()
         {
-            OnButtonClicked = null;
-
             _topbarPopup.OnSettingsButtonClicked -= OnSettingsButtonClicked;
         }
     }
