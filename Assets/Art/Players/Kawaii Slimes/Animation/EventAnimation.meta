@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Players/Kawaii Slimes/Animation/EventAnimation.meta
 guid: 44946597bc75af845a8af97c0571e3aa
+========
+guid: 296d6e8619cf9c04fa517f1aeffd1b64
+>>>>>>>> master:Assets/Art/Players/DragonsHP.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,5 +1,6 @@
 using Cinemachine;
 using EasyButtons;
+using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
@@ -24,6 +25,7 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
+
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -35,10 +37,13 @@ namespace LegoBattaleRoyal.App
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
-            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController)
+            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController,
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             var characterSO = gameSettingsSO.CharacterSO;
+
             var currentLevel = levelRepository.GetCurrentLevel();
+            Debug.Log($"Level: {currentLevel.Order}");
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var music = levelSO.LevelMusic;
@@ -58,10 +63,10 @@ namespace LegoBattaleRoyal.App
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
                 CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController,
-                    _endGameController, gameSettingsSO);
+                    _endGameController, gameSettingsSO, analyticsProvider);
             }
             CreatePlayer(characterSO, _characterRepository, pairs, roundController,
-                _endGameController, gameSettingsSO);
+                _endGameController, gameSettingsSO, analyticsProvider);
 
             _characterRepository
                 .GetAll()
@@ -100,7 +105,8 @@ namespace LegoBattaleRoyal.App
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
             (PanelModel panelModel, PanelView panelView)[] pairs, RoundController roundController,
-            EndGameController endGameController, GameSettingsSO gameSettingsSO)
+            EndGameController endGameController, GameSettingsSO gameSettingsSO,
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             var characterModel = characterSO is AICharacterSO aiCharacterSO
 
@@ -114,8 +120,6 @@ namespace LegoBattaleRoyal.App
             var characterView = Instantiate(characterSO.ViewPrefab);
 
             var playerColor = characterModel.Id.ToColor();
-
-            characterView.SetColor(playerColor);
 
             characterView.SetJumpHeight(characterSO.JumpHeight);
             characterView.SetMoveDuration(characterSO.MoveDuration);
@@ -137,11 +141,11 @@ namespace LegoBattaleRoyal.App
             if (characterModel is AICharacterModel)
             {
                 CreateAIPlayerModule(panelController, pairs, (AICharacterModel)characterModel,
-                    roundController, endGameController);
+                    roundController, endGameController, analyticsProvider);
             }
             else
             {
-                CreateMainPlayerModule(panelController, roundController, endGameController);
+                CreateMainPlayerModule(panelController, roundController, endGameController, analyticsProvider);
 
                 _cinemachineCamera.Follow = characterView.transform;
                 _cinemachineCamera.LookAt = characterView.transform;
@@ -179,7 +183,7 @@ namespace LegoBattaleRoyal.App
         }
 
         public void CreateMainPlayerModule(PanelController panelController, RoundController roundController,
-            EndGameController endGameController)
+            EndGameController endGameController, Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             panelController.OnMoveSelected += ChangeRound;
             panelController.SubscribeOnInput();
@@ -194,6 +198,7 @@ namespace LegoBattaleRoyal.App
             void LoseGame()
             {
                 endGameController.LoseGame();
+                analyticsProvider.SendEvent(AnalyticsEvents.Lose);
 
                 panelController.OnMoveSelected -= ChangeRound;
 
@@ -204,7 +209,8 @@ namespace LegoBattaleRoyal.App
         }
 
         public void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
-            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController)
+            AICharacterModel characterModel, RoundController roundController, EndGameController endGameController,
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
             var aiController = new AIController(panelController, pairs, characterModel);
             roundController.OnRoundChanged += aiController.ProcessRound;
@@ -218,12 +224,14 @@ namespace LegoBattaleRoyal.App
                 panelController.OnCharacterLoss -= TryWinGame;
 
                 endGameController.TryWinGame();
+                analyticsProvider.SendEvent(AnalyticsEvents.Win);
             }
         }
 
         public void Dispose()
         {
             OnDisposed?.Invoke();
+
             OnDisposed = null;
             OnRestarted = null;
         }

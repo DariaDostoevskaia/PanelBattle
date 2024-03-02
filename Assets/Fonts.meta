@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Fonts.meta
 guid: e7f97bf55a9d5004e9243e73ce4fb657
+========
+guid: 56f584608be36a740b4a30faff696290
+>>>>>>>> master:Assets/Android.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

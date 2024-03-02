@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/UI/LevelSelect/LevelSelectView.cs.meta
 guid: a48d72d240b9cda4fbd3fd5657ccaa24
+========
+guid: 636c6f63de511ff45bbea6b346c3dc09
+>>>>>>>> master:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/AdUnit.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -26,9 +26,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             CharacterModel characterModel, CharacterView characterView,
             CapturePathController capturePathController)
         {
+            _pairs = pairs;
             _characterModel = characterModel;
             _characterView = characterView;
-            _pairs = pairs;
             _capturePathController = capturePathController;
         }
 
@@ -151,9 +151,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 
             if (captureIsReady)
             {
-                _characterView.Capture();
-                _capturePathController.ResetPath();
+                _characterView.OnJumped += OnCaptureEnd;
             }
+        }
+
+        private void OnCaptureEnd(bool isMoving)
+        {
+            if (isMoving)
+                return;
+
+            _characterView.OnJumped -= OnCaptureEnd;
+            _characterView.Capture();
+            _capturePathController.ResetPath();
         }
 
         private void OnPanelHover(PanelView view)

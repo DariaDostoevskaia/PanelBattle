@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Fonts/Montserrat-Black SDF.asset.meta
 guid: c2beadc0fdb8aec489bda4b468fc8ea0
 NativeFormatImporter:
+========
+guid: 287947d4983f9f64493d09faccf36da0
+PrefabImporter:
+>>>>>>>> master:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_5_Pre.prefab.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 

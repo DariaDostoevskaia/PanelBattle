@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/ScreenshotCompanion.meta
 guid: 040aee4029b853844bf419b70416c867
+========
+guid: 245dfd6920d835f4089e7ebcacec1ca5
+>>>>>>>> master:Assets/Art/Backgrounds/Game.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
