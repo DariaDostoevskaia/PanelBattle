@@ -38,6 +38,7 @@ namespace LegoBattaleRoyal.App
         private async UniTaskVoid ConfigureAsync()
         {
             _uiContainer.LoadingScreen.Show();
+            await _uiContainer.LoadingScreen.LoadMockAsync();
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
