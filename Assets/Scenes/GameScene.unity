@@ -831,7 +831,7 @@ PrefabInstance:
     - target: {fileID: 2388513592504072355, guid: f90d9d4c99867f24081eb4e016dcd61c,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4224455233155373391, guid: f90d9d4c99867f24081eb4e016dcd61c,
         type: 3}
@@ -851,12 +851,12 @@ PrefabInstance:
     - target: {fileID: 4224455233155373391, guid: f90d9d4c99867f24081eb4e016dcd61c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 208
       objectReference: {fileID: 0}
     - target: {fileID: 4224455233155373391, guid: f90d9d4c99867f24081eb4e016dcd61c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -93.01
       objectReference: {fileID: 0}
     - target: {fileID: 4599611472157940079, guid: f90d9d4c99867f24081eb4e016dcd61c,
         type: 3}
@@ -1842,6 +1842,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900949134}
   m_CullTransparentMesh: 1
+--- !u!1 &1001008808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001008810}
+  - component: {fileID: 1001008809}
+  m_Layer: 0
+  m_Name: ScreenshotCompanion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1001008809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001008808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f3be723b7d574b88248c5ed72fdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list:
+  - cam: {fileID: 330585543}
+    deleteQuestion: 0
+    hotkey: 9
+  settings:
+    signatureColor: {r: 1, g: 0, b: 0.5, a: 1}
+    customFileName: 
+    includeProject: 1
+    includeCamera: 1
+    includeDate: 1
+    includeResolution: 0
+    includeCounter: 0
+    counter: 0
+    fileType: 0
+    applicationPath: 0
+    customDirectoryName: 
+    captureMethod: 0
+    singleCamera: 0
+    renderSizeMultiplier: 1
+    captureSizeMultiplier: 1
+    cutoutPosition: {x: 0, y: 0}
+    cutoutSize: {x: 0, y: 0}
+  foldoutSettings: 0
+  lastCamID: 0
+  lastCam: {fileID: 330585545}
+--- !u!4 &1001008810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001008808}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 400, y: 368, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1048069291
 GameObject:
   m_ObjectHideFlags: 0
@@ -4786,6 +4855,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1147830071}
   - {fileID: 330585546}
+  - {fileID: 1001008810}
   - {fileID: 557913348}
   - {fileID: 410087041}
   - {fileID: 832575519}

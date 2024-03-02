@@ -68,8 +68,6 @@ namespace LegoBattaleRoyal.App
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
-            topbarController.ShowTopbar();
-
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
             levelSelectController.ShowLevelSelect();
 
