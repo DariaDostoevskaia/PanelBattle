@@ -59,16 +59,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
             _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
 
-            _gameSettingsPopup.OnHomeClicked += GoHome;
-
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
-        }
-
-        private void GoHome()
-        {
-            _gamePanel.Close();
-            _menuPanel.Show();
         }
 
         public void CloseAll()
@@ -90,8 +82,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _gameSettingsPopup.OnCloseClicked -= _audioSource.Play;
 
             _topbarScreenPanel.OnSettingsButtonClicked -= _audioSource.Play;
-
-            _gameSettingsPopup.OnHomeClicked -= GoHome;
         }
     }
 }

@@ -233,7 +233,7 @@ RectTransform:
   m_Father: {fileID: 5384079394578508377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.65396535, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: -0}
   m_SizeDelta: {x: 10, y: 6.9914}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -694,7 +694,7 @@ RectTransform:
   m_Father: {fileID: 5135253413045275363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.65396535, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: -0}
   m_SizeDelta: {x: 10, y: 6.9914}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -769,9 +769,9 @@ RectTransform:
   - {fileID: 7279637816736028318}
   m_Father: {fileID: 8853237295033077875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6743000444767776336
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 2062939649199151553}
   - component: {fileID: 6726833559792987648}
   m_Layer: 5
-  m_Name: ExitToMenuButton
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -986,9 +986,9 @@ RectTransform:
   - {fileID: 5513448218282230631}
   m_Father: {fileID: 8853237295033077875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -106.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5801004165743332281
@@ -1145,7 +1145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2092632814718870278
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1184,8 +1184,8 @@ MonoBehaviour:
   _soundSlider: {fileID: 4252999584275045508}
   _musicSlider: {fileID: 1111613533841255847}
   _okButton: {fileID: 2290740836803320707}
-  _homeButton: {fileID: 2062939649199151553}
-  _closeButton: {fileID: 8290504258195776307}
+  _homeButton: {fileID: 8290504258195776307}
+  _closeButton: {fileID: 2062939649199151553}
   _parts:
   - {fileID: 2092632814718870278}
 --- !u!1 &8242757932000714938
@@ -1667,7 +1667,7 @@ PrefabInstance:
     - target: {fileID: 7637681175056657821, guid: ad283f59dd7e3494590e58c2936d76db,
         type: 3}
       propertyPath: m_Name
-      value: ExitButton
+      value: ExitToTheMainMenuButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

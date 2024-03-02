@@ -44,7 +44,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 OnOkClicked?.Invoke();
             });
 
-            _homeButton.onClick.AddListener(() =>
+            if (_homeButton != null)
+                _homeButton.onClick.AddListener(() =>
             {
                 LoadPrefs();
 
@@ -53,15 +54,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 OnHomeClicked?.Invoke();
             });
 
-            if (_closeButton != null)
-                _closeButton.onClick.AddListener(() =>
-            {
-                LoadPrefs();
+            _closeButton.onClick.AddListener(() =>
+        {
+            LoadPrefs();
 
-                Close();
+            Close();
 
-                OnCloseClicked?.Invoke();
-            });
+            OnCloseClicked?.Invoke();
+        });
 
             _musicSlider.SetValueWithoutNotify(PlayerPrefs
                 .GetFloat(SoundController.MusicVolume, 1f));
@@ -115,10 +115,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             _soundSlider.onValueChanged.RemoveAllListeners();
 
             _okButton.onClick.RemoveAllListeners();
-            _homeButton.onClick.RemoveAllListeners();
+            _closeButton.onClick.RemoveAllListeners();
 
-            if (_closeButton != null)
-                _closeButton.onClick.RemoveAllListeners();
+            if (_homeButton != null)
+                _homeButton.onClick.RemoveAllListeners();
         }
     }
 }

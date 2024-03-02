@@ -66,6 +66,7 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
             _endGameButton.onClick.RemoveAllListeners();
 
             _settingsToggle.onValueChanged.RemoveAllListeners();
+            _levelSelectToggle.onValueChanged.RemoveAllListeners();
         }
     }
 }

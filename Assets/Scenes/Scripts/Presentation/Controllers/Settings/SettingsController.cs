@@ -1,5 +1,8 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsController : IDisposable
 {
@@ -17,6 +20,18 @@ public class SettingsController : IDisposable
         _settingsPopup.OnSoundVolumeChanged += _soundController.SetSoundVolume;
 
         _settingsPopup.Closed += OnClosed;
+        _settingsPopup.OnHomeClicked += OnHomeClicked;
+    }
+
+    private void OnHomeClicked()
+    {
+        var progress = new Progress<float>((progressValue) =>
+        {
+            //var loadingController;
+            Debug.Log(progressValue);
+        });
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadSceneAsync(currentSceneIndex).ToUniTask(progress).Forget();
     }
 
     private void OnClosed()
@@ -42,5 +57,6 @@ public class SettingsController : IDisposable
         _settingsPopup.OnSoundVolumeChanged -= _soundController.SetSoundVolume;
 
         _settingsPopup.Closed -= OnClosed;
+        _settingsPopup.OnHomeClicked -= OnHomeClicked;
     }
 }
