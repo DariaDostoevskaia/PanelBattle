@@ -115,12 +115,12 @@ namespace LegoBattaleRoyal.App
                     return;
                 }
 
-                if (entriesGameNumber % 4 == 0)
-                {
-                    adsProvider.ShowInterstitial();
-                    Debug.Log("Intrestitial show.");
-                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
-                }
+                //if (entriesGameNumber % 4 == 0)
+                //{
+                //    adsProvider.ShowInterstitial();
+                //    Debug.Log("Intrestitial show.");
+                //    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                //}
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
