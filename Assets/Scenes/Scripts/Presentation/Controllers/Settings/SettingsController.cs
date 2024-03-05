@@ -1,35 +1,59 @@
+using Cysharp.Threading.Tasks;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SettingsController : IDisposable
+namespace LegoBattaleRoyal.Presentation.Controllers.Settings
 {
-    private readonly TopbarController _topbarController;
-    private readonly SettingsPopup _settingsPopup;
-    private readonly SoundController _soundController;
-
-    public SettingsController(TopbarController topbarController, SettingsPopup settingsPopup, SoundController soundController)
+    public class SettingsController : IDisposable
     {
-        _topbarController = topbarController;
-        _settingsPopup = settingsPopup;
-        _soundController = soundController;
+        private readonly TopbarController _topbarController;
+        private readonly SettingsPopup _settingsPopup;
+        private readonly SoundController _soundController;
+        private readonly LoadingController _loadingController;
 
-        _settingsPopup.OnMusicVolumeChanged += _soundController.SetMusicVolume;
-        _settingsPopup.OnSoundVolumeChanged += _soundController.SetSoundVolume;
+        public SettingsController(TopbarController topbarController, SettingsPopup settingsPopup,
+            SoundController soundController, LoadingController loadingController)
+        {
+            _topbarController = topbarController;
+            _settingsPopup = settingsPopup;
+            _soundController = soundController;
+            _loadingController = loadingController;
 
-        _topbarController.OnButtonClicked += ShowSettings;
-    }
+            _settingsPopup.OnMusicVolumeChanged += _soundController.SetMusicVolume;
+            _settingsPopup.OnSoundVolumeChanged += _soundController.SetSoundVolume;
 
-    public void ShowSettings()
-    {
-        _settingsPopup.Show();
-    }
+            _topbarController.OnButtonClicked += ShowSettings;
+        }
 
-    public void Dispose()
-    {
-        _settingsPopup.OnMusicVolumeChanged -= _soundController.SetMusicVolume;
-        _settingsPopup.OnSoundVolumeChanged -= _soundController.SetSoundVolume;
+        private void OnHomeClicked()
+        {
+            // for settings popup branch:
+            // _settingsPopup.OnHomeClicked += OnHomeClicked;
 
-        _topbarController.OnButtonClicked -= ShowSettings;
+            var progress = new Progress<float>((progressValue) =>
+            {
+                _loadingController.LoadMockAsync().Forget();
+                Debug.Log(progressValue);
+            });
+            var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadSceneAsync(currentSceneIndex).ToUniTask(progress).Forget();
+        }
+
+        public void ShowSettings()
+        {
+            _settingsPopup.Show();
+        }
+
+        public void Dispose()
+        {
+            _settingsPopup.OnMusicVolumeChanged -= _soundController.SetMusicVolume;
+            _settingsPopup.OnSoundVolumeChanged -= _soundController.SetSoundVolume;
+
+            _topbarController.OnButtonClicked -= ShowSettings;
+        }
     }
 }

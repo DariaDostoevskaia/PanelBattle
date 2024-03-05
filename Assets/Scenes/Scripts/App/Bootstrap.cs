@@ -6,7 +6,9 @@ using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Settings;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
@@ -37,13 +39,15 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
-            _uiContainer.LoadingScreen.Show();
-            await _uiContainer.LoadingScreen.LoadMockAsync();
+            var loadingController = new LoadingController(_uiContainer.LoadingScreen);
+            loadingController.ShowLoadingPopup();
+            await loadingController.LoadMockAsync();
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
 
             _uiContainer.CloseAll();
+
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
@@ -68,11 +72,11 @@ namespace LegoBattaleRoyal.App
             menuController.ShowMenu();
 
             var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, loadingController);
 
             topbarController.ShowTopbar();
 
-            _uiContainer.LoadingScreen.Close();
+            loadingController.CloseLoadingPopup();
 
             OnDisposed += () =>
             {
@@ -125,7 +129,7 @@ namespace LegoBattaleRoyal.App
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
 
-                _uiContainer.LoadingScreen.Close();
+                loadingController.CloseLoadingPopup();
                 menuController.CloseMenu();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
