@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 {
-    public class GamePanelUI : MonoBehaviour
+    public class GamePanelUI : BaseViewUI
     {
         public event Action OnRestartClicked;
 
@@ -38,16 +39,6 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
         public void SetActiveNextLevelButton(bool value)
         {
             _nextLevelGameButton.gameObject.SetActive(value);
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
         }
 
         private void OnDestroy()

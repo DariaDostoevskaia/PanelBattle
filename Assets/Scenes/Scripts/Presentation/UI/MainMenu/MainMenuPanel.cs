@@ -1,10 +1,11 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 {
-    public class MainMenuPanel : MonoBehaviour
+    public class MainMenuPanel : BaseViewUI
     {
         public event Action OnStartGameClicked;
 
@@ -15,16 +16,6 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
         }
 
         private void EndGame()

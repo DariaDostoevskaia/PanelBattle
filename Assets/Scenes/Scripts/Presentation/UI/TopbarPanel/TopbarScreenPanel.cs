@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 {
-    public class TopbarScreenPanel : MonoBehaviour
+    public class TopbarScreenPanel : BaseViewUI
     {
         public event Action OnSettingsButtonClicked;
 
@@ -15,11 +16,6 @@ namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
         private void Start()
         {
             _settingsButton.onClick.AddListener(() => OnSettingsButtonClicked?.Invoke());
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
         }
 
         public void SetText(int count)
