@@ -1,10 +1,8 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
-using LegoBattaleRoyal.Presentation.UI.Container;
-using LegoBattaleRoyal.Presentation.UI.GamePanel;
-using LegoBattaleRoyal.Presentation.UI.General;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -14,63 +12,51 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     public class EndGameController : IDisposable
     {
         public event Action OnGameRestarted;
+
         public event Action OnProgressRemoved;
 
-        private readonly UIContainer _uiContainer;
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
-        private readonly GamePanelUI _endGamePopup;
-        private readonly GeneralPopup _generalPopup;
+        private readonly GeneralController _generalController;
+
         private readonly SoundController _soundController;
 
-        public EndGameController(UIContainer uiContainer, CharacterRepository characterRepository,
-            ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
+        public EndGameController(CharacterRepository characterRepository,
+            ILevelRepository levelRepository,
+            SoundController soundController,
+            WalletController walletController,
+            GeneralController generalController)
         {
-            _uiContainer = uiContainer;
-            _endGamePopup = _uiContainer.EndGamePopup;
-            _generalPopup = _uiContainer.GeneralPopup;
-
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
             _walletController = walletController;
             _soundController = soundController;
-
-            _endGamePopup.OnRestartClicked += RestartGame;
-            _endGamePopup.OnNextLevelClicked += RestartGame;
-            _endGamePopup.OnRemoveAllProgressClicked += Remove;
-            _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
+            _generalController = generalController;
         }
 
         private void Remove()
         {
-            _endGamePopup.Close();
-
             OnProgressRemoved?.Invoke();
         }
 
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //loadingScreen
         }
 
         private void RestartGame()
         {
-            _endGamePopup.Close();
-
             OnGameRestarted?.Invoke();
         }
 
         public void LoseGame()
         {
-            _endGamePopup.SetTitle("You Lose!");
-            _endGamePopup.SetActiveRestartButton(true);
-            _endGamePopup.SetActiveNextLevelButton(false);
-            _endGamePopup.SetActiveRemoveAllProgress(false);
-
             _soundController.PlayLoseGameMusic();
+            var currentLevel = _levelRepository.GetCurrentLevel();
 
-            _endGamePopup.Show();
+            _generalController.ShowLosePopup(RestartGame, ExitMainMenu);
         }
 
         public bool TryWinGame()
@@ -87,27 +73,30 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
-            _endGamePopup.SetTitle("You Win!");
-            _endGamePopup.SetActiveRestartButton(false);
-            _endGamePopup.SetActiveRemoveAllProgress(false);
-            _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
-
             _soundController.PLayWinGameMusic();
 
             if (!isLastLevel)
             {
-                var nextLevel = _levelRepository.GetNextLevel();
-                currentLevel.Exit();
-                nextLevel.Launch();
-
-                _endGamePopup.Show();
+                _generalController.ShowWinLevelPopup(() =>
+                {
+                    var nextLevel = _levelRepository.GetNextLevel();
+                    currentLevel.Exit();
+                    nextLevel.Launch();
+                    RestartGame();
+                }, ExitMainMenu);
 
                 return true;
             }
 
-            _endGamePopup.SetTitle("You Won this game!");
-            _endGamePopup.SetActiveRemoveAllProgress(true);
-            _endGamePopup.Show();
+            _generalController.ShowWinGamePopup(() =>
+            {
+                currentLevel.Exit();
+                var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+                var firstLevel = _levelRepository.Get(firstLevelOrder);
+                firstLevel.Launch();
+                RestartGame();
+            }, ExitMainMenu);
+
             return true;
         }
 
@@ -115,11 +104,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         {
             OnGameRestarted = null;
             OnProgressRemoved = null;
-
-            _endGamePopup.OnRestartClicked -= RestartGame;
-            _endGamePopup.OnNextLevelClicked -= RestartGame;
-            _endGamePopup.OnRemoveAllProgressClicked -= Remove;
-            _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
 }

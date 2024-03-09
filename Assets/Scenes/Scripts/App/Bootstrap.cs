@@ -67,7 +67,7 @@ namespace LegoBattaleRoyal.App
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
             var generalPopup = _uiContainer.GeneralPopup;
-            var generalController = new GeneralController(generalPopup);
+            var generalController = new GeneralController(generalPopup, walletController, levelRepository);
 
             var menuController = new MenuController(_uiContainer.MenuView);
             menuController.OnGameStarted += StartGame;
@@ -103,12 +103,12 @@ namespace LegoBattaleRoyal.App
                     return;
                 }
 
-                if (entriesGameNumber % 4 == 0)
-                {
-                    adsProvider.ShowInterstitial();
-                    Debug.Log("Intrestitial show.");
-                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
-                }
+                //if (entriesGameNumber % 4 == 0)
+                //{
+                //    adsProvider.ShowInterstitial();
+                //    Debug.Log("Intrestitial show.");
+                //    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                //}
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -120,7 +120,7 @@ namespace LegoBattaleRoyal.App
                 menuController.CloseMenu();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider);
 
                 async UniTask ShowRewardedAdsAsync()
                 {
