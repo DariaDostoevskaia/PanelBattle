@@ -8,6 +8,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Loading
     {
         private readonly LoadingScreenUI _loadingScreen;
         private readonly int _total = 100;
+        private readonly float _seconds = 0.2f;
 
         public LoadingController(LoadingScreenUI loadingScreen)
         {
@@ -22,6 +23,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Loading
         public void CloseLoadingPopup()
         {
             _loadingScreen.Close();
+        }
+
+        public void SetProgress(float percent)
+        {
+            _loadingScreen.SetProgress(percent);
         }
 
         public async UniTask LoadMockAsync()
@@ -40,14 +46,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Loading
             for (int i = 0; i <= _total; i++)
             {
                 progress.Report(i);
-                await UniTask.Delay(TimeSpan.FromSeconds(_loadingScreen.Seconds));
+                await UniTask.Delay(TimeSpan.FromSeconds(_seconds));
             }
-        }
-
-        private void SetProgress(float percent)
-        {
-            if (_loadingScreen.ProgressBar != null)
-                _loadingScreen.ProgressBar.value = percent;
         }
     }
 }

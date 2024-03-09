@@ -6,11 +6,11 @@ namespace LegoBattaleRoyal.Presentation.UI.LoadingPopup
     public class LoadingScreenUI : MonoBehaviour
     {
         [SerializeField] private Slider _progressBar;
-        [SerializeField] private float _seconds = 0.2f;
 
-        public Slider ProgressBar => _progressBar;
-
-        public float Seconds => _seconds;
+        public void SetProgress(float percent)
+        {
+            _progressBar.value = percent;
+        }
 
         public void Show()
         {

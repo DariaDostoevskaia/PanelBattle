@@ -3,7 +3,6 @@ using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Settings
@@ -31,13 +30,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Settings
 
         private void OnHomeClicked()
         {
-            // for settings popup branch:
-            // _settingsPopup.OnHomeClicked += OnHomeClicked;
-
             var progress = new Progress<float>((progressValue) =>
             {
-                _loadingController.LoadMockAsync().Forget();
-                Debug.Log(progressValue);
+                _loadingController.SetProgress(progressValue);
             });
             var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadSceneAsync(currentSceneIndex).ToUniTask(progress).Forget();
