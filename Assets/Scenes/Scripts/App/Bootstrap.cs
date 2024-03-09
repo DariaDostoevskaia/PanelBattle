@@ -5,6 +5,7 @@ using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -62,12 +63,15 @@ namespace LegoBattaleRoyal.App
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
             topbarController.ShowTopbar();
 
+            var settingsPopup = _uiContainer.SettingsPopup;
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+
+            var generalPopup = _uiContainer.GeneralPopup;
+            var generalController = new GeneralController(generalPopup);
+
             var menuController = new MenuController(_uiContainer.MenuView);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
-
-            var settingsPopup = _uiContainer.SettingsPopup;
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
             topbarController.ShowTopbar();
 
@@ -88,50 +92,13 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var generalPopup = _uiContainer.GeneralPopup;
-
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
-
-                // TODO
-
-                //var continueButton = generalPopup.CreateButton("Continue");
-                //continueButton.onClick.AddListener(() =>
-                //{
-                //    continueButton.interactable = false;
-                //    generalPopup.Close();
-                //});
-
-                //var exitButton = generalPopup.CreateButton("Exit");
-                //exitButton.onClick.AddListener(() =>
-                //{
-                //    exitButton.interactable = false;
-                //    generalPopup.Close();
-                //    menuController.ShowMenu();
-                //});
-
-                //generalPopup.SetTitle("Economic and awards.");
-                //generalPopup.SetText($"There are {_gameSettingsSO.Money} energy in your wallet. " +
-                //    $"The reward for the next level is {level.Reward} energy.");
-
-                //generalPopup.Show();
-
-                //TODO
 
                 if (!levelController.TryBuyLevel(level.Price))
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
-                    var showButton = generalPopup.CreateButton("Show Ads");
-                    showButton.onClick.AddListener(() =>
-                    {
-                        showButton.interactable = false;
-                        ShowRewardedAdsAsync().Forget();
-                    });
-
-                    generalPopup.SetTitle("Not enough energy.");
-                    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
-
-                    generalPopup.Show();
+                    generalController.ShowAdsPopup(() => ShowRewardedAdsAsync().Forget());
 
                     return;
                 }
@@ -169,10 +136,6 @@ namespace LegoBattaleRoyal.App
                     SaveNumberInputs(entriesGameNumber);
 
                     StartGame();
-                }
-
-                void ShowEconomicAndAward()
-                {
                 }
             }
         }
