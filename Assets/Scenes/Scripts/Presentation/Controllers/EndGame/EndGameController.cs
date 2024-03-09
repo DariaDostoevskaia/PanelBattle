@@ -14,10 +14,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     public class EndGameController : IDisposable
     {
         public event Action OnGameRestarted;
+        public event Action OnProgressRemoved;
 
-        private readonly ILevelRepository _levelRepository;
         private readonly UIContainer _uiContainer;
         private readonly CharacterRepository _characterRepository;
+        private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
         private readonly GamePanelUI _endGamePopup;
         private readonly GeneralPopup _generalPopup;
@@ -37,7 +38,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _endGamePopup.OnRestartClicked += RestartGame;
             _endGamePopup.OnNextLevelClicked += RestartGame;
+            _endGamePopup.OnRemoveAllProgressClicked += Remove;
             _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
+        }
+
+        private void Remove()
+        {
+            _endGamePopup.Close();
+
+            OnProgressRemoved?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -57,6 +66,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _endGamePopup.SetTitle("You Lose!");
             _endGamePopup.SetActiveRestartButton(true);
             _endGamePopup.SetActiveNextLevelButton(false);
+            _endGamePopup.SetActiveRemoveAllProgress(false);
 
             _soundController.PlayLoseGameMusic();
 
@@ -79,6 +89,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _endGamePopup.SetTitle("You Win!");
             _endGamePopup.SetActiveRestartButton(false);
+            _endGamePopup.SetActiveRemoveAllProgress(false);
             _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
 
             _soundController.PLayWinGameMusic();
@@ -94,16 +105,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return true;
             }
 
-            _endGamePopup.ShowLastLevel();
+            _endGamePopup.SetTitle("You Won this game!");
+            _endGamePopup.SetActiveRemoveAllProgress(true);
+            _endGamePopup.Show();
             return true;
         }
 
         public void Dispose()
         {
             OnGameRestarted = null;
+            OnProgressRemoved = null;
 
             _endGamePopup.OnRestartClicked -= RestartGame;
             _endGamePopup.OnNextLevelClicked -= RestartGame;
+            _endGamePopup.OnRemoveAllProgressClicked -= Remove;
             _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
