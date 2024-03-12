@@ -1,7 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MaterialIcons/MaterialIcon.cs.meta
 guid: b616e0308c79a454ebc4f2af9f4e7668
 timeCreated: 1585147601
 licenseType: Free
+========
+guid: 60e964e43e51c6b4b9aa5f928c89a3db
+>>>>>>>> dev:Assets/Scenes/Scripts/Presentation/Controllers/General/GeneralController.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

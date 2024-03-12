@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/UI/Buttons.meta
 guid: 17b413f8b949d6c47a66d51eeaa242f9
+========
+guid: ff81faddbcf38b348a81db6c112d5436
+>>>>>>>> dev:Assets/Art/Backgrounds/Game/Cobblestone/CobbleStone textures.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

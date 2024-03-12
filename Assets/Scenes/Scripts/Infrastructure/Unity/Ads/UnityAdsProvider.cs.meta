@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MaterialIcons/Editor/MenuOptions.cs.meta
+guid: c6056967d025d734fb8b6de31d3a4789
+timeCreated: 1614183199
+licenseType: Free
+========
+guid: 7b5da0439ffbe9340aaa19f6bd2dca2e
+>>>>>>>> dev:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/UnityAdsProvider.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

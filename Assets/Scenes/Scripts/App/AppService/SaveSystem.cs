@@ -9,6 +9,10 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+#if !UNITY_EDITOR
+using System.Linq;
+#endif
+
 namespace LegoBattaleRoyal.App.AppService
 {
     public class SaveService : ISaveService, IDisposable

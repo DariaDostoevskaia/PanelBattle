@@ -1,5 +1,5 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
-using LegoBattaleRoyal.Presentation.UI.GamePanel;
+using LegoBattaleRoyal.Presentation.UI.General;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
@@ -8,10 +8,11 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 {
     public class UIContainer : MonoBehaviour
     {
-        [SerializeField] private GamePanelUI _gamePanel;
-        [SerializeField] private MainMenuPanel _menuPanel;
+        [SerializeField] private MainMenuPanelUI _menuPanel;
+        [SerializeField] private GeneralPopup _generalPopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
+
         [SerializeField] private GameObject _loadingScreen;
         [SerializeField] private GameObject _background;
 
@@ -19,9 +20,9 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         private AudioSource _audioSource;
 
-        public GamePanelUI EndGamePopup => _gamePanel;
+        public MainMenuPanelUI MenuView => _menuPanel;
 
-        public MainMenuPanel MenuView => _menuPanel;
+        public GeneralPopup GeneralPopup => _generalPopup;
 
         public SettingsPopup SettingsPopup => _settingsPopup;
 
@@ -37,9 +38,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
 
-            _gamePanel.OnRestartClicked += _audioSource.Play;
-            _gamePanel.OnNextLevelClicked += _audioSource.Play;
-            _gamePanel.OnExitMainMenuClicked += _audioSource.Play;
+            _generalPopup.OnGeneralButtonClicked += _audioSource.Play;
 
             _settingsPopup.OnOkClicked += _audioSource.Play;
             _settingsPopup.OnHomeClicked += _audioSource.Play;
@@ -55,23 +54,26 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         private void GoHome()
         {
-            _gamePanel.Close();
+            CloseAll();
             _menuPanel.Show();
+            _topbarScreenPanel.Show();
         }
 
         public void CloseAll()
         {
-            _gamePanel.Close();
             _menuPanel.Close();
+
+            _generalPopup.Close();
+            _settingsPopup.Close();
+
+            _loadingScreen.SetActive(false);
         }
 
         private void OnDestroy()
         {
             _menuPanel.OnStartGameClicked -= _audioSource.Play;
 
-            _gamePanel.OnRestartClicked -= _audioSource.Play;
-            _gamePanel.OnNextLevelClicked -= _audioSource.Play;
-            _gamePanel.OnExitMainMenuClicked -= _audioSource.Play;
+            _generalPopup.OnGeneralButtonClicked -= _audioSource.Play;
 
             _settingsPopup.OnOkClicked -= _audioSource.Play;
             _settingsPopup.OnHomeClicked -= _audioSource.Play;

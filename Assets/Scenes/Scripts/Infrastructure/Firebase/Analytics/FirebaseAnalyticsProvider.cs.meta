@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/GameView/Character/AnimationConstants.cs.meta
+guid: b587b3925189c484ba70f41e37afb9e2
+========
 guid: 59ec28df2416b904d84909345f4dbaa1
+>>>>>>>> master:Assets/Scenes/Scripts/Infrastructure/Firebase/Analytics/FirebaseAnalyticsProvider.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
