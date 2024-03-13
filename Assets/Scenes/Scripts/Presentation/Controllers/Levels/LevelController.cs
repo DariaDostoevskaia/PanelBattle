@@ -57,9 +57,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
         public void RemoveAllProgress()
         {
-            var currentLevel = _levelRepository.GetAll().ToList().First();
+            var currentLevel = _levelRepository.GetCurrentLevel();
+            currentLevel.Exit();
+
+            var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+            var firstLevel = _levelRepository.Get(firstLevelOrder);
+            firstLevel.Launch();
+
             _saveService.DeleteAllLocal();
-            _saveService.Save(currentLevel);
+            _saveService.Save(firstLevel);
         }
 
         private void OnSuccessEnded()

@@ -44,6 +44,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             OnGameProgressRemoved = null;
 
             _menuView.OnStartGameClicked -= StartGame;
+            _menuView.OnRemoveProgressGameClicked -= RemoveGameProgress;
         }
     }
 }

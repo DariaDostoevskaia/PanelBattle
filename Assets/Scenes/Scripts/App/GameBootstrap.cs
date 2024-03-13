@@ -37,8 +37,9 @@ namespace LegoBattaleRoyal.App
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
             Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController)
         {
-            var characterSO = gameSettingsSO.CharacterSO;
             var currentLevel = levelRepository.GetCurrentLevel();
+            Debug.Log(currentLevel.Order + " level");
+
             var levelSO = gameSettingsSO.Levels[currentLevel.Order - 1];
 
             var music = levelSO.LevelMusic;
@@ -60,7 +61,7 @@ namespace LegoBattaleRoyal.App
                 CreatePlayer(levelSO.AICharactersSO[i], _characterRepository, pairs, roundController,
                     _endGameController, gameSettingsSO);
             }
-            CreatePlayer(characterSO, _characterRepository, pairs, roundController,
+            CreatePlayer(gameSettingsSO.CharacterSO, _characterRepository, pairs, roundController,
                 _endGameController, gameSettingsSO);
 
             _characterRepository
