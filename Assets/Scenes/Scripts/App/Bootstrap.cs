@@ -51,7 +51,7 @@ namespace LegoBattaleRoyal.App
 
             walletController.LoadWalletData();
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            var menuController = new MenuController(_uiContainer.MenuView, _uiContainer.RefinementPanel, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
             menuController.ShowMenu();
@@ -87,7 +87,7 @@ namespace LegoBattaleRoyal.App
                 _gameBootstrap.OnRestarted += StartGame;
 
                 _uiContainer.LoadingScreen.SetActive(false);
-                _uiContainer.MenuView.Close();
+                menuController.CloseMenu();
 
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController);
             }

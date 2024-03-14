@@ -11,20 +11,31 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public event Action OnGameProgressRemoved;
 
         private readonly MainMenuPanel _menuView;
+        private readonly RefinementPanel _refinementPanel;
         private readonly IAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanel menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanel menuView, RefinementPanel refinementPanel, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
+            _refinementPanel = refinementPanel;
             _analyticsProvider = analyticsProvider;
 
+            _refinementPanel.Close();
+
             _menuView.OnStartGameClicked += StartGame;
-            _menuView.OnRemoveProgressGameClicked += RemoveGameProgress;
+            _menuView.RemoveProgressGameClicked += ShowRefinementPanel;
+            _refinementPanel.RemoveProgressClicked += (value) => RemoveGameProgress(value);
         }
 
-        private void RemoveGameProgress()
+        private void RemoveGameProgress(bool value)
         {
-            OnGameProgressRemoved?.Invoke();
+            if (value == true)
+                OnGameProgressRemoved?.Invoke();
+        }
+
+        private void ShowRefinementPanel()
+        {
+            _refinementPanel.Show();
         }
 
         private void StartGame()
@@ -38,13 +49,19 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
+        public void CloseMenu()
+        {
+            _menuView.Close();
+        }
+
         public void Dispose()
         {
             OnGameStarted = null;
             OnGameProgressRemoved = null;
 
             _menuView.OnStartGameClicked -= StartGame;
-            _menuView.OnRemoveProgressGameClicked -= RemoveGameProgress;
+            _menuView.RemoveProgressGameClicked -= ShowRefinementPanel;
+            _refinementPanel.RemoveProgressClicked -= (value) => RemoveGameProgress(value);
         }
     }
 }

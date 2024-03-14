@@ -13,6 +13,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
         [SerializeField] private GameObject _loadingScreen;
+        [SerializeField] private RefinementPanel _refinementPanel;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -28,12 +29,14 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public GameObject LoadingScreen => _loadingScreen;
 
+        public RefinementPanel RefinementPanel => _refinementPanel;
+
         private void Start()
         {
             _audioSource = GetComponent<AudioSource>();
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
-            _menuPanel.OnRemoveProgressGameClicked += _audioSource.Play;
+            _menuPanel.RemoveProgressGameClicked += _audioSource.Play;
 
             _gamePanel.OnRestartClicked += _audioSource.Play;
             _gamePanel.OnNextLevelClicked += _audioSource.Play;
@@ -46,6 +49,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
 
             _settingsPopup.OnHomeClicked += GoHome;
+
+            //_refinementPanel.RemoveProgressClicked += _audioSource.Play ;
 
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
@@ -66,7 +71,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         private void OnDestroy()
         {
             _menuPanel.OnStartGameClicked -= _audioSource.Play;
-            _menuPanel.OnRemoveProgressGameClicked -= _audioSource.Play;
+            _menuPanel.RemoveProgressGameClicked -= _audioSource.Play;
 
             _gamePanel.OnRestartClicked -= _audioSource.Play;
             _gamePanel.OnNextLevelClicked -= _audioSource.Play;

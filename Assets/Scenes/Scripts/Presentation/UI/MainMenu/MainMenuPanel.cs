@@ -8,17 +8,18 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
     {
         public event Action OnStartGameClicked;
 
-        public event Action OnRemoveProgressGameClicked;
+        public event Action RemoveProgressGameClicked;
 
         [SerializeField] private Button _startGameButton;
-        [SerializeField] private Button _removeProgressGameButton;
         [SerializeField] private Button _endGameButton;
+
+        [SerializeField] private Button _removeProgressGameButton;
 
         private void Start()
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
-            _removeProgressGameButton.onClick.AddListener(() => OnRemoveProgressGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
+            _removeProgressGameButton.onClick.AddListener(() => RemoveProgressGameClicked?.Invoke());
         }
 
         public void Show()
@@ -39,11 +40,11 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         private void OnDestroy()
         {
             OnStartGameClicked = null;
-            OnRemoveProgressGameClicked = null;
+            RemoveProgressGameClicked = null;
 
             _startGameButton.onClick.RemoveAllListeners();
-            _removeProgressGameButton.onClick.RemoveAllListeners();
             _endGameButton.onClick.RemoveAllListeners();
+            _removeProgressGameButton.onClick.RemoveAllListeners();
         }
     }
 }
