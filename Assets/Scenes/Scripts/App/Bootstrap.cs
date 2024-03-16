@@ -45,6 +45,11 @@ namespace LegoBattaleRoyal.App
             if (_debugLogManager == null)
             {
                 _debugLogManager = Instantiate(_debugLogManagerPrefab);
+
+                DebugLogConsole.AddCommandInstance(nameof(RemoveProgress), "Remove all progress", nameof(RemoveProgress), this);
+                DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.WinGame), "Win level", nameof(_gameBootstrap.WinGame), _gameBootstrap);
+                DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.LoseLevel), "Lose level", nameof(_gameBootstrap.LoseLevel), _gameBootstrap);
+
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
 #endif
@@ -182,7 +187,6 @@ namespace LegoBattaleRoyal.App
 
 #if DEBUG
 
-        [ConsoleMethod(nameof(RemoveProgress), "Remove all progress")]
         [Button]
         private void RemoveProgress()
         {
