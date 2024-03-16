@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/QuickOutline/Scripts/QuickOutline.cs.meta
+guid: c87dac15e4587da4abaf3ec8a8eaf146
+timeCreated: 1522369084
+licenseType: Store
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/UI/General/GeneralPopup.cs.meta
+guid: 4224dacd9740db442a861bd822d2bb24
+========
 guid: 12d3a7e5e179205479f113bce94d79b0
+>>>>>>>> master:Assets/Scenes/Scripts/Core/AI/AIStrategy/HardAIMovementStrategy.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

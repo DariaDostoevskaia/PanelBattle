@@ -10,11 +10,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
         public event Action OnGameProgressRemoved;
 
-        private readonly MainMenuPanel _menuView;
+        private readonly MainMenuPanelUI _menuView;
         private readonly RefinementPanel _refinementPanel;
         private readonly IAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanel menuView, RefinementPanel refinementPanel, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanelUI menuView, RefinementPanel refinementPanel, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
             _refinementPanel = refinementPanel;
@@ -46,7 +46,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void ShowMenu()
         {
             _menuView.Show();
-            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void CloseMenu()
