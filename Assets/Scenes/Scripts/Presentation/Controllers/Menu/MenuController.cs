@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -8,10 +9,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        private readonly MainMenuPanel _menuView;
-        private readonly IAnalyticsProvider _analyticsProvider;
+        private readonly MainMenuPanelUI _menuView;
+        private readonly FirebaseAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanel menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanelUI menuView, FirebaseAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
@@ -22,12 +23,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         private void StartGame()
         {
             OnGameStarted?.Invoke();
+            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void ShowMenu()
         {
             _menuView.Show();
-            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
+        }
+
+        public void CloseMenu()
+        {
+            _menuView.Close();
         }
 
         public void Dispose()
