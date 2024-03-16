@@ -62,7 +62,7 @@ namespace LegoBattaleRoyal.App
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
             topbarController.ShowTopbar();
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.ShowMenu();
 
@@ -113,9 +113,9 @@ namespace LegoBattaleRoyal.App
 
                 if (entriesGameNumber % 4 == 0)
                 {
+                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                     adsProvider.ShowInterstitial();
                     Debug.Log("Intrestitial show.");
-                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                 }
 
                 generalPopup.Close();
