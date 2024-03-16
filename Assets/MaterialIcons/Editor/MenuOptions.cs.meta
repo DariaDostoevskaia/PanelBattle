@@ -1,7 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MaterialIcons/Editor/MenuOptions.cs.meta
 guid: 43dd1868dd14adf48939a5153365212b
 timeCreated: 1614183199
 licenseType: Free
+========
+guid: 7b5da0439ffbe9340aaa19f6bd2dca2e
+>>>>>>>> dev:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/UnityAdsProvider.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _music: {fileID: 8300000, guid: 5b1ed8fbe89154eaf96723b6e5f0aad3, type: 3}
   _panelSettings:
-  - {fileID: 11400000, guid: e150eb798991e234cbb2f1cb9122a345, type: 2}
-  - {fileID: 11400000, guid: 02e99734834d2154b894a59e07802d73, type: 2}
-  - {fileID: 11400000, guid: c8a7bb1f559bc214ca7fa0a3576ec1aa, type: 2}
-  - {fileID: 11400000, guid: 41df4ccd11e8d0c4b9e4a3095c511c9c, type: 2}
+  - {fileID: 11400000, guid: 906a9ae3039d70240bd64ac600bd5dfa, type: 2}
+  - {fileID: 11400000, guid: 906a9ae3039d70240bd64ac600bd5dfa, type: 2}
+  - {fileID: 11400000, guid: 701d6b562f9be024496d1792b878a457, type: 2}
+  - {fileID: 11400000, guid: 29b90818abafab14dbe69ab9d8f1d69e, type: 2}
+  - {fileID: 11400000, guid: 86b4efb4815a66a41819f5bcd23d56b8, type: 2}
+  - {fileID: 11400000, guid: 093627b690e389146a691582c9f10061, type: 2}
   _aICharacterSO:
   - {fileID: 11400000, guid: b9eb37c68a5e824418281b9696a4a9ef, type: 2}
   - {fileID: 11400000, guid: b9eb37c68a5e824418281b9696a4a9ef, type: 2}

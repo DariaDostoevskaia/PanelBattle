@@ -34,6 +34,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
             SaveWalletData();
         }
 
+        public int GetCurrentMoney()
+        {
+            return _walletModel.Money;
+        }
+
         public void LoadWalletData()
         {
             var initValue = _saveService.Exists<PlayerWalletDto>()

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/MainMenu.meta
 guid: 955bd8b91f0ab474f9b42691b444ac35
+========
+guid: 51e27de707bf5624099c795b29136c4f
+>>>>>>>> dev:Assets/Art/Backgrounds/Game/Cobblestone/cobble stone scene.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
