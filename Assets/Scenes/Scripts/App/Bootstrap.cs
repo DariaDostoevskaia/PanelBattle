@@ -115,6 +115,8 @@ namespace LegoBattaleRoyal.App
                     adsProvider.ShowInterstitial();
                     Debug.Log("Intrestitial show.");
                 }
+                entriesGameNumber++;
+                SaveNumberInputs(entriesGameNumber);
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -138,7 +140,7 @@ namespace LegoBattaleRoyal.App
 
                     generalPopup.Close();
 
-                    levelController.EarnCoins(level.Price);
+                    walletController.EarnCoins(level.Price);
                     entriesGameNumber--;
                     SaveNumberInputs(entriesGameNumber);
 
@@ -150,9 +152,6 @@ namespace LegoBattaleRoyal.App
         private int GetNumberInputsPlayer()
         {
             int numberInputs = PlayerPrefs.GetInt(NumberInputs);
-            numberInputs++;
-
-            SaveNumberInputs(numberInputs);
 
             Debug.Log(NumberInputs + " " + numberInputs);
             return numberInputs;
