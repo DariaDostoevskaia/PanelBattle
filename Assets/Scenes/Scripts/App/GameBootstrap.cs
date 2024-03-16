@@ -25,7 +25,6 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
@@ -244,13 +243,13 @@ namespace LegoBattaleRoyal.App
 #if DEBUG
 
         [Button]
-        private void LoseLevel()
+        public void LoseLevel()
         {
             _endGameController.LoseGame();
         }
 
         [Button]
-        private void WinGame()
+        public void WinGame()
         {
             var opponents = _characterRepository.GetOpponents().ToArray();
             foreach (var opponent in opponents)
