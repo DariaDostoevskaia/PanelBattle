@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using EasyButtons;
+using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
@@ -27,7 +28,10 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
-
+#if DEBUG
+        [SerializeField] private DebugLogManager _debugLogManagerPrefab;
+        private DebugLogManager _debugLogManager;
+#endif
         private LevelController _levelController;
 
         private void Start()
@@ -37,6 +41,13 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
+#if DEBUG
+            if (_debugLogManager == null)
+            {
+                _debugLogManager = Instantiate(_debugLogManagerPrefab);
+                DontDestroyOnLoad(_debugLogManager.gameObject);
+            }
+#endif
             _uiContainer.Background.SetActive(true);
             _uiContainer.TopbarScreenPanel.Show();
             _uiContainer.LoadingScreen.SetActive(true);
@@ -171,6 +182,7 @@ namespace LegoBattaleRoyal.App
 
 #if DEBUG
 
+        [ConsoleMethod(nameof(RemoveProgress), "Remove all progress")]
         [Button]
         private void RemoveProgress()
         {

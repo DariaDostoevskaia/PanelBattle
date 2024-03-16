@@ -1,5 +1,6 @@
 using Cinemachine;
 using EasyButtons;
+using IngameDebugConsole;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
@@ -24,7 +25,6 @@ namespace LegoBattaleRoyal.App
     public class GameBootstrap : MonoBehaviour, IDisposable
     {
         public event Action OnRestarted;
-
 
         private event Action OnDisposed;
 
@@ -243,12 +243,14 @@ namespace LegoBattaleRoyal.App
 
 #if DEBUG
 
+        [ConsoleMethod(nameof(LoseLevel), "Lose level")]
         [Button]
         private void LoseLevel()
         {
             _endGameController.LoseGame();
         }
 
+        [ConsoleMethod(nameof(WinGame), "Win level")]
         [Button]
         private void WinGame()
         {
