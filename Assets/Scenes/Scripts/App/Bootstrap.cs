@@ -130,8 +130,12 @@ namespace LegoBattaleRoyal.App
                     analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                     adsProvider.ShowInterstitial();
                     Debug.Log("Intrestitial show.");
+                    entriesGameNumber = 0;
                 }
-                entriesGameNumber++;
+                else
+                {
+                    entriesGameNumber++;
+                }
                 SaveNumberInputs(entriesGameNumber);
 
                 generalPopup.Close();
@@ -157,7 +161,7 @@ namespace LegoBattaleRoyal.App
                     generalPopup.Close();
 
                     walletController.EarnCoins(level.Price);
-                    entriesGameNumber--;
+                    entriesGameNumber = Math.Max(0, --entriesGameNumber);
                     SaveNumberInputs(entriesGameNumber);
 
                     StartGame();
