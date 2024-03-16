@@ -62,19 +62,11 @@ namespace LegoBattaleRoyal.App
             walletController.LoadWalletData();
 
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
-            topbarController.ShowTopbar();
-
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
-            menuController.OnGameStarted += StartGame;
-            menuController.ShowMenu();
-
-            var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
-
-            topbarController.ShowTopbar();
-
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+
             menuController.OnGameStarted += StartGame;
+            topbarController.ShowTopbar();
             menuController.ShowMenu();
 
             _uiContainer.LoadingScreen.SetActive(false);
