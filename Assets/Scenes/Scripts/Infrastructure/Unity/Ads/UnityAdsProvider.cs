@@ -116,7 +116,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             void InterstitialFailedShown()
             {
                 EndIntrestitialShow();
-                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSkip);
             }
 
             void EndIntrestitialShow()
