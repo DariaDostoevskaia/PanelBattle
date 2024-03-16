@@ -68,11 +68,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             return true;
         }
 
-        public void EarnCoins(int price)
-        {
-            _walletController.EarnCoins(price);
-        }
-
         private void OnSuccessEnded()
         {
             var currentLevel = _levelRepository.GetCurrentLevel();

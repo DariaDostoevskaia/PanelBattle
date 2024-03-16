@@ -16,6 +16,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
+
             _menuView.OnStartGameClicked += StartGame;
         }
 
