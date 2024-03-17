@@ -41,7 +41,7 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
-#if DEBUG
+#if DEBUG && ! UNITY_EDITOR
             if (_debugLogManager == null)
             {
                 _debugLogManager = Instantiate(_debugLogManagerPrefab);
