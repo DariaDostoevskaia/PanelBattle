@@ -12,9 +12,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private GeneralPopup _generalPopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
-
         [SerializeField] private GameObject _loadingScreen;
-        [SerializeField] private RefinementPanel _refinementPanel;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -29,8 +27,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
 
         public GameObject LoadingScreen => _loadingScreen;
-
-        public RefinementPanel RefinementPanel => _refinementPanel;
 
         private void Start()
         {
@@ -48,8 +44,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
 
             _settingsPopup.OnHomeClicked += GoHome;
-
-            //_refinementPanel.RemoveProgressClicked += _audioSource.Play ;
 
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
