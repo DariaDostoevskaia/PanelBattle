@@ -15,5 +15,7 @@ namespace LegoBattaleRoyal.Core.Levels.Contracts
         LevelModel GetNextLevel();
 
         IEnumerable<LevelModel> GetFinishedLevels();
+
+        LevelModel Get(int firstLevelOrder);
     }
 }

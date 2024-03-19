@@ -8,6 +8,7 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
+using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -25,21 +26,22 @@ namespace LegoBattaleRoyal.App
     {
         public event Action OnRestarted;
 
-
         private event Action OnDisposed;
 
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private CinemachineFreeLook _cinemachineCamera;
+        [SerializeField] private UIContainer _uiContainer;
 
         private EndGameController _endGameController;
         private CharacterRepository _characterRepository;
-
+        private ILevelRepository _levelRepository;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO, UIContainer uiContainer,
+        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
             Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController,
             Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
         {
+            _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
 
             var currentLevel = levelRepository.GetCurrentLevel();
@@ -56,8 +58,9 @@ namespace LegoBattaleRoyal.App
             _characterRepository = new CharacterRepository();
 
             var roundController = new RoundController();
+            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
 
-            _endGameController = new EndGameController(uiContainer.EndGamePopup, _characterRepository, levelRepository, soundController, walletController);
+            _endGameController = new EndGameController(_characterRepository, levelRepository, soundController, walletController, generalController);
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
@@ -247,6 +250,17 @@ namespace LegoBattaleRoyal.App
         private void LoseLevel()
         {
             _endGameController.LoseGame();
+        }
+
+        [Button]
+        private void InvokeLevel(int order)
+        {
+            var currentLevel = _levelRepository.GetCurrentLevel();
+            currentLevel.Exit();
+
+            var nextLevel = _levelRepository.Get(order);
+            nextLevel.Launch();
+            OnRestarted?.Invoke();
         }
 
         [Button]
