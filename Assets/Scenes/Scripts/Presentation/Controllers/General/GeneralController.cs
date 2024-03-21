@@ -18,6 +18,30 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _levelRepository = levelRepository;
         }
 
+        public void ShowRefinementRemovePanel(Action callback)
+        {
+            var removeProgressButton = _generalPopup.CreateButton("YES");
+            removeProgressButton.onClick.AddListener(() =>
+            {
+                removeProgressButton.interactable = false;
+                callback?.Invoke();
+                _generalPopup.Close();
+            });
+
+            var nonRemoveButton = _generalPopup.CreateButton("NO");
+            nonRemoveButton.onClick.AddListener(() =>
+            {
+                nonRemoveButton.interactable = false;
+                _generalPopup.Close();
+            });
+
+            _generalPopup.SetTitle("Remove progress.");
+            _generalPopup.SetText("This process is irreversible, and it will not be possible to restore it later. " +
+                "Are you sure you want to delete all current progress?");
+
+            _generalPopup.Show();
+        }
+
         public void ShowAdsPopup(Action callback)
         {
             var showButton = _generalPopup.CreateButton("Show Ads");

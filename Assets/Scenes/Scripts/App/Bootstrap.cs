@@ -69,8 +69,9 @@ namespace LegoBattaleRoyal.App
             var generalPopup = _uiContainer.GeneralPopup;
             var generalController = new GeneralController(generalPopup, walletController, levelRepository);
 
-            var menuController = new MenuController(_uiContainer.MenuView);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
+            menuController.OnGameProgressRemoved += RemoveProgress;
             menuController.ShowMenu();
 
             topbarController.ShowTopbar();
@@ -80,6 +81,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
+                menuController.OnGameProgressRemoved -= RemoveProgress;
                 _gameBootstrap.OnRestarted -= StartGame;
 
                 saveService.Dispose();
@@ -137,6 +139,16 @@ namespace LegoBattaleRoyal.App
 
                     StartGame();
                 }
+            }
+
+            void RemoveProgress()
+            {
+                generalController.ShowRefinementRemovePanel(Remove);
+            }
+
+            void Remove()
+            {
+                levelController.RemoveAllProgress();
             }
         }
 
