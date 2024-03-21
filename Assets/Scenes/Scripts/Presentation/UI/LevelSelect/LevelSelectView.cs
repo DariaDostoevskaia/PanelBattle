@@ -4,6 +4,7 @@ using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
 {
@@ -42,16 +43,15 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
 
             for (int i = 0; i < levels.Length; i++)
             {
-                //var levelSO = _levelsSO[i];
-
                 var levelItem = Instantiate(_levelItem, _levelContent);
                 levelItem.Init(levels[i]);
 
                 levelItem.Clicked += OnLevelItemClicked;
                 _items.Add(levelItem);
 
-                //var levelIconImage = levelItem.GetComponent<Image>();
-                //levelIconImage = levelSO.LevelIcon;
+                var levelSO = _levelsSO[i];
+                var levelIconImage = levelItem.GetComponent<Image>();
+                levelIconImage.sprite = levelSO.LevelIcon;
 
                 if (i == levels.Length - 1)
                     continue;
