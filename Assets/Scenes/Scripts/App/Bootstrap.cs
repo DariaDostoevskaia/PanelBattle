@@ -5,6 +5,7 @@ using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
@@ -67,12 +68,16 @@ namespace LegoBattaleRoyal.App
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
             topbarController.ShowTopbar();
 
-            var menuController = new MenuController(_uiContainer.MenuView);
-            menuController.OnGameStarted += StartGame;
-            menuController.ShowMenu();
-
             var settingsPopup = _uiContainer.SettingsPopup;
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, loadingController);
+
+            var generalPopup = _uiContainer.GeneralPopup;
+            var generalController = new GeneralController(generalPopup, walletController, levelRepository);
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            menuController.OnGameStarted += StartGame;
+            menuController.OnGameProgressRemoved += RemoveProgress;
+            menuController.ShowMenu();
 
             topbarController.ShowTopbar();
 
@@ -81,6 +86,7 @@ namespace LegoBattaleRoyal.App
             OnDisposed += () =>
             {
                 menuController.OnGameStarted -= StartGame;
+                menuController.OnGameProgressRemoved -= RemoveProgress;
                 _gameBootstrap.OnRestarted -= StartGame;
 
                 saveService.Dispose();
@@ -93,35 +99,23 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var generalPopup = _uiContainer.GeneralPopup;
-
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
 
                 if (!levelController.TryBuyLevel(level.Price))
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
-                    var showButton = generalPopup.CreateButton("Show Ads");
-                    showButton.onClick.AddListener(() =>
-                    {
-                        showButton.interactable = false;
-                        ShowRewardedAdsAsync().Forget();
-                    });
-
-                    generalPopup.SetTitle("Not enough energy.");
-                    generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
-
-                    generalPopup.Show();
+                    generalController.ShowAdsPopup(() => ShowRewardedAdsAsync().Forget());
 
                     return;
                 }
 
-                if (entriesGameNumber % 4 == 0)
-                {
-                    adsProvider.ShowInterstitial();
-                    Debug.Log("Intrestitial show.");
-                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
-                }
+                //if (entriesGameNumber % 4 == 0)
+                //{
+                //    adsProvider.ShowInterstitial();
+                //    Debug.Log("Intrestitial show.");
+                //    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                //}
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -133,7 +127,7 @@ namespace LegoBattaleRoyal.App
                 menuController.CloseMenu();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, _uiContainer, walletController, _soundController, analyticsProvider);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider);
 
                 async UniTask ShowRewardedAdsAsync()
                 {
@@ -150,6 +144,16 @@ namespace LegoBattaleRoyal.App
 
                     StartGame();
                 }
+            }
+
+            void RemoveProgress()
+            {
+                generalController.ShowRefinementRemovePanel(Remove);
+            }
+
+            void Remove()
+            {
+                levelController.RemoveAllProgress();
             }
         }
 
