@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using System;
@@ -16,27 +17,29 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
-        private readonly GeneralController _generalController;
-
         private readonly SoundController _soundController;
+        private readonly GeneralController _generalController;
+        private readonly LoadingController _loadingController;
 
         public EndGameController(CharacterRepository characterRepository,
             ILevelRepository levelRepository,
             SoundController soundController,
             WalletController walletController,
-            GeneralController generalController)
+            GeneralController generalController,
+            LoadingController loadingController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
             _walletController = walletController;
             _soundController = soundController;
             _generalController = generalController;
+            _loadingController = loadingController;
         }
 
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //loadingScreen
+            _loadingController.ShowLoadingPopup();
         }
 
         private void RestartGame()

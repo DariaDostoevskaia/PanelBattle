@@ -9,6 +9,7 @@ using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -52,15 +53,17 @@ namespace LegoBattaleRoyal.App
             soundController.Play(music);
 
             var gridFactory = new GridFactory(levelSO);
-
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             _characterRepository = new CharacterRepository();
 
             var roundController = new RoundController();
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
+            var loadingController = new LoadingController(_uiContainer.LoadingScreen);
 
-            _endGameController = new EndGameController(_characterRepository, levelRepository, soundController, walletController, generalController);
+            _endGameController = new EndGameController(_characterRepository, levelRepository,
+                soundController, walletController, generalController, loadingController);
+
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
