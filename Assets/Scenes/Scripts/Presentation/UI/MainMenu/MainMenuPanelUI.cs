@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,10 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
     {
         public event Action OnStartGameClicked;
 
-        public event Action RemoveProgressGameClicked;
-
+        [SerializeField] private TextMeshProUGUI _ribbonText;
         [SerializeField] private Button _startGameButton;
+        [SerializeField] private Button _leaderboardGameButton;
+        [SerializeField] private Button _resetGameButton;
         [SerializeField] private Button _endGameButton;
 
         [SerializeField] private Button _removeProgressGameButton;
@@ -19,7 +21,8 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
-            _removeProgressGameButton.onClick.AddListener(() => RemoveProgressGameClicked?.Invoke());
+
+            _ribbonText.SetText("Menu");
         }
 
         public void Show()
