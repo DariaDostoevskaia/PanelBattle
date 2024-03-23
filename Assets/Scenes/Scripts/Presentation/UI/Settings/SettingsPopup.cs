@@ -66,16 +66,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 .GetFloat(SoundController.SoundVolume, 1f));
         }
 
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
-        }
-
         private void LoadPrefs()
         {
             var musicVolume = PlayerPrefs.GetFloat(SoundController.MusicVolume, 1f);

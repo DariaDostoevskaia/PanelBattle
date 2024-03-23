@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 {
-    public class MainMenuPanelUI : MonoBehaviour
+    public class MainMenuPanelUI : BaseViewUI
     {
         public event Action OnStartGameClicked;
 

@@ -2,7 +2,6 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.App.DTO.Wallet;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
-using System.Diagnostics;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
 {
@@ -47,9 +46,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
                  : _gameSettingsSO.Money;
 
             _walletModel = new WalletModel(initValue);
-
-            Debug.WriteLine(initValue);
-            return initValue;
         }
 
         public void SaveWalletData()

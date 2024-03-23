@@ -50,16 +50,6 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
             _removeAllProgressGameButton.gameObject.SetActive(value);
         }
 
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
-        }
-
         private void OnDestroy()
         {
             OnRestartClicked = null;

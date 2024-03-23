@@ -42,11 +42,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _menuView.Close();
         }
 
-        public void CloseMenu()
-        {
-            _menuView.Close();
-        }
-
         public void Dispose()
         {
             OnGameStarted = null;
