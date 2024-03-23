@@ -20,7 +20,7 @@ namespace LegoBattaleRoyal.ApplicationLayer.Analytics
 
         public static string InterstitialSucces => nameof(InterstitialSucces);
 
-        public static string InterstitialError => nameof(InterstitialError);
+        public static string InterstitialSkip => nameof(InterstitialSkip);
 
         public static string Lose => nameof(Lose);
 

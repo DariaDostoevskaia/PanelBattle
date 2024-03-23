@@ -12,8 +12,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         [SerializeField] private GeneralPopup _generalPopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
-
         [SerializeField] private GameObject _loadingScreen;
+        [SerializeField] private GameObject _background;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -29,11 +29,14 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public GameObject LoadingScreen => _loadingScreen;
 
+        public GameObject Background => _background;
+
         private void Start()
         {
             _audioSource = GetComponent<AudioSource>();
 
             _menuPanel.OnStartGameClicked += _audioSource.Play;
+            _menuPanel.RemoveProgressGameClicked += _audioSource.Play;
 
             _generalPopup.OnGeneralButtonClicked += _audioSource.Play;
 
@@ -69,6 +72,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         private void OnDestroy()
         {
             _menuPanel.OnStartGameClicked -= _audioSource.Play;
+            _menuPanel.RemoveProgressGameClicked -= _audioSource.Play;
 
             _generalPopup.OnGeneralButtonClicked -= _audioSource.Play;
 

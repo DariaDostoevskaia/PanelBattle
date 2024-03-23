@@ -15,10 +15,10 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
         private static readonly string _iOSGameId = "5493302";
 #if UNITY_IOS
         private static readonly string _rewardedPlacementId = "Rewarded_iOS" ;
-        private static readonly string _intrestitialPlacementId = "Interstitial_Android";
+        private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
 #elif UNITY_ANDROID || UNITY_EDITOR
         private static readonly string _rewardedPlacementId = "Rewarded_Android";
-        private static readonly string _intrestitialPlacementId = "Interstitial_iOS";
+        private static readonly string _intrestitialPlacementId = "Interstitial_Android";
 #endif
         private bool _testMode;
 
@@ -116,7 +116,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
             void InterstitialFailedShown()
             {
                 EndIntrestitialShow();
-                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialError);
+                _analyticsProvider.SendEvent(AnalyticsEvents.InterstitialSkip);
             }
 
             void EndIntrestitialShow()

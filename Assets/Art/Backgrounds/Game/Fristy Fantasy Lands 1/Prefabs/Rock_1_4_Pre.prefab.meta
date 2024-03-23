@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/UI/WorldTab/PricePanel/PricePanel.prefab.meta
-guid: 19e2a2f1f6069eb49b116ef6387892e2
+<<<<<<<< HEAD:Assets/Prefabs/UI/WorldTab/PricePanel.prefab.meta
+guid: f899a0ae04c08714a8d5f937d00892ea
 ========
 guid: e444840a6b117f04abdfa6fb4d59c829
->>>>>>>> dev:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_4_Pre.prefab.meta
+>>>>>>>> release/v0.2:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_4_Pre.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

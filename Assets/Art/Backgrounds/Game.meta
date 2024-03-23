@@ -1,9 +1,9 @@
 fileFormatVersion: 2
 <<<<<<<< HEAD:Assets/Fonts.meta
-guid: c3fcf6ae570543047847b109225151b3
+guid: 9a87ec3bed501424aa672758113eb180
 ========
 guid: 245dfd6920d835f4089e7ebcacec1ca5
->>>>>>>> dev:Assets/Art/Backgrounds/Game.meta
+>>>>>>>> release/v0.2:Assets/Art/Backgrounds/Game.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

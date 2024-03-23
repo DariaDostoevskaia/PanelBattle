@@ -54,11 +54,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
-        public void RemoveAllProgress()
-        {
-            _saveService.DeleteAllLocal();
-        }
-
         public bool TryBuyLevel(int price)
         {
             if (!_walletController.CanBuy(price))
@@ -68,9 +63,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             return true;
         }
 
-        public void EarnCoins(int price)
+
+        public void RemoveAllProgress()
         {
-            _walletController.EarnCoins(price);
+            var currentLevel = _levelRepository.GetCurrentLevel();
+            currentLevel.Exit();
+
+            var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+            var firstLevel = _levelRepository.Get(firstLevelOrder);
+            firstLevel.Launch();
+
+            _saveService.DeleteAllLocal();
+            _saveService.Save(firstLevel);
         }
 
         private void OnSuccessEnded()
