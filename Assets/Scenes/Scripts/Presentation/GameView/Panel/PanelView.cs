@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.Presentation.GameView.Panel
 {
+    [RequireComponent(typeof(QuickOutline))]
     public class PanelView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public event Action<PanelView> OnClicked;
@@ -14,37 +15,39 @@ namespace LegoBattaleRoyal.Presentation.GameView.Panel
 
         public event Action<PanelView> OnDestoyed;
 
-        [SerializeField] private MeshRenderer _hoverRenderer;
-        private MeshRenderer _renderer;
+        [SerializeField] private MeshRenderer _ownerHoverRenderer;
+        private QuickOutline _hoverOutline;
 
         private Color _defaultColor;
 
         private void Awake()
         {
-            _renderer = GetComponent<MeshRenderer>();
-            _defaultColor = _renderer.material.color;
+            _hoverOutline = GetComponent<QuickOutline>();
+
+            _defaultColor = _ownerHoverRenderer.material.color;
+
             CancelHighlight();
         }
 
         public void SetColor(Color color)
         {
-            _renderer.material.color = color;
+            _ownerHoverRenderer.material.color = color;
         }
 
         public void ResetColor()
         {
-            _renderer.material.color = _defaultColor;
+            _ownerHoverRenderer.material.color = _defaultColor;
         }
 
         public void Highlight(Color color)
         {
-            _hoverRenderer.material.color = color;
-            _hoverRenderer.gameObject.SetActive(true);
+            _hoverOutline.OutlineColor = color;
+            _hoverOutline.enabled = true;
         }
 
         public void CancelHighlight()
         {
-            _hoverRenderer.gameObject.SetActive(false);
+            _hoverOutline.enabled = false;
         }
 
         public void OnPointerClick(PointerEventData eventData)

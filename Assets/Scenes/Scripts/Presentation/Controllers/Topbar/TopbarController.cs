@@ -13,7 +13,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
         {
             _topbarPopup = topbarPopup;
 
-            _topbarPopup.OnSettingsButtonClicked += OnSettingsButtonCliked;
+            _topbarPopup.OnSettingsButtonClicked += ButtonClicked;
         }
 
         public void ShowTopbar()
@@ -21,7 +21,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
             _topbarPopup.Show();
         }
 
-        public void OnSettingsButtonCliked()
+        private void ButtonClicked()
         {
             OnButtonClicked?.Invoke();
         }
@@ -29,7 +29,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
         public void Dispose()
         {
             OnButtonClicked = null;
-            _topbarPopup.OnSettingsButtonClicked -= OnSettingsButtonCliked;
+            _topbarPopup.OnSettingsButtonClicked -= ButtonClicked;
         }
     }
 }

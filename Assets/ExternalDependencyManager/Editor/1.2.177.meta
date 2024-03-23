@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/ExternalDependencyManager/Editor/1.2.177.meta
 guid: bf4ea4c6f32c4664e8838fa6ea2b2887
+========
+guid: 5f6ba48a6b086cf47b82673957159087
+>>>>>>>> master:Assets/ExternalDependencyManager.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
