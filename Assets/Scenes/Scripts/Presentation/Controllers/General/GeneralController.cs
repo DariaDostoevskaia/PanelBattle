@@ -34,6 +34,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 nonRemoveButton.interactable = false;
                 _generalPopup.Close();
             });
+            _generalPopup.SetActiveCloseButton(true);
 
             _generalPopup.SetTitle("Remove progress.");
             _generalPopup.SetText("This process is irreversible, and it will not be possible to restore it later. " +
@@ -50,6 +51,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 showButton.interactable = false;
                 callback?.Invoke();
             });
+            _generalPopup.SetActiveCloseButton(true);
 
             _generalPopup.SetTitle("Not enough energy.");
             _generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
@@ -77,6 +79,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 _generalPopup.Close();
                 exitCallback?.Invoke();
             });
+            _generalPopup.SetActiveCloseButton(false);
 
             _generalPopup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet");
             _generalPopup.Show();
@@ -104,6 +107,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 _generalPopup.Close();
                 exitCallback?.Invoke();
             });
+            _generalPopup.SetActiveCloseButton(false);
 
             _generalPopup.SetText($"You earn {currentLevel.Reward}.");
             _generalPopup.Show();
@@ -130,6 +134,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 _generalPopup.Close();
                 exitCallback?.Invoke();
             });
+            _generalPopup.SetActiveCloseButton(false);
 
             _generalPopup.SetText($"You earn {currentLevel.Reward}. Thanks for playing! Updates coming soon. Try the levels again?");
             _generalPopup.Show();
