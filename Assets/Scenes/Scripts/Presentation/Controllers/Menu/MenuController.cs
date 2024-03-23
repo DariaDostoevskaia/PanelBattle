@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
-using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -10,8 +9,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public event Action OnGameStarted;
 
         public event Action OnGameProgressRemoved;
+
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
+
         public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
