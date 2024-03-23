@@ -16,12 +16,14 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private Button _buttonPrefab;
+        [SerializeField] private Button _closeButton;
 
         private readonly List<Button> _buttons = new();
 
         private void Start()
         {
             _buttonPrefab.gameObject.SetActive(false);
+            _closeButton.onClick.AddListener(Close);
         }
 
         public void Show()
@@ -41,6 +43,11 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             gameObject.SetActive(false);
 
             ClearButtons();
+        }
+
+        public void SetActiveCloseButton(bool isActive)
+        {
+            _closeButton.gameObject.SetActive(isActive);
         }
 
         private void ClearButtons()
