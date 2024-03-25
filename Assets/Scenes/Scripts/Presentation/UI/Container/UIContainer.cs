@@ -3,7 +3,6 @@ using LegoBattaleRoyal.Presentation.UI.General;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.Container
 {
@@ -57,7 +56,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         {
             CloseAll();
             _menuPanel.Show();
-            _topbarScreenPanel.Show();
         }
 
         public void CloseAll()
@@ -65,6 +63,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _menuPanel.Close();
 
             _generalPopup.Close();
+            _topbarScreenPanel.Close();
             _settingsPopup.Close();
 
             _loadingScreen.SetActive(false);
