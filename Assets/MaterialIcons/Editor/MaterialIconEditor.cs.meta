@@ -1,11 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/MaterialIcons/Editor/MaterialIconEditor.cs.meta
 guid: 51028811296326e41a2930e85b26f4b3
-timeCreated: 1585147601
-licenseType: Free
-========
-guid: 7b5da0439ffbe9340aaa19f6bd2dca2e
->>>>>>>> dev:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/UnityAdsProvider.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

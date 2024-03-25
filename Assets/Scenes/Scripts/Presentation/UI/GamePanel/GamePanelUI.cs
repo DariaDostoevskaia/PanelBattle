@@ -16,6 +16,7 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 
         public event Action OnExitMainMenuClicked;
 
+        [SerializeField] private TextMeshProUGUI _systemText;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Button _restartGameButton;
         [SerializeField] private Button _nextLevelGameButton;

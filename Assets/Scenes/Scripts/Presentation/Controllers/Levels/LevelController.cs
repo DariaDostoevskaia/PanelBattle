@@ -63,10 +63,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             return true;
         }
 
-        public void EarnCoins(int price)
-        {
-            _walletController.EarnCoins(price);
-        }
 
         public void RemoveAllProgress()
         {

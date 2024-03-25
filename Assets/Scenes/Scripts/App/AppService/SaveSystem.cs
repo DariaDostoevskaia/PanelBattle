@@ -452,11 +452,6 @@ namespace LegoBattaleRoyal.App.AppService
 #endif
         }
 
-        public void Dispose()
-        {
-            OnFileDeleted = null;
-        }
-
         public void Save<T>(T contentToSerialize)
         {
             var fileName = typeof(T).Name;
@@ -467,6 +462,11 @@ namespace LegoBattaleRoyal.App.AppService
         {
             var fileName = typeof(T).Name;
             return Load<T>(fileName, converts);
+        }
+
+        public void Dispose()
+        {
+            OnFileDeleted = null;
         }
     }
 }
