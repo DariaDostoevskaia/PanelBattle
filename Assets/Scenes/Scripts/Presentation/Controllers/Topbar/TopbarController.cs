@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using System;
 
@@ -8,12 +9,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
         public event Action OnButtonClicked;
 
         private readonly TopbarScreenPanel _topbarPopup;
+        private readonly WalletController _walletController;
 
-        public TopbarController(TopbarScreenPanel topbarPopup)
+        public TopbarController(TopbarScreenPanel topbarPopup, WalletController walletController)
         {
             _topbarPopup = topbarPopup;
+            _walletController = walletController;
 
             _topbarPopup.OnSettingsButtonClicked += ButtonClicked;
+            _walletController.ChangeWallet += SetCount;
+        }
+
+        private void SetCount(int count)
+        {
+            _topbarPopup.SetText(count);
         }
 
         public void ShowTopbar()
@@ -29,7 +38,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
         public void Dispose()
         {
             OnButtonClicked = null;
+
             _topbarPopup.OnSettingsButtonClicked -= ButtonClicked;
+            _walletController.ChangeWallet -= SetCount;
         }
     }
 }

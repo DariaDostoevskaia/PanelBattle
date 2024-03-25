@@ -14,6 +14,7 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private TextMeshProUGUI _title;
+        [SerializeField] private TextMeshProUGUI _energyCount;
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private Button _buttonPrefab;
         [SerializeField] private Button _closeButton;
@@ -29,13 +30,6 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         public void Show()
         {
             gameObject.SetActive(true);
-        }
-
-        public async UniTask ShowAsync()
-        {
-            Show();
-
-            await UniTask.WaitWhile(() => gameObject.activeSelf);
         }
 
         public void Close()
@@ -60,6 +54,11 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             _buttons.Clear();
         }
 
+        public void SetEnergyCount(int count)
+        {
+            _energyCount.SetText($"{count}");
+        }
+
         public void SetTitle(string title)
         {
             _title.SetText(title);
@@ -81,6 +80,13 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             button.onClick.AddListener(() => OnGeneralButtonClicked?.Invoke());
 
             return button;
+        }
+
+        public async UniTask ShowAsync()
+        {
+            Show();
+
+            await UniTask.WaitWhile(() => gameObject.activeSelf);
         }
 
         private void OnDestroy()

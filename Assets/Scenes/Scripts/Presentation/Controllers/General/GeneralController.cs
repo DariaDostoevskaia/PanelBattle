@@ -20,6 +20,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
         public void ShowRefinementRemovePanel(Action callback)
         {
+            _generalPopup.SetEnergyCount(_walletController.GetCurrentMoney());
+
             var removeProgressButton = _generalPopup.CreateButton("YES");
             removeProgressButton.onClick.AddListener(() =>
             {
@@ -46,6 +48,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         public void ShowAdsPopup(Action callback)
         {
             var showButton = _generalPopup.CreateButton("Show Ads");
+            _generalPopup.SetEnergyCount(_walletController.GetCurrentMoney());
+
             showButton.onClick.AddListener(() =>
             {
                 showButton.interactable = false;
@@ -62,7 +66,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         public void ShowLosePopup(Action restartCallback, Action exitCallback)
         {
             _generalPopup.SetTitle("You Lose!");
+
             var currentLevel = _levelRepository.GetCurrentLevel();
+            var loseCountEnergy = 0;
+            _generalPopup.SetEnergyCount(loseCountEnergy);
 
             var restartButton = _generalPopup.CreateButton($"Restart for {currentLevel.Price}");
             restartButton.onClick.AddListener(() =>
@@ -89,8 +96,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         public void ShowWinLevelPopup(Action nextCallback, Action exitCallback)
         {
             _generalPopup.SetTitle("You Win!");
+
             var nextLevel = _levelRepository.GetNextLevel();
             var currentLevel = _levelRepository.GetCurrentLevel();
+            _generalPopup.SetEnergyCount(currentLevel.Reward);
 
             var nextButton = _generalPopup.CreateButton($"Next for {nextLevel.Price}");
             nextButton.onClick.AddListener(() =>
@@ -118,6 +127,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.SetTitle("You Won Game!");
 
             var currentLevel = _levelRepository.GetCurrentLevel();
+            _generalPopup.SetEnergyCount(currentLevel.Reward);
 
             var restartGameButton = _generalPopup.CreateButton($"Restart Game");
             restartGameButton.onClick.AddListener(() =>
