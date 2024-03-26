@@ -20,7 +20,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
         public void ShowRefinementRemovePanel(Action callback)
         {
-            _generalPopup.SetEnergyCount(_walletController.GetCurrentMoney());
+            _generalPopup.CloseEnergyContainer();
 
             var removeProgressButton = _generalPopup.CreateButton("YES");
             removeProgressButton.onClick.AddListener(() =>
@@ -48,7 +48,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         public void ShowAdsPopup(Action callback)
         {
             var showButton = _generalPopup.CreateButton("Show Ads");
-            _generalPopup.SetEnergyCount(_walletController.GetCurrentMoney());
+            _generalPopup.CloseEnergyContainer();
 
             showButton.onClick.AddListener(() =>
             {
@@ -68,6 +68,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.SetTitle("You Lose!");
 
             var currentLevel = _levelRepository.GetCurrentLevel();
+
             var loseCountEnergy = 0;
             _generalPopup.SetEnergyCount(loseCountEnergy);
 

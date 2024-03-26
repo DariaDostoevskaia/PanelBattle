@@ -14,9 +14,13 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private TextMeshProUGUI _title;
-        [SerializeField] private TextMeshProUGUI _energyCount;
+
+        [SerializeField] private TextMeshProUGUI _energyCountText;
+        [SerializeField] private RectTransform _energyPanel;
+
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private Button _buttonPrefab;
+
         [SerializeField] private Button _closeButton;
 
         private readonly List<Button> _buttons = new();
@@ -56,7 +60,13 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         public void SetEnergyCount(int count)
         {
-            _energyCount.SetText($"{count}");
+            _energyPanel.gameObject.SetActive(true);
+            _energyCountText.SetText($"{count}");
+        }
+
+        public void CloseEnergyContainer()
+        {
+            _energyPanel.gameObject.SetActive(false);
         }
 
         public void SetTitle(string title)

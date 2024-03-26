@@ -51,7 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 7400683767714879849}
   _title: {fileID: 7745715578673349062}
-  _energyCount: {fileID: 5919939125439276211}
+  _energyCountText: {fileID: 5919939125439276211}
+  _energyPanel: {fileID: 8710760643123696212}
   _buttonContainer: {fileID: 5172735148348413037}
   _buttonPrefab: {fileID: 1430032426401688125}
   _closeButton: {fileID: 8203446511514684780}
