@@ -66,14 +66,12 @@ namespace LegoBattaleRoyal.App
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
 
-            var levelsSO = _gameSettingsSO.Levels;
-
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
             var walletController = new WalletController(saveService, _gameSettingsSO);
             var levelController = new LevelController(levelRepository, saveService, walletController);
 
-            levelController.CreateLevels(levelsSO);
+            levelController.CreateLevels(_gameSettingsSO.Levels);
             _levelController = levelController;
 
             walletController.LoadWalletData();
