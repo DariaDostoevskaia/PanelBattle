@@ -3,7 +3,6 @@ using LegoBattaleRoyal.App.DTO.Level;
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
-using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -15,19 +14,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
-
         private readonly WalletController _walletController;
-        private readonly UnityAdsProvider _adsProvider;
         private LevelDTO _levelDTO;
 
-        public LevelController(ILevelRepository levelRepository, ISaveService saveService,
-            WalletController walletController, UnityAdsProvider adsProvider)
+        public LevelController(
+            ILevelRepository levelRepository,
+            ISaveService saveService,
+            WalletController walletController)
         {
             _levelRepository = levelRepository;
             _saveService = saveService;
-
             _walletController = walletController;
-            _adsProvider = adsProvider;
         }
 
         public void CreateLevels(LevelSO[] levelSettings)
@@ -62,7 +59,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
             return true;
         }
-
 
         public void RemoveAllProgress()
         {

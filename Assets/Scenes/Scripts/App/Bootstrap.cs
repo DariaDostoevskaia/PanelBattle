@@ -32,7 +32,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private UIContainer _uiContainer;
 #if DEBUG
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
-        private DebugLogManager _debugLogManager;
+        private readonly DebugLogManager _debugLogManager;
 #endif
         private LevelController _levelController;
 
@@ -71,7 +71,7 @@ namespace LegoBattaleRoyal.App
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
             var walletController = new WalletController(saveService, _gameSettingsSO);
-            var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
+            var levelController = new LevelController(levelRepository, saveService, walletController);
 
             levelController.CreateLevels(levelsSO);
             _levelController = levelController;
@@ -116,6 +116,7 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                var levels = levelRepository.GetAll();
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
 
