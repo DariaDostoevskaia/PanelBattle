@@ -13,6 +13,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
+        //public event Action DoublePaymentAdsClicked;
+
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
@@ -44,6 +46,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             OnGameRestarted?.Invoke();
         }
 
+        //private void OnShowAdsClicked()
+        //{
+        //    DoublePaymentAdsClicked?.Invoke();
+        //}
         public void LoseGame()
         {
             _soundController.PlayLoseGameMusic();
@@ -96,6 +102,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
+            //DoublePaymentAdsClicked = null;
         }
     }
 }

@@ -7,6 +7,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
     public class GeneralController
     {
+        //public event Action DoublePaymentClicked;
+
         private readonly GeneralPopup _generalPopup;
         private readonly WalletController _walletController;
         private readonly ILevelRepository _levelRepository;
@@ -40,31 +42,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
             _generalPopup.SetText("This process is irreversible, and it will not be possible to restore it later. " +
                 "Are you sure you want to delete all current progress?");
-            _generalPopup.Show();
-        }
-
-        public void ShowAdsRefinementPanel(Action callback)
-        {
-            _generalPopup.SetTitle("Double reward");
-
-            var removeProgressButton = _generalPopup.CreateButton("YES");
-            removeProgressButton.onClick.AddListener(() =>
-            {
-                removeProgressButton.interactable = false;
-                callback?.Invoke(); //ads
-                _generalPopup.Close();
-            });
-
-            var nonRemoveButton = _generalPopup.CreateButton("NO");
-            nonRemoveButton.onClick.AddListener(() =>
-            {
-                nonRemoveButton.interactable = false;
-                _generalPopup.Close();
-            });
-            _generalPopup.SetActiveCloseButton(true);
-
-            _generalPopup.SetText("Do you want to watch an ads and get a double reward?");
-
             _generalPopup.Show();
         }
 
