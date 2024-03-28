@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/UI/Buttons/MenuButton.prefab.meta
 guid: ad283f59dd7e3494590e58c2936d76db
+========
+guid: 287947d4983f9f64493d09faccf36da0
+>>>>>>>> release/v0.2:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_5_Pre.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

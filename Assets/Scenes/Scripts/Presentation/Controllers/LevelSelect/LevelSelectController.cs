@@ -6,7 +6,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.LevelSelect
 {
     public class LevelSelectController
     {
-        private LevelSelectView _levelSelectView;
+        private readonly LevelSelectView _levelSelectView;
         private readonly LevelRepository _levelRepository;
 
         public LevelSelectController(LevelSelectView levelSelectView, LevelRepository levelRepository)

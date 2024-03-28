@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.GameView.Character
 {
-    [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer))]
+    [RequireComponent(typeof(Rigidbody), (typeof(Animator)))]
     public class CharacterView : MonoBehaviour
     {
         public event Action<bool> OnJumped;
@@ -17,9 +17,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         private static readonly float MinimumPositionY = 1f;
 
         private Rigidbody _rigidbody;
-        private MeshRenderer _meshRenderer;
         private AudioSource _audioSource;
-
+        private Animator _animator;
         private Tween _move;
         private float _moveDuration;
         private float _jumpHeight;
@@ -27,8 +26,9 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _meshRenderer = GetComponent<MeshRenderer>();
             _audioSource = GetComponent<AudioSource>();
+            _animator = GetComponent<Animator>();
+
             _audioSource.loop = false;
         }
 
@@ -44,12 +44,15 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
 
             OnJumped?.Invoke(true);
 
+            transform.LookAt(movePoint);
+
             _move = _rigidbody
                 .DOJump(movePoint, _jumpHeight, 1, _moveDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
                     transform.position = movePoint;
+
                     PlaySound(_jumpAudioClip);
                     OnJumped?.Invoke(false);
                 });
@@ -70,11 +73,6 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
             _moveDuration = moveDuration;
         }
 
-        public void SetColor(Color newColor)
-        {
-            _meshRenderer.material.color = newColor;
-        }
-
         private void PlaySound(AudioClip audioClip)
         {
             if (audioClip == null)
@@ -91,6 +89,8 @@ namespace LegoBattaleRoyal.Presentation.GameView.Character
         public void Capture()
         {
             PlaySound(_capturePanelsAudioClip);
+
+            _animator.SetTrigger(AnimationConstants.JumpTriggerHash);
         }
 
         private void OnDestroy()

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/UI/LevelSelect.meta
 guid: b651f9f9fb43c6b4c9d42896451f7a17
+========
+guid: 81541006a0c01ff46a2ff5e464e7876b
+>>>>>>>> dev:Assets/Scenes/Scripts/Presentation/Controllers/General.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

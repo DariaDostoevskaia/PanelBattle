@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/Controllers/LevelSelect.meta
 guid: 9e4835ef30b235d4ab561a6a94966227
+========
+guid: ec11af5f52bc9e942926f0a3b7c571ec
+>>>>>>>> dev:Assets/QuickOutline.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -17,7 +17,12 @@ namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 
         public void Show()
         {
-            _topbarScreenPanel.gameObject.SetActive(true);
+            gameObject.SetActive(true);
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
         }
 
         private void OnDestroy()
