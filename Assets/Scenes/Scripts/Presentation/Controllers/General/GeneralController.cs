@@ -23,7 +23,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             var showButton = _generalPopup.CreateButton("Show Ads");
             showButton.onClick.AddListener(() =>
             {
-                showButton.interactable = false;
+                //showButton.interactable = false;
                 callback?.Invoke();
             });
 
