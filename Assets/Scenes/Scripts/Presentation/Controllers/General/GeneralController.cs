@@ -85,6 +85,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.Show();
         }
 
+        public GeneralPopup CreatePopup(string title, string text)
+        {
+            _generalPopup.SetTitle(title);
+            _generalPopup.SetText(text);
+            return _generalPopup;
+        }
+
         //TODO DRY
         public void ShowWinLevelPopup(Action nextCallback, Action exitCallback)
         {

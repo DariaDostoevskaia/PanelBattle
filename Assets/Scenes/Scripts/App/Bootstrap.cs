@@ -143,7 +143,7 @@ namespace LegoBattaleRoyal.App
                 menuController.CloseMenu();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
 
                 async UniTask ShowRewardedAdsAsync()
                 {
