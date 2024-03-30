@@ -7,8 +7,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
     public class GeneralController
     {
-        //public event Action DoublePaymentClicked;
-
         private readonly GeneralPopup _generalPopup;
         private readonly WalletController _walletController;
         private readonly ILevelRepository _levelRepository;
@@ -109,6 +107,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 _generalPopup.Close();
                 exitCallback?.Invoke();
             });
+
+            var showAdsButton = _generalPopup.CreateButton("x2 coins per ads view");
+            showAdsButton.onClick.AddListener(() =>
+            {
+                showAdsButton.interactable = false;
+                _generalPopup.Close();
+                ShowAdsPopup(() => _walletController.EarnCoins(_levelRepository.GetCurrentLevel().Reward));
+            });
             _generalPopup.SetActiveCloseButton(false);
 
             _generalPopup.SetText($"You earn {currentLevel.Reward}.");
@@ -135,6 +141,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
                 exitButton.interactable = false;
                 _generalPopup.Close();
                 exitCallback?.Invoke();
+            });
+
+            var showAdsButton = _generalPopup.CreateButton("x2 coins per ads view");
+            showAdsButton.onClick.AddListener(() =>
+            {
+                showAdsButton.interactable = false;
+                _generalPopup.Close();
+                ShowAdsPopup(() => _walletController.EarnCoins(_levelRepository.GetCurrentLevel().Reward));
             });
             _generalPopup.SetActiveCloseButton(false);
 
