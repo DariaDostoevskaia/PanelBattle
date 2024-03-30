@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
@@ -43,14 +44,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.Show();
         }
 
-        public void ShowAdsPopup(Action callback)
+        public void ShowAdsPopup(Func<UniTask<bool>> func)
         {
             var showButton = _generalPopup.CreateButton("Show Ads");
-            showButton.onClick.AddListener(() =>
+            showButton.onClick.AddListener(async () =>
             {
-                showButton.interactable = false;
-                callback?.Invoke();
+                func ??= () => UniTask.FromResult(false);
+                var result = await func.Invoke();
+
+                showButton.interactable = !result;
             });
+
             _generalPopup.SetActiveCloseButton(true);
 
             _generalPopup.SetTitle("Not enough energy.");
@@ -90,77 +94,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.SetTitle(title);
             _generalPopup.SetText(text);
             return _generalPopup;
-        }
-
-        //TODO DRY
-        public void ShowWinLevelPopup(Action nextCallback, Action exitCallback)
-        {
-            _generalPopup.SetTitle("You Win!");
-            var nextLevel = _levelRepository.GetNextLevel();
-            var currentLevel = _levelRepository.GetCurrentLevel();
-
-            var nextButton = _generalPopup.CreateButton($"Next for {nextLevel.Price}");
-            nextButton.onClick.AddListener(() =>
-            {
-                nextButton.interactable = false;
-                _generalPopup.Close();
-                nextCallback?.Invoke();
-            });
-
-            var exitButton = _generalPopup.CreateButton("Exit");
-            exitButton.onClick.AddListener(() =>
-            {
-                exitButton.interactable = false;
-                _generalPopup.Close();
-                exitCallback?.Invoke();
-            });
-
-            var showAdsButton = _generalPopup.CreateButton("x2 coins per ads view");
-            showAdsButton.onClick.AddListener(() =>
-            {
-                showAdsButton.interactable = false;
-                _generalPopup.Close();
-                ShowAdsPopup(() => _walletController.EarnCoins(_levelRepository.GetCurrentLevel().Reward));
-            });
-            _generalPopup.SetActiveCloseButton(false);
-
-            _generalPopup.SetText($"You earn {currentLevel.Reward}.");
-            _generalPopup.Show();
-        }
-
-        public void ShowWinGamePopup(Action restartCallback, Action exitCallback)
-        {
-            _generalPopup.SetTitle("You Won Game!");
-
-            var currentLevel = _levelRepository.GetCurrentLevel();
-
-            var restartGameButton = _generalPopup.CreateButton($"Restart Game");
-            restartGameButton.onClick.AddListener(() =>
-            {
-                restartGameButton.interactable = false;
-                _generalPopup.Close();
-                restartCallback?.Invoke();
-            });
-
-            var exitButton = _generalPopup.CreateButton("Exit");
-            exitButton.onClick.AddListener(() =>
-            {
-                exitButton.interactable = false;
-                _generalPopup.Close();
-                exitCallback?.Invoke();
-            });
-
-            var showAdsButton = _generalPopup.CreateButton("x2 coins per ads view");
-            showAdsButton.onClick.AddListener(() =>
-            {
-                showAdsButton.interactable = false;
-                _generalPopup.Close();
-                ShowAdsPopup(() => _walletController.EarnCoins(_levelRepository.GetCurrentLevel().Reward));
-            });
-            _generalPopup.SetActiveCloseButton(false);
-
-            _generalPopup.SetText($"You earn {currentLevel.Reward}. Thanks for playing! Updates coming soon. Try the levels again?");
-            _generalPopup.Show();
         }
     }
 }

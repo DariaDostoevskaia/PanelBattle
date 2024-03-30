@@ -66,13 +66,12 @@ namespace LegoBattaleRoyal.App
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
 
-            var levelsSO = _gameSettingsSO.Levels;
-
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
             var walletController = new WalletController(saveService, _gameSettingsSO);
             var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
 
+            var levelsSO = _gameSettingsSO.Levels;
             levelController.CreateLevels(levelsSO);
             _levelController = levelController;
 
@@ -114,7 +113,7 @@ namespace LegoBattaleRoyal.App
                 if (!levelController.TryBuyLevel(level.Price))
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
-                    generalController.ShowAdsPopup(() => ShowRewardedAdsAsync().Forget());
+                    generalController.ShowAdsPopup(ShowRewardedAdsAsync);
 
                     return;
                 }
@@ -145,12 +144,12 @@ namespace LegoBattaleRoyal.App
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
 
-                async UniTask ShowRewardedAdsAsync()
+                async UniTask<bool> ShowRewardedAdsAsync()
                 {
                     var result = await adsProvider.ShowRewarededAsync();
 
                     if (!result)
-                        return;
+                        return false;
 
                     generalPopup.Close();
 
@@ -159,6 +158,7 @@ namespace LegoBattaleRoyal.App
                     SaveNumberInputs(entriesGameNumber);
 
                     StartGame();
+                    return true;
                 }
             }
 

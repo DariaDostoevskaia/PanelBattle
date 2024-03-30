@@ -72,11 +72,27 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _soundController.PLayWinGameMusic();
 
-            if (!isLastLevel)
+            var popup = _generalController.CreatePopup("You Win!", $"You earn {currentLevel.Reward}.");
+            if (isLastLevel)
+            {
+                var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+                var firstLevel = _levelRepository.Get(firstLevelOrder);
+
+                var restartButton = popup.CreateButton($"Restart for {firstLevel.Price}");
+                restartButton.onClick.AddListener(() =>
+                {
+                    restartButton.interactable = false;
+                    popup.Close();
+
+                    currentLevel.Exit();
+                    firstLevel.Launch();
+
+                    RestartGame();
+                });
+            }
+            else
             {
                 var nextLevel = _levelRepository.GetNextLevel();
-
-                var popup = _generalController.CreatePopup("You Win!", $"You earn {currentLevel.Reward}.");
 
                 var nextButton = popup.CreateButton($"Next for {nextLevel.Price}");
                 nextButton.onClick.AddListener(() =>
@@ -88,37 +104,25 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     nextLevel.Launch();
                     RestartGame();
                 });
-
-                var exitButton = popup.CreateButton("Exit");
-                exitButton.onClick.AddListener(() =>
-                {
-                    exitButton.interactable = false;
-                    popup.Close();
-                    ExitMainMenu();
-                });
-
-                var showAdsButton = popup.CreateButton("x2 coins");
-                showAdsButton.onClick.AddListener(() =>
-                {
-                    showAdsButton.interactable = false;
-
-                    ShowRewarededAsync(currentLevel.Reward)
-                    .ContinueWith((result) => showAdsButton.interactable = !result)
-                    .Forget();
-                });
-                //TODO ShowWinGamePOpup
-                popup.Show();
-                return true;
             }
-
-            _generalController.ShowWinGamePopup(() =>
+            var exitButton = popup.CreateButton("Exit");
+            exitButton.onClick.AddListener(() =>
             {
-                currentLevel.Exit();
-                var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
-                var firstLevel = _levelRepository.Get(firstLevelOrder);
-                firstLevel.Launch();
-                RestartGame();
-            }, ExitMainMenu);
+                exitButton.interactable = false;
+                popup.Close();
+                ExitMainMenu();
+            });
+
+            var showAdsButton = popup.CreateButton("x2 coins");
+            showAdsButton.onClick.AddListener(() =>
+            {
+                showAdsButton.interactable = false;
+
+                ShowRewarededAsync(currentLevel.Reward)
+                .ContinueWith((result) => showAdsButton.interactable = !result)
+                .Forget();
+            });
+            popup.Show();
 
             return true;
         }
