@@ -21,6 +21,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         public void ShowRefinementRemovePanel(Action callback)
         {
             _generalPopup.CloseEnergyContainer();
+            _generalPopup.SetTitle("Remove progress");
 
             var removeProgressButton = _generalPopup.CreateButton("YES");
             removeProgressButton.onClick.AddListener(() =>
@@ -38,7 +39,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             });
             _generalPopup.SetActiveCloseButton(true);
 
-            _generalPopup.SetTitle("Remove progress.");
             _generalPopup.SetText("This process is irreversible, and it will not be possible to restore it later. " +
                 "Are you sure you want to delete all current progress?");
 
@@ -47,8 +47,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
         public void ShowAdsPopup(Action callback)
         {
-            var showButton = _generalPopup.CreateButton("Show Ads");
             _generalPopup.CloseEnergyContainer();
+            var showButton = _generalPopup.CreateButton("Show Ads");
 
             showButton.onClick.AddListener(() =>
             {
@@ -57,7 +57,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             });
             _generalPopup.SetActiveCloseButton(true);
 
-            _generalPopup.SetTitle("Not enough energy.");
+            _generalPopup.SetTitle("No energy.");
             _generalPopup.SetText("There is not enough energy to buy the next level. Watch an advertisement to replenish energy.");
 
             _generalPopup.Show();
@@ -69,8 +69,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
             var currentLevel = _levelRepository.GetCurrentLevel();
 
-            var loseCountEnergy = 0;
-            _generalPopup.SetEnergyCount(loseCountEnergy);
+            _generalPopup.SetEnergyCount(currentLevel.Price);
 
             var restartButton = _generalPopup.CreateButton($"Restart for {currentLevel.Price}");
             restartButton.onClick.AddListener(() =>

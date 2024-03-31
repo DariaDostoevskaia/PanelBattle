@@ -8,7 +8,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
 {
     public class WalletController : IDisposable
     {
-        public event Action<int> ChangeWallet;
+        public event Action<int> Changed;
 
         private WalletModel _walletModel;
         private readonly SaveService _saveService;
@@ -55,15 +55,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
         {
             var playerDTO = new PlayerWalletDto()
             {
-                WalletValue = _walletModel.Money
+                WalletValue = _walletModel.Money,
             };
             _saveService.Save(playerDTO);
-            ChangeWallet?.Invoke(GetCurrentMoney());
+            Changed?.Invoke(playerDTO.WalletValue);
         }
 
         public void Dispose()
         {
-            ChangeWallet = null;
+            Changed = null;
         }
     }
 }

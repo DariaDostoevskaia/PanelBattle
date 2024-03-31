@@ -17,7 +17,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
             _walletController = walletController;
 
             _topbarPopup.OnSettingsButtonClicked += ButtonClicked;
-            _walletController.ChangeWallet += SetCount;
+            _walletController.Changed += SetCount;
         }
 
         private void SetCount(int count)
@@ -40,7 +40,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
             OnButtonClicked = null;
 
             _topbarPopup.OnSettingsButtonClicked -= ButtonClicked;
-            _walletController.ChangeWallet -= SetCount;
+            _walletController.Changed -= SetCount;
         }
     }
 }

@@ -60,13 +60,18 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         public void SetEnergyCount(int count)
         {
-            _energyPanel.gameObject.SetActive(true);
+            ShowEnergyContainer();
             _energyCountText.SetText($"{count}");
         }
 
         public void CloseEnergyContainer()
         {
             _energyPanel.gameObject.SetActive(false);
+        }
+
+        private void ShowEnergyContainer()
+        {
+            _energyPanel.gameObject.SetActive(true);
         }
 
         public void SetTitle(string title)
