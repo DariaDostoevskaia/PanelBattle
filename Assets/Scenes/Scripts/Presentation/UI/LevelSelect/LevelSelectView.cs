@@ -1,6 +1,5 @@
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Extensions;
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -32,7 +32,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private UIContainer _uiContainer;
 #if DEBUG
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
-        private readonly DebugLogManager _debugLogManager;
+        private DebugLogManager _debugLogManager;
 #endif
         private LevelController _levelController;
 
@@ -114,7 +114,6 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
-                var levels = levelRepository.GetAll();
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
 
@@ -130,6 +129,7 @@ namespace LegoBattaleRoyal.App
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                     adsProvider.ShowInterstitial();
+                    Debug.Log("Intrestitial show.");
                     entriesGameNumber = 0;
                 }
                 else
