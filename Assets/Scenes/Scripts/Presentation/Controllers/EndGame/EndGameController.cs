@@ -64,7 +64,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             var currentLevel = _levelRepository.GetCurrentLevel();
-            currentLevel.Win();
 
             _walletController.EarnCoins(currentLevel.Reward);
 
@@ -84,6 +83,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     restartButton.interactable = false;
                     popup.Close();
 
+                    currentLevel.Win();
                     currentLevel.Exit();
                     firstLevel.Launch();
 
@@ -99,9 +99,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 {
                     nextButton.interactable = false;
                     popup.Close();
-                    var nextLevel = _levelRepository.GetNextLevel();
+
+                    currentLevel.Win();
                     currentLevel.Exit();
                     nextLevel.Launch();
+
                     RestartGame();
                 });
             }
