@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
@@ -5,7 +6,7 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 {
-    public class SettingsPopup : MonoBehaviour
+    public class SettingsPopup : BaseViewUI
     {
         public event Action OnCloseClicked;
 
@@ -63,16 +64,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 
             _soundSlider.SetValueWithoutNotify(PlayerPrefs
                 .GetFloat(SoundController.SoundVolume, 1f));
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
         }
 
         private void LoadPrefs()

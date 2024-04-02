@@ -56,7 +56,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         {
             CloseAll();
             _menuPanel.Show();
-            _topbarScreenPanel.Show();
         }
 
         public void CloseAll()
@@ -64,6 +63,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
             _menuPanel.Close();
 
             _generalPopup.Close();
+            _topbarScreenPanel.Close();
             _settingsPopup.Close();
 
             _loadingScreen.SetActive(false);
