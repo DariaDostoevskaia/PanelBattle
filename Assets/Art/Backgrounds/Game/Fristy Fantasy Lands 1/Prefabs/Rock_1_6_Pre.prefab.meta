@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/UI/Buttons/MenuButton.prefab.meta
-guid: 5bd31b63d5fc07546a7af1894927e7cf
+<<<<<<<< HEAD:Assets/Prefabs/UI/WorldTab/Rectangle.prefab.meta
+guid: 040f9b2337c56ef4480ed36b15731b75
 ========
 guid: 4b03eef6b881e7048b591df4c0170276
->>>>>>>> master:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_6_Pre.prefab.meta
+>>>>>>>> release/v0.2:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_6_Pre.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

@@ -13,8 +13,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnProgressRemoved;
-
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
@@ -33,11 +31,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _walletController = walletController;
             _soundController = soundController;
             _generalController = generalController;
-        }
-
-        private void Remove()
-        {
-            OnProgressRemoved?.Invoke();
         }
 
         private void ExitMainMenu()
@@ -103,7 +96,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void Dispose()
         {
             OnGameRestarted = null;
-            OnProgressRemoved = null;
         }
     }
 }

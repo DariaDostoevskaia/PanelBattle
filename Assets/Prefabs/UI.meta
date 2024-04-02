@@ -1,9 +1,6 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefabs/UI.meta
+guid: 84761d74fa0315d4fb0be1b405e15e80
 guid: 6da3a556e47ca7943b94012b24ca3560
-========
-guid: 5910a95346e93b843a75cde9c319d5f3
->>>>>>>> master:Assets/Art/Backgrounds/Game/Cobblestone.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 {
-    public class GamePanelUI : MonoBehaviour
+    public class GamePanelUI : BaseViewUI
     {
         public event Action OnRestartClicked;
 
@@ -15,6 +16,7 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
 
         public event Action OnExitMainMenuClicked;
 
+        [SerializeField] private TextMeshProUGUI _systemText;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private Button _restartGameButton;
         [SerializeField] private Button _nextLevelGameButton;
@@ -47,16 +49,6 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
         public void SetActiveRemoveAllProgress(bool value)
         {
             _removeAllProgressGameButton.gameObject.SetActive(value);
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
         }
 
         private void OnDestroy()

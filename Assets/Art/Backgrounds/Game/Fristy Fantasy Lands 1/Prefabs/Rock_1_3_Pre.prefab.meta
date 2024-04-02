@@ -1,9 +1,9 @@
 fileFormatVersion: 2
 <<<<<<<< HEAD:Assets/Prefabs/UI/MainScreen.prefab.meta
-guid: 7660193129cea6e43838d228409acbcb
+guid: bf325100b9ae5fc4a87929709b424f88
 ========
 guid: 2b2d8a39e7e53034f9ddc9304b5bb437
->>>>>>>> master:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_3_Pre.prefab.meta
+>>>>>>>> release/v0.2:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_3_Pre.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/UI/Base/BaseViewUI.cs.meta
+guid: 46a8eab8c6720db4fb0bb5e78a168f7a
+========
+guid: 636c6f63de511ff45bbea6b346c3dc09
+>>>>>>>> dev:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/AdUnit.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
