@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "0a9cf7a1809a289ca7bedecee594cdf256e26935"
+      "hash": "b870d64b5704a764fd03aaccb11f2dbe652b1756"
     },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
@@ -21,12 +21,6 @@
       "dependencies": {},
       "hash": "73d2383899210da808a1b27329cdaa8000de557b"
     },
-    "com.unity.2d.sprite": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
     "com.unity.ads": {
       "version": "4.4.2",
       "depth": 0,
@@ -35,6 +29,12 @@
         "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
     },
     "com.unity.burst": {
       "version": "1.8.7",

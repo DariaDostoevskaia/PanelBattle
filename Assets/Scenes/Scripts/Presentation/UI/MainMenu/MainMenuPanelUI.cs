@@ -1,10 +1,11 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 {
-    public class MainMenuPanelUI : MonoBehaviour
+    public class MainMenuPanelUI : BaseViewUI
     {
         public event Action OnStartGameClicked;
 
@@ -45,16 +46,6 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 
             _levelSelectToggle.SetIsOnWithoutNotify(true);
             _levelSelectPanel.gameObject.SetActive(true);
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
         }
 
         private void EndGame()

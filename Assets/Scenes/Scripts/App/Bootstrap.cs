@@ -73,13 +73,12 @@ namespace LegoBattaleRoyal.App
 
             levelController.CreateLevels(_gameSettingsSO.Levels);
             _levelController = levelController;
-
             walletController.LoadWalletData();
 
             var generalPopup = _uiContainer.GeneralPopup;
 
             var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController);
-            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController);
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
@@ -109,6 +108,7 @@ namespace LegoBattaleRoyal.App
                 gameSettingsController.Dispose();
 
                 topbarController.Dispose();
+                walletController.Dispose();
                 adsProvider.Dispose();
             };
 
@@ -149,6 +149,7 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.Background.SetActive(false);
                 levelSelectController.CloseLevelSelect();
                 menuController.CloseMenu();
+                levelSelectController.CloseLevelSelect();
 
                 topbarController.ShowTopbar();
 

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/UI/LevelSelect/LevelAndSettingsPanel.prefab.meta
 guid: 60d81f65d40f301458a5950a1382b4fd
+========
+guid: e444840a6b117f04abdfa6fb4d59c829
+>>>>>>>> master:Assets/Art/Backgrounds/Game/Fristy Fantasy Lands 1/Prefabs/Rock_1_4_Pre.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
