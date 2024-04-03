@@ -3,6 +3,7 @@ using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
 using System;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
@@ -67,8 +68,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
         public void ShowLosePopup(Action restartCallback, Action exitCallback)
         {
-            _generalPopup.SetTitle("You Lose!");
+            var popup = GameObject.Instantiate(_generalPopup);
 
+            popup.SetTitle("You Lose!");
             var currentLevel = _levelRepository.GetCurrentLevel();
 
             _generalPopup.SetEnergyCount(currentLevel.Price);
@@ -77,7 +79,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             restartButton.onClick.AddListener(() =>
             {
                 restartButton.interactable = false;
-                _generalPopup.Close();
                 restartCallback?.Invoke();
             });
 
@@ -85,13 +86,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             exitButton.onClick.AddListener(() =>
             {
                 exitButton.interactable = false;
-                _generalPopup.Close();
+                popup.Close();
                 exitCallback?.Invoke();
             });
-            _generalPopup.SetActiveCloseButton(false);
+            popup.SetActiveCloseButton(false);
 
-            _generalPopup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet");
-            _generalPopup.Show();
+            popup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet");
+            popup.Show();
         }
 
         public GeneralPopup CreatePopup(string title, string text)
