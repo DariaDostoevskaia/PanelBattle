@@ -1140,7 +1140,7 @@ GameObject:
   - component: {fileID: 2092632814718870278}
   - component: {fileID: 2017521535982193716}
   m_Layer: 5
-  m_Name: GameSettingsScreen
+  m_Name: GameSettingsScreenPopupResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
