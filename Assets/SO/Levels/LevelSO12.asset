@@ -26,6 +26,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
   - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
+  _levelIcon: {fileID: 21300000, guid: 658e5a77468c250469eafa5473814f92, type: 3}
   _rect: 0800000008000000
   _startedPosition:
   - 0

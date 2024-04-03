@@ -1619,11 +1619,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6830246236346506064, guid: a9d4fe45dbeda40439cb41ed34192239,
-        type: 3}
-      propertyPath: m_ShowMaskGraphic
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7992553338241401752, guid: a9d4fe45dbeda40439cb41ed34192239,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1653,11 +1648,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8771746361981711714, guid: a9d4fe45dbeda40439cb41ed34192239,
-        type: 3}
-      propertyPath: m_Type
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
