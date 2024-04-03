@@ -71,13 +71,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _soundController.PLayWinGameMusic();
 
-            var popup = _generalController.CreatePopup("You Win!", $"You earn {currentLevel.Reward}.");
+            var popupText = isLastLevel
+                ? $"You earn {currentLevel.Reward}. Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
+                : $"You earn {currentLevel.Reward}. Next for {_levelRepository.GetNextLevel().Price}.";
+
+            var popup = _generalController.CreatePopup("You Win!", popupText);
+
             if (isLastLevel)
             {
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
                 var firstLevel = _levelRepository.Get(firstLevelOrder);
 
-                var restartButton = popup.CreateButton($"Restart for {firstLevel.Price}");
+                var restartButton = popup.CreateButton($"Restart");
                 restartButton.onClick.AddListener(() =>
                 {
                     restartButton.interactable = false;
@@ -94,7 +99,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             {
                 var nextLevel = _levelRepository.GetNextLevel();
 
-                var nextButton = popup.CreateButton($"Next for {nextLevel.Price}");
+                var nextButton = popup.CreateButton($"Next");
                 nextButton.onClick.AddListener(() =>
                 {
                     nextButton.interactable = false;
