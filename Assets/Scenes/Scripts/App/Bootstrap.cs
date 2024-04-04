@@ -89,7 +89,6 @@ namespace LegoBattaleRoyal.App
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
 
-            topbarController.ShowTopbar();
             menuController.ShowMenu();
 
             _uiContainer.LoadingScreen.SetActive(false);
@@ -145,6 +144,8 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.Background.SetActive(false);
                 menuController.CloseMenu();
                 levelSelectController.CloseLevelSelect();
+
+                topbarController.ShowTopbar();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
