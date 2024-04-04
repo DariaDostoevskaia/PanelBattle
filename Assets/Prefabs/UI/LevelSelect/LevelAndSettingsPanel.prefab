@@ -1911,6 +1911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelOrderText: {fileID: 3586157753001252908}
   _button: {fileID: 5095376001904154175}
+  _levelOrder: {fileID: 308031573825731103}
 --- !u!1 &7696690145340200510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,27 +2446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a48d72d240b9cda4fbd3fd5657ccaa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelsSO:
-  - {fileID: 11400000, guid: 937d343dfb053624fb9e4d21ad869e6e, type: 2}
-  - {fileID: 11400000, guid: 3d298af9e65b524459a168eec1c63a57, type: 2}
-  - {fileID: 11400000, guid: 17141d6ad88e582408e7d6bd44cb54bf, type: 2}
-  - {fileID: 11400000, guid: de60a730a3bf321459bf71eb383a98c4, type: 2}
-  - {fileID: 11400000, guid: be1a29598701c084588ada9200e2cfbd, type: 2}
-  - {fileID: 11400000, guid: dfcc385e6b469b542b63f80e80e2959c, type: 2}
-  - {fileID: 11400000, guid: 4e0ca9eec7cc34a4ba61dd864d3027be, type: 2}
-  - {fileID: 11400000, guid: b520768180882104b88a63669453e94a, type: 2}
-  - {fileID: 11400000, guid: 7f119b499bf99134a8ffbd4e381572be, type: 2}
-  - {fileID: 11400000, guid: d5b42f0417c1f6445974d50536a2f0ec, type: 2}
-  - {fileID: 11400000, guid: ae6576709064d1346891f404b32a8e49, type: 2}
-  - {fileID: 11400000, guid: cfcdaf3443b978e438f0d84f052eeaa4, type: 2}
-  - {fileID: 11400000, guid: aee3f34850c3866448368e34f36734e1, type: 2}
-  - {fileID: 11400000, guid: c83dc224207507841a1644ac052d7300, type: 2}
-  - {fileID: 11400000, guid: 5119fc281962fbd4bb7b188af2c00bf3, type: 2}
-  - {fileID: 11400000, guid: 0e385b186bcc2054d8a26a75a5cbf33c, type: 2}
-  - {fileID: 11400000, guid: e641c2c6777ac6240bc3b036340df1d9, type: 2}
-  - {fileID: 11400000, guid: b5c2106efb9e8004e80bc9486c3aad4b, type: 2}
-  - {fileID: 11400000, guid: b73d84e9ea538ce4faf8de8c56f4c4c5, type: 2}
-  - {fileID: 11400000, guid: fe040481efd96bf46b3dca6c7a06fee0, type: 2}
+  level: []
   _levelItem: {fileID: 3723807726008766158}
   _levelContent: {fileID: 2387761074835919798}
   _levelSplit: {fileID: 3855682491309706112}
