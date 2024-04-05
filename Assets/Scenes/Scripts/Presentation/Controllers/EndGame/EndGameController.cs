@@ -66,6 +66,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             var currentLevel = _levelRepository.GetCurrentLevel();
 
             _walletController.EarnCoins(currentLevel.Reward);
+            currentLevel.Win();
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
@@ -88,7 +89,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     restartButton.interactable = false;
                     popup.Close();
 
-                    currentLevel.Win();
                     currentLevel.Exit();
                     firstLevel.Launch();
 
@@ -105,7 +105,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     nextButton.interactable = false;
                     popup.Close();
 
-                    currentLevel.Win();
                     currentLevel.Exit();
                     nextLevel.Launch();
 
