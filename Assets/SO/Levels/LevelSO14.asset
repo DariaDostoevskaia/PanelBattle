@@ -27,6 +27,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   _levelIcon: {fileID: 21300000, guid: 467db0414562fdb4abd5c90273bedf52, type: 3}
+  _levelName: Moon
   _rect: 0a0000000a000000
   _startedPosition:
   - 0

@@ -12,6 +12,8 @@ namespace LegoBattaleRoyal.ScriptableObjects
 
         [SerializeField] private Sprite _levelIcon;
 
+        [SerializeField] private string _levelName;
+
         [SerializeField] private int[] _rect = new int[] { 5, 5 };
         [SerializeField] private float[] _startedPosition = new float[] { 0, 0 };
         [SerializeField] private float _spacing = 10f;
@@ -26,6 +28,8 @@ namespace LegoBattaleRoyal.ScriptableObjects
         public AICharacterSO[] AICharactersSO => _aICharacterSO;
 
         public Sprite LevelIcon => _levelIcon;
+
+        public string LevelName => _levelName;
 
         public int[] Rect => _rect;
 

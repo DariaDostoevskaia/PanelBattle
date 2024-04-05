@@ -28,7 +28,9 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         public SettingsPopup SettingsPopup => _settingsPopup;
 
         public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
+
         public LevelSelectView LevelSelectView => _levelSelectView;
+
         public GameObject LoadingScreen => _loadingScreen;
 
         public GameObject Background => _background;

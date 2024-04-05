@@ -89,6 +89,8 @@ namespace LegoBattaleRoyal.App
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
 
+            levelSelectController.OnLevelInvoked += StartGame;
+
             menuController.ShowMenu();
 
             _uiContainer.LoadingScreen.SetActive(false);
@@ -106,6 +108,7 @@ namespace LegoBattaleRoyal.App
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
+                levelSelectController.Dispose();
             };
 
             void StartGame()

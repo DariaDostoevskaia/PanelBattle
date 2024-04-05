@@ -14,14 +14,25 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
         [SerializeField] private TextMeshProUGUI _levelOrderText;
         [SerializeField] private Button _button;
 
-        [SerializeField] private Image _levelOrder;
+        [SerializeField] private Image _levelIcon;
+        [SerializeField] private RectTransform _levelMedal;
+        [SerializeField] private TextMeshProUGUI _levelName;
+        [SerializeField] private TextMeshProUGUI _levelPrice;
 
         public void Init(LevelModel level, LevelSO levelSO)
         {
             _levelOrderText.SetText(level.Order.ToString());
-            _button.onClick.AddListener(() => Clicked?.Invoke(level));
+            _levelIcon.sprite = levelSO.LevelIcon;
 
-            _levelOrder.sprite = levelSO.LevelIcon;
+            if (level.IsFinished == true)
+                _levelMedal.gameObject.SetActive(true);
+            else
+                _levelMedal.gameObject.SetActive(false);
+
+            _levelName.SetText(levelSO.LevelName.ToString());
+            _levelPrice.SetText(levelSO.Price.ToString());
+
+            _button.onClick.AddListener(() => Clicked?.Invoke(level));
         }
 
         private void OnDestroy()

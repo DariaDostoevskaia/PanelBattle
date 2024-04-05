@@ -1911,7 +1911,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelOrderText: {fileID: 3586157753001252908}
   _button: {fileID: 5095376001904154175}
-  _levelOrder: {fileID: 308031573825731103}
+  _levelIcon: {fileID: 308031573825731103}
+  _levelMedal: {fileID: 6107603636382368345}
+  _levelName: {fileID: 9040287914562456094}
+  _levelPrice: {fileID: 41728228708223790}
 --- !u!1 &7696690145340200510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,6 +2215,7 @@ GameObject:
   - component: {fileID: 7522948490931697712}
   - component: {fileID: 6583462006170096038}
   - component: {fileID: 9040287914562456094}
+  - component: {fileID: 6493653748043730290}
   m_Layer: 5
   m_Name: LevelName
   m_TagString: Untagged
@@ -2336,6 +2340,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6493653748043730290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9017401252937370695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 65
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &9147986694521660478
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,7 +2470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a48d72d240b9cda4fbd3fd5657ccaa24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: []
   _levelItem: {fileID: 3723807726008766158}
   _levelContent: {fileID: 2387761074835919798}
   _levelSplit: {fileID: 3855682491309706112}
+  _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
