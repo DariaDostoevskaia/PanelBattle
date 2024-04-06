@@ -8,7 +8,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Loading
     {
         private readonly LoadingScreenUI _loadingScreen;
         private readonly int _total = 100;
-        private readonly float _seconds = 0.2f;
+        private readonly float _seconds = 0.02f;
 
         public LoadingController(LoadingScreenUI loadingScreen)
         {
