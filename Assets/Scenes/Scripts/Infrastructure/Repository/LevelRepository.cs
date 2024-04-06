@@ -41,7 +41,7 @@ namespace LegoBattaleRoyal.Infrastructure.Repository
             var current = GetCurrentLevel();
             var nextCurrent = current.Order + 1;
 
-            var nextLevel = _levelModels.FirstOrDefault(level => level.Order == nextCurrent);
+            var nextLevel = _levelModels.First(level => level.Order == nextCurrent);
 
             return nextLevel;
         }
