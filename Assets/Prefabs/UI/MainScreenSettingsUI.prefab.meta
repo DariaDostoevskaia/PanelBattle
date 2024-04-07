@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/UI/MainScreenSettingsUI.prefab.meta
 guid: 7db8639a3a6b09b4297043ee52ff09f6
+========
+guid: 587cd4b7d960e8942b61991c822efb9a
+>>>>>>>> feature/level-select-ui:Assets/Prefabs/UI/MainScreenLevelSelect.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
