@@ -1172,14 +1172,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.39607847, g: 0.39607847, b: 0.39607847, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 308, y: 1, z: 0, w: 673}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1915,6 +1915,7 @@ MonoBehaviour:
   _levelMedal: {fileID: 6107603636382368345}
   _levelName: {fileID: 9040287914562456094}
   _levelPrice: {fileID: 41728228708223790}
+  _gem: {fileID: 1312308806601441116}
 --- !u!1 &7696690145340200510
 GameObject:
   m_ObjectHideFlags: 0

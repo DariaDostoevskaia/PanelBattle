@@ -18,6 +18,7 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
         [SerializeField] private RectTransform _levelMedal;
         [SerializeField] private TextMeshProUGUI _levelName;
         [SerializeField] private TextMeshProUGUI _levelPrice;
+        [SerializeField] private RectTransform _gem;
 
         public void Init(LevelModel level, LevelSO levelSO)
         {
@@ -25,12 +26,21 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
             _levelIcon.sprite = levelSO.LevelIcon;
 
             if (level.IsFinished == true)
+            {
                 _levelMedal.gameObject.SetActive(true);
+
+                _gem.gameObject.SetActive(false);
+                _levelPrice.SetText(" ");
+            }
             else
+            {
                 _levelMedal.gameObject.SetActive(false);
 
+                _gem.gameObject.SetActive(true);
+                _levelPrice.SetText(levelSO.Price.ToString());
+            }
+
             _levelName.SetText(levelSO.LevelName.ToString());
-            _levelPrice.SetText(levelSO.Price.ToString());
 
             _button.onClick.AddListener(() => Clicked?.Invoke(level));
         }
