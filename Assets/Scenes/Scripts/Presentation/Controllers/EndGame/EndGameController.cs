@@ -66,17 +66,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             var currentLevel = _levelRepository.GetCurrentLevel();
 
-            currentLevel.Win();
-            _walletController.EarnCoins(currentLevel.Reward);
-            currentLevel.Exit();
-
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
-            _soundController.PLayWinGameMusic();
-
             var popupText = isLastLevel
-                ? $"You earn {currentLevel.Reward}. Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
-                : $"You earn {currentLevel.Reward}. Next for {_levelRepository.GetNextLevel().Price}.";
+
+                ? $"You earn {currentLevel.Reward}. " +
+                $"Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
+
+                : $"You earn {currentLevel.Reward}. " +
+                $"Next for {_levelRepository.GetNextLevel().Price}.";
+
+            currentLevel.Win();
+            _walletController.EarnCoins(currentLevel.Reward);
+
+            _soundController.PLayWinGameMusic();
 
             var popup = _generalController.CreatePopup("You Win!", popupText);
 
@@ -84,6 +87,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             if (isLastLevel)
             {
+                currentLevel.Exit();
+
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
                 nextLevel = _levelRepository.Get(firstLevelOrder);
 
@@ -101,6 +106,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             else
             {
                 nextLevel = _levelRepository.GetNextLevel();
+                currentLevel.Exit();
 
                 var nextButton = popup.CreateButton($"Next");
                 nextButton.onClick.AddListener(() =>
