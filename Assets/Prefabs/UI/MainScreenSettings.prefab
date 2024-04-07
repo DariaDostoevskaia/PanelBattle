@@ -1567,7 +1567,7 @@ PrefabInstance:
     - target: {fileID: 221973469314457663, guid: 60d81f65d40f301458a5950a1382b4fd,
         type: 3}
       propertyPath: m_Name
-      value: LevelAndSettingsPanel
+      value: LevelAndSettingsPanelSettings
       objectReference: {fileID: 0}
     - target: {fileID: 988488829027023776, guid: 60d81f65d40f301458a5950a1382b4fd,
         type: 3}

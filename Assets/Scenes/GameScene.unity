@@ -2527,6 +2527,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1642433173}
     m_Modifications:
+    - target: {fileID: 440002647808827172, guid: 53a8ebc927641584fba6acfbdcffab02,
+        type: 3}
+      propertyPath: m_Name
+      value: LevelAndSettingsPanelSettings
+      objectReference: {fileID: 0}
     - target: {fileID: 628391752716518587, guid: 53a8ebc927641584fba6acfbdcffab02,
         type: 3}
       propertyPath: m_AnchorMax.y
