@@ -203,7 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7504367c81293fd42aa1574a86601566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ribbonText: {fileID: 2553934234694064717}
   _startGameButton: {fileID: 4317833217787378246}
   _leaderboardGameButton: {fileID: 1177530714611127563}
   _resetGameButton: {fileID: 6851046348211278005}
@@ -1044,7 +1043,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 2990989291271878466}
   m_OnClick:
     m_PersistentCalls:

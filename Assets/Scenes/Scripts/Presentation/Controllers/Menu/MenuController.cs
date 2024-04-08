@@ -1,5 +1,4 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
-using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -9,15 +8,23 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        private readonly MainMenuPanelUI _menuView;
-        private readonly FirebaseAnalyticsProvider _analyticsProvider;
+        public event Action OnGameProgressRemoved;
 
-        public MenuController(MainMenuPanelUI menuView, FirebaseAnalyticsProvider analyticsProvider)
+        private readonly MainMenuPanelUI _menuView;
+        private readonly IAnalyticsProvider _analyticsProvider;
+
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
 
             _menuView.OnStartGameClicked += StartGame;
+            _menuView.RemoveProgressGameClicked += RemoveGameProgress;
+        }
+
+        private void RemoveGameProgress()
+        {
+            OnGameProgressRemoved?.Invoke();
         }
 
         private void StartGame()
@@ -39,8 +46,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void Dispose()
         {
             OnGameStarted = null;
+            OnGameProgressRemoved = null;
 
             _menuView.OnStartGameClicked -= StartGame;
+            _menuView.RemoveProgressGameClicked -= RemoveGameProgress;
         }
     }
 }

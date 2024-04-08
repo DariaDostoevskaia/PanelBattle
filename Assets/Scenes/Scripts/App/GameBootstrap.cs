@@ -39,7 +39,7 @@ namespace LegoBattaleRoyal.App
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
             Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController,
-            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider, Infrastructure.Unity.Ads.UnityAdsProvider adsProvider)
         {
             _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
@@ -60,7 +60,7 @@ namespace LegoBattaleRoyal.App
             var roundController = new RoundController();
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
 
-            _endGameController = new EndGameController(_characterRepository, levelRepository, soundController, walletController, generalController);
+            _endGameController = new EndGameController(_characterRepository, levelRepository, soundController, walletController, generalController, adsProvider);
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)

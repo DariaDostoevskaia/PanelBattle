@@ -1,15 +1,16 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 {
-    public class MainMenuPanelUI : MonoBehaviour
+    public class MainMenuPanelUI : BaseViewUI
     {
         public event Action OnStartGameClicked;
 
-        [SerializeField] private TextMeshProUGUI _ribbonText;
+        public event Action RemoveProgressGameClicked;
+
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _leaderboardGameButton;
         [SerializeField] private Button _resetGameButton;
@@ -19,18 +20,7 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
-
-            _ribbonText.SetText("Menu");
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
+            _resetGameButton.onClick.AddListener(() => RemoveProgressGameClicked?.Invoke());
         }
 
         private void EndGame()
@@ -41,9 +31,11 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         private void OnDestroy()
         {
             OnStartGameClicked = null;
+            RemoveProgressGameClicked = null;
 
             _startGameButton.onClick.RemoveAllListeners();
             _endGameButton.onClick.RemoveAllListeners();
+            _resetGameButton.onClick.RemoveAllListeners();
         }
     }
 }

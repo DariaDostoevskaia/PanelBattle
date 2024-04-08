@@ -2,14 +2,17 @@ using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.App.DTO.Wallet;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
+using System;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
 {
-    public class WalletController
+    public class WalletController : IDisposable
     {
+        public event Action<int> Changed;
+
         private WalletModel _walletModel;
-        private SaveService _saveService;
-        private GameSettingsSO _gameSettingsSO;
+        private readonly SaveService _saveService;
+        private readonly GameSettingsSO _gameSettingsSO;
 
         public WalletController(SaveService saveService, GameSettingsSO gameSettingsSO)
         {
@@ -52,9 +55,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
         {
             var playerDTO = new PlayerWalletDto()
             {
-                WalletValue = _walletModel.Money
+                WalletValue = _walletModel.Money,
             };
             _saveService.Save(playerDTO);
+            Changed?.Invoke(playerDTO.WalletValue);
+        }
+
+        public void Dispose()
+        {
+            Changed = null;
         }
     }
 }
