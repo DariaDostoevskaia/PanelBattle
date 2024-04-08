@@ -51,7 +51,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void LoseGame()
         {
             _soundController.PlayLoseGameMusic();
-            var currentLevel = _levelRepository.GetCurrentLevel();
 
             _generalController.ShowLosePopup(RestartGame, ExitMainMenu);
         }
@@ -64,21 +63,29 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             var currentLevel = _levelRepository.GetCurrentLevel();
+            var currentLevelReward = currentLevel.Reward;
 
-            _walletController.EarnCoins(currentLevel.Reward);
+            currentLevel.Win();
+            _walletController.EarnCoins(currentLevelReward);
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
             _soundController.PLayWinGameMusic();
 
             var popupText = isLastLevel
-                ? $"You earn {currentLevel.Reward}. Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
-                : $"You earn {currentLevel.Reward}. Next for {_levelRepository.GetNextLevel().Price}.";
+
+                ? $"You earn {currentLevelReward}. " +
+                $"Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
+
+                : $"You earn {currentLevelReward}. " +
+                $"Next for {_levelRepository.GetNextLevel().Price}.";
 
             var popup = _generalController.CreatePopup("You Win!", popupText);
 
             if (isLastLevel)
             {
+                currentLevel.Exit();
+
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
                 var firstLevel = _levelRepository.Get(firstLevelOrder);
 
@@ -88,8 +95,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     restartButton.interactable = false;
                     popup.Close();
 
-                    currentLevel.Win();
-                    currentLevel.Exit();
                     firstLevel.Launch();
 
                     RestartGame();
@@ -98,6 +103,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             else
             {
                 var nextLevel = _levelRepository.GetNextLevel();
+                currentLevel.Exit();
 
                 var nextButton = popup.CreateButton($"Next");
                 nextButton.onClick.AddListener(() =>
@@ -105,8 +111,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     nextButton.interactable = false;
                     popup.Close();
 
-                    currentLevel.Win();
-                    currentLevel.Exit();
                     nextLevel.Launch();
 
                     RestartGame();
@@ -125,7 +129,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             {
                 showAdsButton.interactable = false;
 
-                ShowRewarededAsync(currentLevel.Reward)
+                ShowRewarededAsync(currentLevelReward)
                 .ContinueWith((result) => showAdsButton.interactable = !result)
                 .Forget();
             });
