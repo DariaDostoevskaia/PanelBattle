@@ -118,16 +118,13 @@ namespace LegoBattaleRoyal.App
                     return;
                 }
 
+                entriesGameNumber++;
                 if (entriesGameNumber % 4 == 0)
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
                     adsProvider.ShowInterstitial();
                     Debug.Log("Intrestitial show.");
                     entriesGameNumber = 0;
-                }
-                else
-                {
-                    entriesGameNumber++;
                 }
                 SaveNumberInputs(entriesGameNumber);
 
