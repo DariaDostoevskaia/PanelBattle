@@ -25,6 +25,13 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         private readonly List<Button> _buttons = new();
 
+        public RectTransform RectTransform { get; set; }
+
+        private void Awake()
+        {
+            RectTransform = GetComponent<RectTransform>();
+        }
+
         private void Start()
         {
             _buttonPrefab.gameObject.SetActive(false);
