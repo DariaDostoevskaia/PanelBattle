@@ -25,21 +25,18 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
             _levelOrderText.SetText(level.Order.ToString());
             _levelIcon.sprite = levelSO.LevelIcon;
 
-            if (level.IsFinished == true)
+            if (level.IsFinished)
             {
-                _levelMedal.gameObject.SetActive(true);
-
-                _gem.gameObject.SetActive(false);
-                _levelPrice.SetText(" ");
+                _levelPrice.gameObject.SetActive(!level.IsFinished);
+                _gem.gameObject.SetActive(!level.IsFinished);
             }
             else
             {
-                _levelMedal.gameObject.SetActive(false);
-
                 _gem.gameObject.SetActive(true);
                 _levelPrice.SetText(levelSO.Price.ToString());
             }
 
+            _levelMedal.gameObject.SetActive(level.IsFinished);
             _levelName.SetText(levelSO.LevelName.ToString());
 
             _button.onClick.AddListener(() => Clicked?.Invoke(level));

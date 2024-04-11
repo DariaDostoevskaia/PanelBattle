@@ -79,7 +79,7 @@ namespace LegoBattaleRoyal.App
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
-            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository);
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
 
             var generalPopup = _uiContainer.GeneralPopup;

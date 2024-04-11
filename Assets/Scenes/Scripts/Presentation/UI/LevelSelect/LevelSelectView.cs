@@ -9,25 +9,21 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
 {
     public class LevelSelectView : MonoBehaviour
     {
-        public event Action<LevelModel> Selected; //id?
+        public event Action<LevelModel> Selected;
 
         [SerializeField] private LevelItem _levelItem;
         [SerializeField] private RectTransform _levelContent;
         [SerializeField] private RectTransform _levelSplit;
 
-        [SerializeField] private GameSettingsSO _gameSettingsSO;
-
         private List<LevelItem> _items;
-        private LevelSO[] _levelsSO;
 
         private void Awake()
         {
             _levelItem.gameObject.SetActive(false);
             _levelSplit.gameObject.SetActive(false);
-            _levelsSO = _gameSettingsSO.Levels;
         }
 
-        public void SetLevels(LevelModel[] levels)
+        public void SetLevels(LevelModel[] levels, LevelSO[] levelsSO)
         {
             _levelItem.gameObject.SetActive(true);
             _levelSplit.gameObject.SetActive(true);
@@ -44,7 +40,7 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
 
             for (int i = 0; i < levels.Length; i++)
             {
-                var level = _levelsSO[i];
+                var level = levelsSO[i];
 
                 var levelItem = Instantiate(_levelItem, _levelContent);
                 levelItem.Init(levels[i], level);
@@ -58,7 +54,7 @@ namespace LegoBattaleRoyal.Presentation.UI.LevelSelect
                 Instantiate(_levelSplit, _levelContent);
             }
             _levelItem.gameObject.SetActive(false);
-            _levelSplit.gameObject.SetActive(false); //
+            _levelSplit.gameObject.SetActive(false);
         }
 
         public void Close()
