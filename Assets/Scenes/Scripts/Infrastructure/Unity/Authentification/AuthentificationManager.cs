@@ -1,13 +1,12 @@
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
-using Unity.Services.Authentication.PlayerAccounts;
 using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
 //TODO namespace
-namespace LegoBattaleRoyal
+namespace LegoBattaleRoyal.Infrastructure.Unity.Authentification
 {
     public class AuthentificationManager : MonoBehaviour
     {
@@ -26,6 +25,46 @@ namespace LegoBattaleRoyal
         public async UniTask StartAuthentificationInitAsync()
         {
             await UnityServices.InitializeAsync();
+        }
+
+        public async UniTask SignInAsync()
+        {
+            await SignInWithUnityAsync(_unityTokenID);
+        }
+
+        private void OnSignIn()
+        {
+            SetupEvents();
+            SignInAsync().Forget();
+        }
+
+        private void SetupEvents()
+        {
+            // Setup authentication event handlers if desired
+
+            AuthenticationService.Instance.SignedIn += () =>
+            {
+                // Shows how to get a playerID
+                Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+
+                // Shows how to get an access token
+                Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
+            };
+
+            AuthenticationService.Instance.SignInFailed += (err) =>
+            {
+                Debug.LogError(err);
+            };
+
+            AuthenticationService.Instance.SignedOut += () =>
+            {
+                Debug.Log("Player signed out.");
+            };
+
+            AuthenticationService.Instance.Expired += () =>
+            {
+                Debug.Log("Player session could not be refreshed and expired.");
+            };
         }
 
         private async UniTask SignInAnonymouslyAsync()
@@ -50,21 +89,6 @@ namespace LegoBattaleRoyal
                 // Notify the player with the proper error message
                 Debug.LogException(ex);
             }
-        }
-
-        private void OnSignIn()
-        {
-            PlayerAccountService.Instance.SignedIn += SignInWithUnity;
-        }
-
-        private void SignInWithUnity()
-        {
-            SignInAsync().Forget();
-        }
-
-        public async UniTask SignInAsync()
-        {
-            await SignInWithUnityAsync(_unityTokenID);
         }
 
         private async UniTask SignInWithUnityAsync(string token)
