@@ -1888,7 +1888,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 3
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
@@ -2474,4 +2474,3 @@ MonoBehaviour:
   _levelItem: {fileID: 3723807726008766158}
   _levelContent: {fileID: 2387761074835919798}
   _levelSplit: {fileID: 3855682491309706112}
-  _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
