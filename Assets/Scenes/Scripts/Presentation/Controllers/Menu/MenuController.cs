@@ -13,7 +13,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController
+            (MainMenuPanelUI menuView,
+            IAnalyticsProvider analyticsProvider)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;

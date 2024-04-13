@@ -6,6 +6,8 @@ using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Infrastructure.Unity.Authentification;
+using LegoBattaleRoyal.Infrastructure.Unity.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
@@ -80,6 +82,11 @@ namespace LegoBattaleRoyal.App
 
             var generalPopup = _uiContainer.GeneralPopup;
             var generalController = new GeneralController(generalPopup, walletController, levelRepository);
+
+            var authentificationManager = new AuthentificationController();
+            await authentificationManager.SignInAsync();
+
+            var leaderboardController = new LeaderboardController();//new popup - ui
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
