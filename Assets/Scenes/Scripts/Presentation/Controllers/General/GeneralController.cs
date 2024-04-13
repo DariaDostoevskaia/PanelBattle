@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
 using System;
@@ -11,12 +12,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
         private readonly GeneralPopup _generalPopup;
         private readonly WalletController _walletController;
         private readonly ILevelRepository _levelRepository;
+        private readonly CameraController _cameraController;
 
-        public GeneralController(GeneralPopup generalPopup, WalletController walletController, ILevelRepository levelRepository)
+        public GeneralController
+            (GeneralPopup generalPopup,
+            WalletController walletController,
+            ILevelRepository levelRepository,
+            CameraController cameraController)
         {
             _generalPopup = generalPopup;
             _walletController = walletController;
             _levelRepository = levelRepository;
+            _cameraController = cameraController;
+
+            _generalPopup.SetCamera(cameraController);
         }
 
         public void ShowRefinementRemovePanel(Action callback)

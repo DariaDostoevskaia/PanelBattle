@@ -24,6 +24,7 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         [SerializeField] private Button _closeButton;
 
         private readonly List<Button> _buttons = new();
+        private CameraController _cameraController;
 
         private void Start()
         {
@@ -34,6 +35,8 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         public void Show()
         {
             gameObject.SetActive(true);
+
+            _cameraController.CloseRaycaster();
         }
 
         public void Close()
@@ -41,6 +44,8 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             gameObject.SetActive(false);
 
             ClearButtons();
+
+            _cameraController.ShowRaycaster();
         }
 
         public void SetActiveCloseButton(bool isActive)
@@ -107,6 +112,11 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         private void OnDestroy()
         {
             OnGeneralButtonClicked = null;
+        }
+
+        public void SetCamera(CameraController cameraController)
+        {
+            _cameraController = cameraController;
         }
     }
 }

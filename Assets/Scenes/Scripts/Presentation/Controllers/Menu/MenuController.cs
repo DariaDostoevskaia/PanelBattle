@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -12,11 +13,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
+        private readonly CameraController _cameraController;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, CameraController cameraController)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
+            _cameraController = cameraController;
 
             _menuView.OnStartGameClicked += StartGame;
             _menuView.RemoveProgressGameClicked += RemoveGameProgress;
@@ -36,11 +39,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void ShowMenu()
         {
             _menuView.Show();
+            _cameraController.CloseRaycaster();
         }
 
         public void CloseMenu()
         {
             _menuView.Close();
+            _cameraController.ShowRaycaster();
         }
 
         public void Dispose()

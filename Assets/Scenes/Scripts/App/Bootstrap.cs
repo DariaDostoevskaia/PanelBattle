@@ -3,6 +3,7 @@ using EasyButtons;
 using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
@@ -29,6 +30,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
+        [SerializeField] private Camera _camera;
 #if DEBUG
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
         private DebugLogManager _debugLogManager;
@@ -75,13 +77,15 @@ namespace LegoBattaleRoyal.App
             _levelController = levelController;
             walletController.LoadWalletData();
 
+            var cameraController = new CameraController(_camera);
+
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, cameraController);
 
             var generalPopup = _uiContainer.GeneralPopup;
-            var generalController = new GeneralController(generalPopup, walletController, levelRepository);
+            var generalController = new GeneralController(generalPopup, walletController, levelRepository, cameraController);
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, cameraController);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
 
@@ -141,7 +145,15 @@ namespace LegoBattaleRoyal.App
 
                 topbarController.ShowTopbar();
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
+
+                _gameBootstrap.Configure
+                    (levelRepository,
+                    _gameSettingsSO,
+                    walletController,
+                    _soundController,
+                    analyticsProvider,
+                    adsProvider,
+                    cameraController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {
