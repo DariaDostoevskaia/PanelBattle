@@ -78,8 +78,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             OnSoundVolumeChanged?.Invoke(soundVolume);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnOkClicked = null;
             OnHomeClicked = null;
             OnCloseClicked = null;

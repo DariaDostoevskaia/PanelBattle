@@ -28,8 +28,10 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
             Application.Quit();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnStartGameClicked = null;
             RemoveProgressGameClicked = null;
 

@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Extensions;
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.General
 {
-    public class GeneralPopup : MonoBehaviour
+    public class GeneralPopup : BaseViewUI
     {
         public event Action OnGeneralButtonClicked;
 
@@ -24,7 +25,6 @@ namespace LegoBattaleRoyal.Presentation.UI.General
         [SerializeField] private Button _closeButton;
 
         private readonly List<Button> _buttons = new();
-        private CameraController _cameraController;
 
         private void Start()
         {
@@ -32,20 +32,11 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             _closeButton.onClick.AddListener(Close);
         }
 
-        public void Show()
+        public override void Close()
         {
-            gameObject.SetActive(true);
-
-            _cameraController.CloseRaycaster();
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
+            base.Close();
 
             ClearButtons();
-
-            _cameraController.ShowRaycaster();
         }
 
         public void SetActiveCloseButton(bool isActive)
@@ -109,14 +100,11 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             await UniTask.WaitWhile(() => gameObject.activeSelf);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
-            OnGeneralButtonClicked = null;
-        }
+            base.OnDestroy();
 
-        public void SetCamera(CameraController cameraController)
-        {
-            _cameraController = cameraController;
+            OnGeneralButtonClicked = null;
         }
     }
 }

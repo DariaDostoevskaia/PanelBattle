@@ -1,4 +1,4 @@
-using UnityEngine;
+using Cinemachine;
 using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.Extensions
@@ -6,20 +6,24 @@ namespace LegoBattaleRoyal.Extensions
     public class CameraController
     {
         private PhysicsRaycaster _raycaster;
+        private CinemachineBrain _cinemachine;
 
-        public CameraController(Camera camera)
+        public CameraController(PhysicsRaycaster raycaster, CinemachineBrain cinemachine)
         {
-            _raycaster = camera.GetComponent<PhysicsRaycaster>();
+            _raycaster = raycaster;
+            _cinemachine = cinemachine;
         }
 
         public void ShowRaycaster()
         {
-            _raycaster.gameObject.SetActive(true);
+            _raycaster.enabled = true;
+            _cinemachine.enabled = true;
         }
 
         public void CloseRaycaster()
         {
-            _raycaster.gameObject.SetActive(false);
+            _raycaster.enabled = false;
+            _cinemachine.enabled = false;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using EasyButtons;
 using IngameDebugConsole;
@@ -17,6 +18,7 @@ using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.App
 {
@@ -30,7 +32,6 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
-        [SerializeField] private Camera _camera;
 #if DEBUG
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
         private DebugLogManager _debugLogManager;
@@ -77,7 +78,11 @@ namespace LegoBattaleRoyal.App
             _levelController = levelController;
             walletController.LoadWalletData();
 
-            var cameraController = new CameraController(_camera);
+            var camera = Camera.main;
+            var raycaster = camera.GetComponent<PhysicsRaycaster>();
+            var cinemachine = camera.GetComponent<CinemachineBrain>();
+            var cameraController = new CameraController(raycaster, cinemachine);
+            cameraController.ShowRaycaster();
 
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, cameraController);
@@ -106,6 +111,7 @@ namespace LegoBattaleRoyal.App
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
+                generalController.Dispose();
             };
 
             void StartGame()

@@ -7,7 +7,7 @@ using System;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
-    public class GeneralController
+    public class GeneralController : IDisposable
     {
         private readonly GeneralPopup _generalPopup;
         private readonly WalletController _walletController;
@@ -25,7 +25,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _levelRepository = levelRepository;
             _cameraController = cameraController;
 
-            _generalPopup.SetCamera(cameraController);
+            _generalPopup.Shown += _cameraController.CloseRaycaster;
+            _generalPopup.Closed += _cameraController.ShowRaycaster;
         }
 
         public void ShowRefinementRemovePanel(Action callback)
@@ -108,6 +109,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.SetTitle(title);
             _generalPopup.SetText(text);
             return _generalPopup;
+        }
+
+        public void Dispose()
+        {
+            _generalPopup.Shown -= _cameraController.CloseRaycaster;
+            _generalPopup.Closed -= _cameraController.ShowRaycaster;
         }
     }
 }
