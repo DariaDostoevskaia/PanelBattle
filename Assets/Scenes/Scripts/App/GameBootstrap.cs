@@ -5,6 +5,7 @@ using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
+using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
@@ -40,7 +41,7 @@ namespace LegoBattaleRoyal.App
 
         public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
             Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController,
-            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider, UnityAdsProvider adsProvider)
         {
             _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
@@ -62,7 +63,7 @@ namespace LegoBattaleRoyal.App
             var loadingController = new LoadingController(_uiContainer.LoadingScreen);
 
             _endGameController = new EndGameController(_characterRepository, levelRepository,
-                soundController, walletController, generalController, loadingController);
+                soundController, walletController, generalController, adsProvider, loadingController);
 
             _endGameController.OnGameRestarted += OnRestarted;
 
@@ -250,9 +251,20 @@ namespace LegoBattaleRoyal.App
 #if DEBUG
 
         [Button]
-        private void LoseLevel()
+        public void LoseLevel()
         {
             _endGameController.LoseGame();
+        }
+
+        [Button]
+        public void WinGame()
+        {
+            var opponents = _characterRepository.GetOpponents().ToArray();
+            foreach (var opponent in opponents)
+            {
+                _characterRepository.Remove(opponent.Id);
+            }
+            _endGameController.TryWinGame();
         }
 
         [Button]
@@ -264,17 +276,6 @@ namespace LegoBattaleRoyal.App
             var nextLevel = _levelRepository.Get(order);
             nextLevel.Launch();
             OnRestarted?.Invoke();
-        }
-
-        [Button]
-        private void WinGame()
-        {
-            var opponents = _characterRepository.GetOpponents().ToArray();
-            foreach (var opponent in opponents)
-            {
-                _characterRepository.Remove(opponent.Id);
-            }
-            _endGameController.TryWinGame();
         }
 
 #endif

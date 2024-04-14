@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -17,6 +19,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
+        private readonly UnityAdsProvider _adsProvider;
         private readonly SoundController _soundController;
         private readonly GeneralController _generalController;
         private readonly LoadingController _loadingController;
@@ -26,6 +29,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
+            UnityAdsProvider adsProvider,
             LoadingController loadingController)
         {
             _levelRepository = levelRepository;
@@ -34,6 +38,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _loadingController = loadingController;
+            _adsProvider = adsProvider;
         }
 
         private void ExitMainMenu()
@@ -63,7 +68,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             var currentLevel = _levelRepository.GetCurrentLevel();
-            currentLevel.Win();
 
             _walletController.EarnCoins(currentLevel.Reward);
 
@@ -71,28 +75,77 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             _soundController.PLayWinGameMusic();
 
-            if (!isLastLevel)
-            {
-                _generalController.ShowWinLevelPopup(() =>
-                {
-                    var nextLevel = _levelRepository.GetNextLevel();
-                    currentLevel.Exit();
-                    nextLevel.Launch();
-                    RestartGame();
-                }, ExitMainMenu);
+            var popupText = isLastLevel
+                ? $"You earn {currentLevel.Reward}. Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
+                : $"You earn {currentLevel.Reward}. Next for {_levelRepository.GetNextLevel().Price}.";
 
-                return true;
-            }
+            var popup = _generalController.CreatePopup("You Win!", popupText);
 
-            _generalController.ShowWinGamePopup(() =>
+            if (isLastLevel)
             {
-                currentLevel.Exit();
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
                 var firstLevel = _levelRepository.Get(firstLevelOrder);
-                firstLevel.Launch();
-                RestartGame();
-            }, ExitMainMenu);
 
+                var restartButton = popup.CreateButton($"Restart");
+                restartButton.onClick.AddListener(() =>
+                {
+                    restartButton.interactable = false;
+                    popup.Close();
+
+                    currentLevel.Win();
+                    currentLevel.Exit();
+                    firstLevel.Launch();
+
+                    RestartGame();
+                });
+            }
+            else
+            {
+                var nextLevel = _levelRepository.GetNextLevel();
+
+                var nextButton = popup.CreateButton($"Next");
+                nextButton.onClick.AddListener(() =>
+                {
+                    nextButton.interactable = false;
+                    popup.Close();
+
+                    currentLevel.Win();
+                    currentLevel.Exit();
+                    nextLevel.Launch();
+
+                    RestartGame();
+                });
+            }
+            var exitButton = popup.CreateButton("Exit");
+            exitButton.onClick.AddListener(() =>
+            {
+                exitButton.interactable = false;
+                popup.Close();
+                ExitMainMenu();
+            });
+
+            var showAdsButton = popup.CreateButton("x2 coins");
+            showAdsButton.onClick.AddListener(() =>
+            {
+                showAdsButton.interactable = false;
+
+                ShowRewarededAsync(currentLevel.Reward)
+                .ContinueWith((result) => showAdsButton.interactable = !result)
+                .Forget();
+            });
+            popup.Show();
+
+            return true;
+        }
+
+        private async UniTask<bool> ShowRewarededAsync(int reward)
+        {
+            var result = await _adsProvider.ShowRewarededAsync();
+
+            if (!result)
+                return false;
+
+            _walletController.EarnCoins(reward);
             return true;
         }
 

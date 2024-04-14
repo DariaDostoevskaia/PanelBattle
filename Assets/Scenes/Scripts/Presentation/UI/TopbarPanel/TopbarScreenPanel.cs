@@ -1,30 +1,33 @@
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
 {
-    public class TopbarScreenPanel : MonoBehaviour
+    public class TopbarScreenPanel : BaseViewUI
     {
         public event Action OnSettingsButtonClicked;
 
-        [SerializeField] private Button _topbarScreenPanel;
+        [SerializeField] private Button _settingsButton;
+        [SerializeField] private TextMeshProUGUI _moneyCount;
 
         private void Start()
         {
-            _topbarScreenPanel.onClick.AddListener(() => OnSettingsButtonClicked?.Invoke());
+            _settingsButton.onClick.AddListener(() => OnSettingsButtonClicked?.Invoke());
         }
 
-        public void Show()
+        public void SetText(int count)
         {
-            _topbarScreenPanel.gameObject.SetActive(true);
+            _moneyCount.SetText($"{count}");
         }
 
         private void OnDestroy()
         {
             OnSettingsButtonClicked = null;
 
-            _topbarScreenPanel.onClick.RemoveAllListeners();
+            _settingsButton.onClick.RemoveAllListeners();
         }
     }
 }

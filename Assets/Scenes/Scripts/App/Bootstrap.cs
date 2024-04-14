@@ -30,7 +30,10 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
-
+#if DEBUG && ! UNITY_EDITOR
+        [SerializeField] private DebugLogManager _debugLogManagerPrefab;
+        private DebugLogManager _debugLogManager;
+#endif
         private LevelController _levelController;
 
         private void Start()
@@ -40,9 +43,22 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
+#if DEBUG && ! UNITY_EDITOR
+            if (_debugLogManager == null)
+            {
+                _debugLogManager = Instantiate(_debugLogManagerPrefab);
+
+                DebugLogConsole.AddCommandInstance(nameof(RemoveProgress), "Remove all progress", nameof(RemoveProgress), this);
+                DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.WinGame), "Win level", nameof(_gameBootstrap.WinGame), _gameBootstrap);
+                DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.LoseLevel), "Lose level", nameof(_gameBootstrap.LoseLevel), _gameBootstrap);
+
+                DontDestroyOnLoad(_debugLogManager.gameObject);
+            }
+#endif
             var loadingController = new LoadingController(_uiContainer.LoadingScreen);
             loadingController.ShowLoadingPopup();
             await loadingController.LoadMockAsync();
+            _uiContainer.Background.SetActive(true);
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
@@ -53,22 +69,17 @@ namespace LegoBattaleRoyal.App
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
 
-            var levelsSO = _gameSettingsSO.Levels;
-
             var levelRepository = new LevelRepository();
             var saveService = new SaveService();
             var walletController = new WalletController(saveService, _gameSettingsSO);
-            var levelController = new LevelController(levelRepository, saveService, walletController, adsProvider);
+            var levelController = new LevelController(levelRepository, saveService, walletController);
 
+            var levelsSO = _gameSettingsSO.Levels;
             levelController.CreateLevels(levelsSO);
             _levelController = levelController;
-
             walletController.LoadWalletData();
 
-            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel);
-            topbarController.ShowTopbar();
-
-            var settingsPopup = _uiContainer.SettingsPopup;
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, loadingController);
 
             var generalPopup = _uiContainer.GeneralPopup;
@@ -77,9 +88,8 @@ namespace LegoBattaleRoyal.App
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
-            menuController.ShowMenu();
 
-            topbarController.ShowTopbar();
+            menuController.ShowMenu();
 
             loadingController.CloseLoadingPopup();
 
@@ -94,6 +104,7 @@ namespace LegoBattaleRoyal.App
                 menuController.Dispose();
                 settingsController.Dispose();
                 topbarController.Dispose();
+                walletController.Dispose();
                 adsProvider.Dispose();
             };
 
@@ -105,17 +116,21 @@ namespace LegoBattaleRoyal.App
                 if (!levelController.TryBuyLevel(level.Price))
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NotEnoughCurrency);
-                    generalController.ShowAdsPopup(() => ShowRewardedAdsAsync().Forget());
+                    generalController.ShowAdsPopup(ShowRewardedAdsAsync);
 
                     return;
                 }
 
-                //if (entriesGameNumber % 4 == 0)
-                //{
-                //    adsProvider.ShowInterstitial();
-                //    Debug.Log("Intrestitial show.");
-                //    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
-                //}
+                entriesGameNumber++;
+
+                if (entriesGameNumber % 4 == 0)
+                {
+                    analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
+                    adsProvider.ShowInterstitial();
+                    Debug.Log("Intrestitial show.");
+                    entriesGameNumber = 0;
+                }
+                SaveNumberInputs(entriesGameNumber);
 
                 generalPopup.Close();
                 _gameBootstrap.Dispose();
@@ -123,26 +138,30 @@ namespace LegoBattaleRoyal.App
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
 
+                _uiContainer.Background.SetActive(false);
                 loadingController.CloseLoadingPopup();
                 menuController.CloseMenu();
+                _uiContainer.Background.SetActive(false);
 
+                topbarController.ShowTopbar();
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider);
+                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
 
-                async UniTask ShowRewardedAdsAsync()
+                async UniTask<bool> ShowRewardedAdsAsync()
                 {
                     var result = await adsProvider.ShowRewarededAsync();
 
                     if (!result)
-                        return;
+                        return false;
 
                     generalPopup.Close();
 
-                    levelController.EarnCoins(level.Price);
-                    entriesGameNumber--;
+                    walletController.EarnCoins(level.Price);
+                    entriesGameNumber = Math.Max(0, --entriesGameNumber);
                     SaveNumberInputs(entriesGameNumber);
 
                     StartGame();
+                    return true;
                 }
             }
 
@@ -160,9 +179,6 @@ namespace LegoBattaleRoyal.App
         private int GetNumberInputsPlayer()
         {
             int numberInputs = PlayerPrefs.GetInt(NumberInputs);
-            numberInputs++;
-
-            SaveNumberInputs(numberInputs);
 
             Debug.Log(NumberInputs + " " + numberInputs);
             return numberInputs;

@@ -30,6 +30,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         private void StartGame()
         {
             OnGameStarted?.Invoke();
+            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void ShowMenu()
