@@ -12,14 +12,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
+        private readonly SettingsController _menuSettingsController;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider)
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
+            _menuSettingsController = menuSettingsController;
 
             _menuView.OnStartGameClicked += StartGame;
             _menuView.RemoveProgressGameClicked += RemoveGameProgress;
+            _menuView.SettingsRequested += OnSettingsRequested;
+            _menuSettingsController.Closed += OnSettingsClosed;
         }
 
         private void RemoveGameProgress()
@@ -27,15 +31,29 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             OnGameProgressRemoved?.Invoke();
         }
 
+        private void OnSettingsRequested(bool active)
+        {
+            if (active)
+                _menuSettingsController.ShowSettings();
+            else
+                _menuSettingsController.CloseSettings();
+        }
+
+        private void OnSettingsClosed()
+        {
+            _menuView.SetActiveLevelToggleWithoutNotify();
+        }
+
         private void StartGame()
         {
             OnGameStarted?.Invoke();
-            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void ShowMenu()
         {
             _menuView.Show();
+            _menuSettingsController.CloseSettings();
+            _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
 
         public void CloseMenu()
@@ -50,6 +68,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
             _menuView.OnStartGameClicked -= StartGame;
             _menuView.RemoveProgressGameClicked -= RemoveGameProgress;
+            _menuView.SettingsRequested -= OnSettingsRequested;
+            _menuSettingsController.Closed -= OnSettingsClosed;
         }
     }
 }

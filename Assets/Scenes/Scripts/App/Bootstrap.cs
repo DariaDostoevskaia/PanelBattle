@@ -55,13 +55,13 @@ namespace LegoBattaleRoyal.App
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
 #endif
+            _uiContainer.CloseAll();
             _uiContainer.Background.SetActive(true);
             _uiContainer.LoadingScreen.SetActive(true);
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
 
-            _uiContainer.CloseAll();
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
@@ -76,16 +76,18 @@ namespace LegoBattaleRoyal.App
             _levelController = levelController;
             walletController.LoadWalletData();
 
-            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+            var generalPopup = _uiContainer.GeneralPopup;
+
+            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController);
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
+            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
+
+            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
 
-            var generalPopup = _uiContainer.GeneralPopup;
-            var generalController = new GeneralController(generalPopup, walletController, levelRepository);
-
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
 
@@ -104,7 +106,10 @@ namespace LegoBattaleRoyal.App
                 saveService.Dispose();
                 levelController.Dispose();
                 menuController.Dispose();
-                settingsController.Dispose();
+
+                mainSettingsController.Dispose();
+                gameSettingsController.Dispose();
+
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
@@ -143,6 +148,7 @@ namespace LegoBattaleRoyal.App
 
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
+                levelSelectController.CloseLevelSelect();
                 menuController.CloseMenu();
                 levelSelectController.CloseLevelSelect();
 
@@ -172,6 +178,7 @@ namespace LegoBattaleRoyal.App
             void RemoveProgress()
             {
                 generalController.ShowRefinementRemovePanel(Remove);
+                levelSelectController.ShowLevelSelect();
             }
 
             void Remove()

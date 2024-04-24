@@ -11,16 +11,41 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 
         public event Action RemoveProgressGameClicked;
 
+        public event Action<bool> SettingsRequested;
+
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _leaderboardGameButton;
         [SerializeField] private Button _resetGameButton;
         [SerializeField] private Button _endGameButton;
 
+        [SerializeField] private Toggle _levelSelectToggle;
+        [SerializeField] private Toggle _settingsToggle;
+
+        [SerializeField] private RectTransform _levelSelectPanel;
+
         private void Start()
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
-            _endGameButton.onClick.AddListener(EndGame);
             _resetGameButton.onClick.AddListener(() => RemoveProgressGameClicked?.Invoke());
+            _endGameButton.onClick.AddListener(EndGame);
+
+            _settingsToggle.onValueChanged.AddListener((isOn) =>
+            {
+                SettingsRequested?.Invoke(isOn);
+            });
+
+            _levelSelectToggle.onValueChanged.AddListener((isOn) =>
+            {
+                _levelSelectPanel.gameObject.SetActive(isOn);
+            });
+        }
+
+        public void SetActiveLevelToggleWithoutNotify()
+        {
+            _settingsToggle.SetIsOnWithoutNotify(false);
+
+            _levelSelectToggle.SetIsOnWithoutNotify(true);
+            _levelSelectPanel.gameObject.SetActive(true);
         }
 
         private void EndGame()
@@ -34,8 +59,11 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
             RemoveProgressGameClicked = null;
 
             _startGameButton.onClick.RemoveAllListeners();
-            _endGameButton.onClick.RemoveAllListeners();
             _resetGameButton.onClick.RemoveAllListeners();
+            _endGameButton.onClick.RemoveAllListeners();
+
+            _settingsToggle.onValueChanged.RemoveAllListeners();
+            _levelSelectToggle.onValueChanged.RemoveAllListeners();
         }
     }
 }
