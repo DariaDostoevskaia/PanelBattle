@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Scripts/Presentation/Controllers/LevelSelect/LevelSelectController.cs.meta
+guid: 73a27f3118abac247bd65e0dc40723a7
+========
+guid: 7b5da0439ffbe9340aaa19f6bd2dca2e
+>>>>>>>> master:Assets/Scenes/Scripts/Infrastructure/Unity/Ads/UnityAdsProvider.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

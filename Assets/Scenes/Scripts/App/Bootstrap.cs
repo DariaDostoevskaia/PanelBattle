@@ -8,6 +8,7 @@ using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
@@ -78,12 +79,17 @@ namespace LegoBattaleRoyal.App
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
             var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
 
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
+            levelSelectController.ShowLevelSelect();
+
             var generalPopup = _uiContainer.GeneralPopup;
             var generalController = new GeneralController(generalPopup, walletController, levelRepository);
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
+
+            levelSelectController.OnLevelInvoked += StartGame;
 
             menuController.ShowMenu();
 
@@ -102,6 +108,7 @@ namespace LegoBattaleRoyal.App
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
+                levelSelectController.Dispose();
             };
 
             void StartGame()
@@ -137,9 +144,10 @@ namespace LegoBattaleRoyal.App
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
                 menuController.CloseMenu();
-                _uiContainer.Background.SetActive(false);
+                levelSelectController.CloseLevelSelect();
 
                 topbarController.ShowTopbar();
+
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
                 _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
 
