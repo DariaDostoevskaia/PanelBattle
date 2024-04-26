@@ -83,14 +83,15 @@ namespace LegoBattaleRoyal.App
             var generalPopup = _uiContainer.GeneralPopup;
             var generalController = new GeneralController(generalPopup, walletController, levelRepository);
 
-            var authentificationManager = new AuthentificationController();
-            await authentificationManager.SignInAsync();
+            var authentificationController = new AuthentificationController();
+            await authentificationController.SignInAsync();
 
             var leaderboardController = new LeaderboardController();//new popup - ui
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
+            menuController.OnLeaderboardClicked += ShowLeaderboard;
 
             menuController.ShowMenu();
 
@@ -100,6 +101,7 @@ namespace LegoBattaleRoyal.App
             {
                 menuController.OnGameStarted -= StartGame;
                 menuController.OnGameProgressRemoved -= RemoveProgress;
+                menuController.OnLeaderboardClicked -= ShowLeaderboard;
                 _gameBootstrap.OnRestarted -= StartGame;
 
                 saveService.Dispose();
@@ -176,6 +178,11 @@ namespace LegoBattaleRoyal.App
             void Remove()
             {
                 levelController.RemoveAllProgress();
+            }
+
+            void ShowLeaderboard()
+            {
+                //leaderboardController.
             }
         }
 

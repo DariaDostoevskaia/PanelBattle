@@ -16,7 +16,7 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 
         public async void AddScore()
         {
-            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, 102);
+            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, 50);
 
             Debug.Log($"{scoreResponse.PlayerId}, {scoreResponse.PlayerName},{scoreResponse.Score}");
         }

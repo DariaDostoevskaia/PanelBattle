@@ -8,6 +8,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
+        public event Action OnLeaderboardClicked;
+
         public event Action OnGameProgressRemoved;
 
         private readonly MainMenuPanelUI _menuView;
@@ -22,6 +24,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
             _menuView.OnStartGameClicked += StartGame;
             _menuView.RemoveProgressGameClicked += RemoveGameProgress;
+            _menuView.LeaderboardClicked += ShowLeaderboard;
+        }
+
+        private void ShowLeaderboard()
+        {
+            OnLeaderboardClicked?.Invoke();
         }
 
         private void RemoveGameProgress()
@@ -49,9 +57,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         {
             OnGameStarted = null;
             OnGameProgressRemoved = null;
+            OnLeaderboardClicked = null;
 
             _menuView.OnStartGameClicked -= StartGame;
             _menuView.RemoveProgressGameClicked -= RemoveGameProgress;
+            _menuView.LeaderboardClicked -= ShowLeaderboard;
         }
     }
 }
