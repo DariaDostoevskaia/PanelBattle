@@ -6,6 +6,7 @@ using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Infrastructure.Unity.Authentification;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
@@ -75,6 +76,9 @@ namespace LegoBattaleRoyal.App
             levelController.CreateLevels(levelsSO);
             _levelController = levelController;
             walletController.LoadWalletData();
+
+            var authentificationController = new AuthentificationController();
+            await authentificationController.SignInAsync();
 
             var generalPopup = _uiContainer.GeneralPopup;
 
