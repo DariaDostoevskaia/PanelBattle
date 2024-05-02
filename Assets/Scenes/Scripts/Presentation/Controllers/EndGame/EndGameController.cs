@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Infrastructure.Unity.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
@@ -20,6 +21,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly WalletController _walletController;
         private readonly GeneralController _generalController;
         private readonly UnityAdsProvider _adsProvider;
+        private readonly LeaderboardController _leaderboardController;
         private readonly SoundController _soundController;
 
         public EndGameController(CharacterRepository characterRepository,
@@ -27,7 +29,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
-            UnityAdsProvider adsProvider)
+            UnityAdsProvider adsProvider,
+            LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -35,6 +38,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _adsProvider = adsProvider;
+            _leaderboardController = leaderboardController;
         }
 
         private void ExitMainMenu()
@@ -70,6 +74,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
             _soundController.PLayWinGameMusic();
+
+            _leaderboardController.AddScore(currentLevel.Reward);
+            //_leaderboardController.GetPlayerScore(); //not fount auth.packages
 
             var popupText = isLastLevel
                 ? $"You earn {currentLevel.Reward}. Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"

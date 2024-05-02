@@ -1,11 +1,15 @@
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Unity.Services.Core;
 using Unity.Services.Leaderboards;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 {
     public class LeaderboardController
     {
+        private ILeaderboard _leaderboard;
         private readonly string _leaderboardId = "PanelBattle";  //вывести в лог
 
         private string VersionId { get; set; }
@@ -14,42 +18,55 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 
         private int Limit { get; set; }
 
-        //void Start()
-        //{
-        //    ILeaderboard leaderboard = Social.CreateLeaderboard();
-        //    leaderboard.id = _leaderboardId;
-        //    leaderboard.LoadScores(result =>
-        //    {
-        //        Debug.Log("Received " + leaderboard.scores.Length + " scores");
-        //        foreach (IScore score in leaderboard.scores)
-        //            Debug.Log(score);
-        //    });
-        //}
+        public void Start()
+        {
+            // Authenticate user first
+            Social.localUser.Authenticate(success =>
+            {
+                if (success)
+                {
+                    Debug.Log("Authentication successful");
+                    string userInfo = "Username: " + Social.localUser.userName +
+                        "\nUser ID: " + Social.localUser.id +
+                        "\nIsUnderage: " + Social.localUser.underage;
+                    Debug.Log(userInfo);
+                }
+                else
+                    Debug.Log("Authentication failed");
+            });
 
-        //private void Init()
-        //{
-        //    if (PlayGamesPlatform.Instance.IsAuthenticated())
-        //    {
-        //        Social.LoadScores("leaderboard_id", scores =>
-        //    {
-        //        if (scores.Length > 0)
-        //        {
-        //            string user = Social.localUser.id;
+            // create social leaderboard
+            _leaderboard = Social.CreateLeaderboard();
+            _leaderboard.id = _leaderboardId;
+        }
 
-        //            foreach (IScore score in scores)
-        //            {
-        //                if (user == score.userID)
-        //                {
-        //                    rank_text.text = "YOUR RANK: " + score.rank.ToString();
-        //                }
-        //            }
-        //        }
-        //    });
-        //    }
-        //}
+        public void ReportScore(long score)
+        {
+            Debug.Log("Reporting score " + score + " on leaderboard " + _leaderboardId);
+            Social.ReportScore(score, _leaderboardId, success =>
+            {
+                Debug.Log(success
+                    ? "Reported score successfully"
+                    : "Failed to report score");
+            });
+        }
 
-        //Social.ShowLeaderboardUI();
-        //Social.LoadScores("Leaderboard ID", scores => {});
+        public async UniTask Init()
+        {
+            await UnityServices.InitializeAsync();
+        }
+
+        public void ShowLeaderboard()
+        {
+            _leaderboard.LoadScores(result =>
+            {
+                Debug.Log("Received " + _leaderboard.scores.Length + " scores");
+                foreach (IScore score in _leaderboard.scores)
+                    Debug.Log(score);
+            });
+            GetScores();
+            //Social.ShowLeaderboardUI();
+        }
 
         public async void AddScore(int score)
         {

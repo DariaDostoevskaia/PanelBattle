@@ -83,6 +83,8 @@ namespace LegoBattaleRoyal.App
             var generalController = new GeneralController(generalPopup, walletController, levelRepository);
 
             var leaderboardController = new LeaderboardController();//new popup - ui
+            await leaderboardController.Init();
+            leaderboardController.Start();
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
             menuController.OnGameStarted += StartGame;
@@ -146,7 +148,14 @@ namespace LegoBattaleRoyal.App
 
                 topbarController.ShowTopbar();
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
+
+                _gameBootstrap.Configure(levelRepository,
+                    _gameSettingsSO,
+                    walletController,
+                    _soundController,
+                    analyticsProvider,
+                    adsProvider,
+                    leaderboardController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {
@@ -178,7 +187,7 @@ namespace LegoBattaleRoyal.App
 
             void ShowLeaderboard()
             {
-                //leaderboardController.
+                leaderboardController.ShowLeaderboard();
             }
         }
 
