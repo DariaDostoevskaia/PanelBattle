@@ -14,9 +14,46 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 
         private int Limit { get; set; }
 
-        public async void AddScore()
+        //void Start()
+        //{
+        //    ILeaderboard leaderboard = Social.CreateLeaderboard();
+        //    leaderboard.id = _leaderboardId;
+        //    leaderboard.LoadScores(result =>
+        //    {
+        //        Debug.Log("Received " + leaderboard.scores.Length + " scores");
+        //        foreach (IScore score in leaderboard.scores)
+        //            Debug.Log(score);
+        //    });
+        //}
+
+        //private void Init()
+        //{
+        //    if (PlayGamesPlatform.Instance.IsAuthenticated())
+        //    {
+        //        Social.LoadScores("leaderboard_id", scores =>
+        //    {
+        //        if (scores.Length > 0)
+        //        {
+        //            string user = Social.localUser.id;
+
+        //            foreach (IScore score in scores)
+        //            {
+        //                if (user == score.userID)
+        //                {
+        //                    rank_text.text = "YOUR RANK: " + score.rank.ToString();
+        //                }
+        //            }
+        //        }
+        //    });
+        //    }
+        //}
+
+        //Social.ShowLeaderboardUI();
+        //Social.LoadScores("Leaderboard ID", scores => {});
+
+        public async void AddScore(int score)
         {
-            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, 50);
+            var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(_leaderboardId, score);
 
             Debug.Log($"{scoreResponse.PlayerId}, {scoreResponse.PlayerName},{scoreResponse.Score}");
         }
@@ -30,8 +67,8 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 
         public async void GetPaginatedScores()
         {
-            Offset = 10;
-            Limit = 10;
+            Offset = 100;
+            Limit = 100;
 
             var scoresResponse = await LeaderboardsService.Instance
                 .GetScoresAsync(_leaderboardId, new GetScoresOptions { Offset = Offset, Limit = Limit });
