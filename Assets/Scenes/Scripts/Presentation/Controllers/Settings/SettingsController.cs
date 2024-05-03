@@ -1,22 +1,20 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
-using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsController : IDisposable
 {
-    private readonly TopbarController _topbarController;
+    public event Action Closed;
+
     private readonly SettingsPopup _settingsPopup;
     private readonly SoundController _soundController;
     private readonly CameraController _cameraController;
 
-    public SettingsController
-        (TopbarController topbarController,
-        SettingsPopup settingsPopup,
-        SoundController soundController,
-        CameraController cameraController)
+    public SettingsController(SettingsPopup settingsPopup, SoundController soundController, CameraController cameraController)
     {
-        _topbarController = topbarController;
         _settingsPopup = settingsPopup;
         _soundController = soundController;
         _cameraController = cameraController;
@@ -24,11 +22,29 @@ public class SettingsController : IDisposable
         _settingsPopup.OnMusicVolumeChanged += _soundController.SetMusicVolume;
         _settingsPopup.OnSoundVolumeChanged += _soundController.SetSoundVolume;
 
-        _topbarController.OnButtonClicked += ShowSettings;
+        _settingsPopup.Closed += OnClosed;
+        _settingsPopup.OnHomeClicked += OnHomeClicked;
 
         _settingsPopup.OnOkClicked += _cameraController.ShowRaycaster;
         _settingsPopup.OnCloseClicked += _cameraController.ShowRaycaster;
-        _settingsPopup.OnHomeClicked += _cameraController.ShowRaycaster;
+    }
+
+    private void OnHomeClicked()
+    {
+        var progress = new Progress<float>((progressValue) =>
+        {
+            //var loadingController;
+            Debug.Log(progressValue);
+        });
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadSceneAsync(currentSceneIndex).ToUniTask(progress).Forget();
+        _cameraController.ShowRaycaster();
+    }
+
+    private void OnClosed()
+    {
+        Closed?.Invoke();
+        _cameraController.ShowRaycaster();
     }
 
     public void ShowSettings()
@@ -37,15 +53,22 @@ public class SettingsController : IDisposable
         _cameraController.CloseRaycaster();
     }
 
+    public void CloseSettings()
+    {
+        _settingsPopup.Close();
+    }
+
     public void Dispose()
     {
+        Closed = null;
+
         _settingsPopup.OnMusicVolumeChanged -= _soundController.SetMusicVolume;
         _settingsPopup.OnSoundVolumeChanged -= _soundController.SetSoundVolume;
 
-        _topbarController.OnButtonClicked -= ShowSettings;
+        _settingsPopup.Closed -= OnClosed;
+        _settingsPopup.OnHomeClicked -= OnHomeClicked;
 
         _settingsPopup.OnOkClicked -= _cameraController.ShowRaycaster;
         _settingsPopup.OnCloseClicked -= _cameraController.ShowRaycaster;
-        _settingsPopup.OnHomeClicked -= _cameraController.ShowRaycaster;
     }
 }

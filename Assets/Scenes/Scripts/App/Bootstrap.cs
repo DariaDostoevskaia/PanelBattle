@@ -10,6 +10,7 @@ using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
@@ -57,13 +58,13 @@ namespace LegoBattaleRoyal.App
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
 #endif
+            _uiContainer.CloseAll();
             _uiContainer.Background.SetActive(true);
             _uiContainer.LoadingScreen.SetActive(true);
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
 
-            _uiContainer.CloseAll();
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
@@ -84,15 +85,22 @@ namespace LegoBattaleRoyal.App
             var cameraController = new CameraController(raycaster, cinemachine);
             cameraController.ShowRaycaster();
 
-            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController, cameraController);
+            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, cameraController);
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
 
             var generalPopup = _uiContainer.GeneralPopup;
-            var generalController = new GeneralController(generalPopup, walletController, levelRepository, cameraController);
+            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, cameraController);
+            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, cameraController);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController);
+
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
+            levelSelectController.ShowLevelSelect();
+
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
+
+            levelSelectController.OnLevelInvoked += StartGame;
 
             menuController.ShowMenu();
 
@@ -107,10 +115,14 @@ namespace LegoBattaleRoyal.App
                 saveService.Dispose();
                 levelController.Dispose();
                 menuController.Dispose();
-                settingsController.Dispose();
+
+                mainSettingsController.Dispose();
+                gameSettingsController.Dispose();
+
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
+                levelSelectController.Dispose();
                 generalController.Dispose();
             };
 
@@ -146,10 +158,12 @@ namespace LegoBattaleRoyal.App
 
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
+                levelSelectController.CloseLevelSelect();
                 menuController.CloseMenu();
-                _uiContainer.Background.SetActive(false);
+                levelSelectController.CloseLevelSelect();
 
                 topbarController.ShowTopbar();
+
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
 
                 _gameBootstrap.Configure
@@ -182,6 +196,7 @@ namespace LegoBattaleRoyal.App
             void RemoveProgress()
             {
                 generalController.ShowRefinementRemovePanel(Remove);
+                levelSelectController.ShowLevelSelect();
             }
 
             void Remove()

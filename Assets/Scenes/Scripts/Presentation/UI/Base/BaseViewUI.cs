@@ -9,7 +9,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Base
 
         public event Action Closed;
 
-        public void Show()
+        public virtual void Show()
         {
             gameObject.SetActive(true);
             Shown?.Invoke();

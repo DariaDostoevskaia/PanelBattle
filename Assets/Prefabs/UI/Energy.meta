@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Backgrounds/Game/Cobblestone/cobble stone scene.meta
+guid: 51e27de707bf5624099c795b29136c4f
+========
 guid: 93b0dfda63bbe474999819dfec4817f1
+>>>>>>>> dev:Assets/Prefabs/UI/Energy.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

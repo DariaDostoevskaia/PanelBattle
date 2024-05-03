@@ -11,7 +11,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
     public class GridFactory
     {
         private readonly PanelSO[] _panelSettings;
-        private LevelSO _levelSettings;
+        private readonly LevelSO _levelSettings;
 
         public GridFactory(LevelSO levelSettings)
         {
