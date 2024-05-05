@@ -2,8 +2,8 @@ using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
-using LegoBattaleRoyal.Infrastructure.Unity.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using System;
@@ -29,8 +29,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
-            UnityAdsProvider adsProvider,
-            LeaderboardController leaderboardController)
+            UnityAdsProvider adsProvider)
+        //LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -38,7 +38,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _adsProvider = adsProvider;
-            _leaderboardController = leaderboardController;
+            //_leaderboardController = leaderboardController;
         }
 
         private void ExitMainMenu()
