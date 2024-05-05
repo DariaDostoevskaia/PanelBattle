@@ -14,11 +14,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
     {
         private readonly ILevelRepository _levelRepository;
         private readonly ISaveService _saveService;
-
         private readonly WalletController _walletController;
         private LevelDTO _levelDTO;
 
-        public LevelController(ILevelRepository levelRepository, ISaveService saveService,
+        public LevelController(
+            ILevelRepository levelRepository,
+            ISaveService saveService,
             WalletController walletController)
         {
             _levelRepository = levelRepository;

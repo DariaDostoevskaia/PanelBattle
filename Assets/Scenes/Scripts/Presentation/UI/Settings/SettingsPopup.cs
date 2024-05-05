@@ -6,13 +6,15 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 {
-    public class SettingsPopup : BaseViewUI
+    public class SettingsPopup : MonoBehaviour
     {
         public event Action OnCloseClicked;
 
         public event Action OnOkClicked;
 
         public event Action OnHomeClicked;
+
+        public event Action Closed;
 
         public event Action<float> OnMusicVolumeChanged;
 
@@ -25,6 +27,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
         [SerializeField] private Button _homeButton;
         [SerializeField] private Button _closeButton;
 
+        [SerializeField] private RectTransform[] _parts;
+
         private void Start()
         {
             _musicSlider.onValueChanged.AddListener((value) => OnMusicVolumeChanged?.Invoke(value));
@@ -36,34 +40,54 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 PlayerPrefs.SetFloat(SoundController.SoundVolume, _soundSlider.value);
                 PlayerPrefs.Save();
 
-                gameObject.SetActive(false);
+                Close();
 
                 OnOkClicked?.Invoke();
             });
 
-            _homeButton.onClick.AddListener(() =>
+            if (_homeButton != null)
+                _homeButton.onClick.AddListener(() =>
             {
                 LoadPrefs();
 
-                gameObject.SetActive(false);
+                Close();
 
                 OnHomeClicked?.Invoke();
             });
 
             _closeButton.onClick.AddListener(() =>
-            {
-                LoadPrefs();
+        {
+            LoadPrefs();
 
-                gameObject.SetActive(false);
+            Close();
 
-                OnCloseClicked?.Invoke();
-            });
+            OnCloseClicked?.Invoke();
+        });
 
             _musicSlider.SetValueWithoutNotify(PlayerPrefs
                 .GetFloat(SoundController.MusicVolume, 1f));
 
             _soundSlider.SetValueWithoutNotify(PlayerPrefs
                 .GetFloat(SoundController.SoundVolume, 1f));
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            foreach (var part in _parts)
+            {
+                part.gameObject.SetActive(true);
+            }
+        }
+
+        public void Close()
+        {
+            gameObject.SetActive(false);
+            foreach (var part in _parts)
+            {
+                part.gameObject.SetActive(false);
+            }
+            Closed?.Invoke();
         }
 
         private void LoadPrefs()
@@ -83,6 +107,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             OnOkClicked = null;
             OnHomeClicked = null;
             OnCloseClicked = null;
+            Closed = null;
 
             OnMusicVolumeChanged = null;
             OnSoundVolumeChanged = null;
@@ -91,8 +116,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             _soundSlider.onValueChanged.RemoveAllListeners();
 
             _okButton.onClick.RemoveAllListeners();
-            _homeButton.onClick.RemoveAllListeners();
             _closeButton.onClick.RemoveAllListeners();
+
+            if (_homeButton != null)
+                _homeButton.onClick.RemoveAllListeners();
         }
     }
 }
