@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -8,19 +9,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
     {
         public event Action OnGameStarted;
 
-        public event Action OnLeaderboardClicked;
-
         public event Action OnGameProgressRemoved;
 
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
         private readonly SettingsController _menuSettingsController;
+        private readonly LeaderboardController _leaderboardController;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController)
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController,
+            LeaderboardController leaderboardController)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
             _menuSettingsController = menuSettingsController;
+            _leaderboardController = leaderboardController;
 
             _menuView.OnStartGameClicked += StartGame;
             _menuView.RemoveProgressGameClicked += RemoveGameProgress;
@@ -31,7 +33,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
         private void ShowLeaderboard()
         {
-            OnLeaderboardClicked?.Invoke();
+            _leaderboardController.ShowLeaderboard();
         }
 
         private void RemoveGameProgress()
@@ -73,7 +75,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         {
             OnGameStarted = null;
             OnGameProgressRemoved = null;
-            OnLeaderboardClicked = null;
 
             _menuView.OnStartGameClicked -= StartGame;
             _menuView.RemoveProgressGameClicked -= RemoveGameProgress;

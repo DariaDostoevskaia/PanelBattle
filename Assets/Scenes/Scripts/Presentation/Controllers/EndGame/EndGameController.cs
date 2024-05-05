@@ -30,8 +30,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
-            UnityAdsProvider adsProvider)
-        //LeaderboardController leaderboardController)
+            UnityAdsProvider adsProvider,
+            LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -39,7 +39,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _adsProvider = adsProvider;
-            //_leaderboardController = leaderboardController;
+            _leaderboardController = leaderboardController;
         }
 
         private void ExitMainMenu()
@@ -86,7 +86,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController.PLayWinGameMusic();
 
             _leaderboardController.AddScore(currentLevel.Reward);
-            //_leaderboardController.GetPlayerScore(); //not fount auth.packages
+
             var popup = _generalController.CreatePopup("You Win!", popupText);
 
             LevelModel nextLevel;

@@ -11,6 +11,7 @@ using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -45,8 +46,8 @@ namespace LegoBattaleRoyal.App
             WalletController walletController,
             SoundController soundController,
            FirebaseAnalyticsProvider analyticsProvider,
-           UnityAdsProvider adsProvider)
-        //LeaderboardController leaderboardController)
+           UnityAdsProvider adsProvider,
+           LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
@@ -72,8 +73,9 @@ namespace LegoBattaleRoyal.App
                 soundController,
                 walletController,
                 generalController,
-                adsProvider);
-            //leaderboardController);
+                adsProvider,
+                leaderboardController);
+
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)

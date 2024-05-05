@@ -89,7 +89,6 @@ namespace LegoBattaleRoyal.App
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
 
             var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController);
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
@@ -97,9 +96,10 @@ namespace LegoBattaleRoyal.App
             var leaderboardProvider = new UnityLeaderboardProvider();
             var leaderboardController = new LeaderboardController(leaderboardProvider);//new popup - ui
             await leaderboardController.InitAsync();
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, leaderboardController);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
-            menuController.OnLeaderboardClicked += ShowLeaderboard;
 
             levelSelectController.OnLevelInvoked += StartGame;
 
@@ -111,7 +111,6 @@ namespace LegoBattaleRoyal.App
             {
                 menuController.OnGameStarted -= StartGame;
                 menuController.OnGameProgressRemoved -= RemoveProgress;
-                menuController.OnLeaderboardClicked -= ShowLeaderboard;
                 _gameBootstrap.OnRestarted -= StartGame;
 
                 saveService.Dispose();
@@ -172,8 +171,8 @@ namespace LegoBattaleRoyal.App
                     walletController,
                     _soundController,
                     analyticsProvider,
-                    adsProvider
-                    /*leaderboardController*/);
+                    adsProvider,
+                    leaderboardController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {
@@ -202,11 +201,6 @@ namespace LegoBattaleRoyal.App
             void Remove()
             {
                 levelController.RemoveAllProgress();
-            }
-
-            void ShowLeaderboard()
-            {
-                //leaderboardController.ShowLeaderboard();
             }
         }
 

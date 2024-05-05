@@ -18,6 +18,9 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Authentification
         {
             try
             {
+                if (AuthenticationService.Instance.IsAuthorized)
+                    return;
+
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 Debug.Log("Sign in anonymously succeeded!");
 

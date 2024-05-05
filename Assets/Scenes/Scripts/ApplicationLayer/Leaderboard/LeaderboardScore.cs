@@ -10,5 +10,10 @@
             UserName = userName;
             UserScore = userScore;
         }
+
+        public override string ToString()
+        {
+            return $"{UserName} - {UserScore}";
+        }
     }
 }

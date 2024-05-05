@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.ApplicationLayer.Leaderboard;
-using Newtonsoft.Json;
 using System.Linq;
+using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
 using Unity.Services.Leaderboards.Models;
@@ -11,18 +11,16 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
 {
     public class UnityLeaderboardProvider : ILeaderboardProvider
     {
-        private readonly string _leaderboardId = "PanelBattle";  //вывести в лог
-        private bool _isInit;
+        private readonly string _leaderboardId = "PanelBattle";
 
         public async UniTask InitAsync()
         {
             if (UnityServices.State == ServicesInitializationState.Uninitialized)
             {
                 await UnityServices.InitializeAsync();
-                //AuthentificationService
-                _isInit = false;
-                return;
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
+            await UniTask.WaitUntil(() => UnityServices.State == ServicesInitializationState.Initialized);
         }
 
         public async UniTask AddScoreAsync(int score)
@@ -39,12 +37,6 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Leaderboard
             return scoresResponse.Results
                 .Select(score => new LeaderboardScore(score.PlayerName, (int)score.Score))
                 .ToArray();
-        }
-
-        public async UniTask GetPlayerScore()
-        {
-            var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(_leaderboardId);
-            Debug.Log(JsonConvert.SerializeObject(scoreResponse));
         }
     }
 }
