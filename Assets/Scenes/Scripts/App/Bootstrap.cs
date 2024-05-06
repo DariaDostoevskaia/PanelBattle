@@ -8,6 +8,7 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Infrastructure.Unity.Authentification;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
@@ -84,6 +85,9 @@ namespace LegoBattaleRoyal.App
             var cinemachine = camera.GetComponent<CinemachineBrain>();
             var cameraController = new CameraController(raycaster, cinemachine);
             cameraController.ShowRaycaster();
+            
+            var authentificationController = new AuthentificationController();
+            await authentificationController.SignInAsync();
 
             var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, cameraController);
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
