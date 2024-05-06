@@ -6,15 +6,13 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Sound
 {
-    public class SettingsPopup : MonoBehaviour
+    public class SettingsPopup : BaseViewUI
     {
         public event Action OnCloseClicked;
 
         public event Action OnOkClicked;
 
         public event Action OnHomeClicked;
-
-        public event Action Closed;
 
         public event Action<float> OnMusicVolumeChanged;
 
@@ -71,8 +69,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
                 .GetFloat(SoundController.SoundVolume, 1f));
         }
 
-        public void Show()
+        public override void Show()
         {
+            base.Show();
+
             gameObject.SetActive(true);
             foreach (var part in _parts)
             {
@@ -80,14 +80,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             }
         }
 
-        public void Close()
+        public override void Close()
         {
             gameObject.SetActive(false);
             foreach (var part in _parts)
             {
                 part.gameObject.SetActive(false);
             }
-            Closed?.Invoke();
         }
 
         private void LoadPrefs()
@@ -102,12 +101,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Sound
             OnSoundVolumeChanged?.Invoke(soundVolume);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnOkClicked = null;
             OnHomeClicked = null;
             OnCloseClicked = null;
-            Closed = null;
 
             OnMusicVolumeChanged = null;
             OnSoundVolumeChanged = null;

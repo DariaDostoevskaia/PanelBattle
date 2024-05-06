@@ -137,17 +137,13 @@ public class ScreenshotCompanionWindow : EditorWindow
                 GUI.color = Color.white;
                 EditorGUILayout.SelectableLabel("Directory = " + getSaveDirectory(), GUILayout.MaxHeight(16));
 
-
                 EditorGUILayout.EndVertical();
 
                 EditorGUILayout.Space();
 
-
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
                 EditorGUILayout.LabelField("FILE SETTINGS", EditorStyles.boldLabel);
-
-
 
                 customName = EditorGUILayout.TextField("Custom Name", customName);
 
@@ -157,26 +153,19 @@ public class ScreenshotCompanionWindow : EditorWindow
 
                 EditorGUILayout.Space();
 
-
-
                 fileTypeGUI();
 
                 EditorGUILayout.Space();
 
                 EditorGUILayout.EndVertical();
             }
-
         }
 
         if (captureMethod != ScreenshotCompanionWindow.CaptureMethod.Cutout)
         {
-
             EditorGUILayout.Space();
 
             GUI.color = signatureColor;
-
-
-
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
@@ -245,9 +234,6 @@ public class ScreenshotCompanionWindow : EditorWindow
             }
 
             EditorGUILayout.EndVertical();
-
-
-
 
             EditorGUILayout.Space();
 

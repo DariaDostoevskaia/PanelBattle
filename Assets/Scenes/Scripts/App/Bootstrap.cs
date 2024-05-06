@@ -1,8 +1,10 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using EasyButtons;
 using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
@@ -17,6 +19,7 @@ using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.App
 {
@@ -76,14 +79,20 @@ namespace LegoBattaleRoyal.App
             _levelController = levelController;
             walletController.LoadWalletData();
 
-            var generalPopup = _uiContainer.GeneralPopup;
+            var camera = Camera.main;
+            var raycaster = camera.GetComponent<PhysicsRaycaster>();
+            var cinemachine = camera.GetComponent<CinemachineBrain>();
+            var cameraController = new CameraController(raycaster, cinemachine);
+            cameraController.ShowRaycaster();
 
-            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController);
+            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, cameraController);
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
-            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository);
 
-            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController);
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController);
+            var generalPopup = _uiContainer.GeneralPopup;
+            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
+
+            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, cameraController);
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
@@ -114,6 +123,7 @@ namespace LegoBattaleRoyal.App
                 walletController.Dispose();
                 adsProvider.Dispose();
                 levelSelectController.Dispose();
+                generalController.Dispose();
             };
 
             void StartGame()
@@ -155,7 +165,15 @@ namespace LegoBattaleRoyal.App
                 topbarController.ShowTopbar();
 
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
+
+                _gameBootstrap.Configure
+                    (levelRepository,
+                    _gameSettingsSO,
+                    walletController,
+                    _soundController,
+                    analyticsProvider,
+                    adsProvider,
+                    cameraController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {

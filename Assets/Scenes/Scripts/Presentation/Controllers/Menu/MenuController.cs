@@ -1,4 +1,5 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -12,17 +13,20 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
 
         private readonly MainMenuPanelUI _menuView;
         private readonly IAnalyticsProvider _analyticsProvider;
+        private readonly CameraController _cameraController;
         private readonly SettingsController _menuSettingsController;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController)
+        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController, CameraController cameraController)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
             _menuSettingsController = menuSettingsController;
+            _cameraController = cameraController;
 
             _menuView.OnStartGameClicked += StartGame;
             _menuView.RemoveProgressGameClicked += RemoveGameProgress;
             _menuView.SettingsRequested += OnSettingsRequested;
+
             _menuSettingsController.Closed += OnSettingsClosed;
         }
 
@@ -52,6 +56,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void ShowMenu()
         {
             _menuView.Show();
+            _cameraController.CloseRaycaster();
+
             _menuSettingsController.CloseSettings();
             _analyticsProvider.SendEvent(AnalyticsEvents.StartMainMenu);
         }
@@ -59,6 +65,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         public void CloseMenu()
         {
             _menuView.Close();
+            _cameraController.ShowRaycaster();
         }
 
         public void Dispose()
@@ -69,6 +76,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _menuView.OnStartGameClicked -= StartGame;
             _menuView.RemoveProgressGameClicked -= RemoveGameProgress;
             _menuView.SettingsRequested -= OnSettingsRequested;
+
             _menuSettingsController.Closed -= OnSettingsClosed;
         }
     }
