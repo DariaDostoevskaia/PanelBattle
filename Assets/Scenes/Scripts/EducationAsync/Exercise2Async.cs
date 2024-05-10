@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -26,9 +27,14 @@ namespace LegoBattaleRoyal.EducationAsync
             _texture.SetNativeSize();
         }
 
-        private UnityWebRequest GetTexture()
+        private UnityWebRequest GetTextureUrl()
         {
-            return UnityWebRequestTexture.GetTexture(_imageUrl);
+            var www = UnityWebRequestTexture.GetTexture(_imageUrl);
+
+            if (www == null)
+                Exercise6ReportExeptions();
+
+            return www;
         }
 
         private Texture2D GetContent(UnityWebRequest request)
@@ -36,9 +42,14 @@ namespace LegoBattaleRoyal.EducationAsync
             return DownloadHandlerTexture.GetContent(request);
         }
 
+        private void Exercise6ReportExeptions()
+        {
+            throw new ArgumentOutOfRangeException(nameof(GetTextureUrl));
+        }
+
         public async UniTask LoadTextureWithUniTask()
         {
-            var request = GetTexture();
+            var request = GetTextureUrl();
             await request.SendWebRequest();
 
             var texture = GetContent(request);
@@ -47,7 +58,7 @@ namespace LegoBattaleRoyal.EducationAsync
 
         public async Task LoadTextureWithTask()
         {
-            var request = GetTexture();
+            var request = GetTextureUrl();
             await request.SendWebRequest();
 
             var texture = GetContent(request);
@@ -56,7 +67,7 @@ namespace LegoBattaleRoyal.EducationAsync
 
         public IEnumerator LoadTextureWithCoroutine()
         {
-            var request = GetTexture();
+            var request = GetTextureUrl();
             yield return request.SendWebRequest();
 
             var texture = GetContent(request);
