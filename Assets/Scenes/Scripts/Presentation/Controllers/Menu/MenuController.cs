@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Extensions;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 
@@ -15,12 +16,18 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
         private readonly IAnalyticsProvider _analyticsProvider;
         private readonly CameraController _cameraController;
         private readonly SettingsController _menuSettingsController;
+        private readonly LeaderboardController _leaderboardController;
 
-        public MenuController(MainMenuPanelUI menuView, IAnalyticsProvider analyticsProvider, SettingsController menuSettingsController, CameraController cameraController)
+        public MenuController(MainMenuPanelUI menuView,
+            IAnalyticsProvider analyticsProvider,
+            SettingsController menuSettingsController,
+            CameraController cameraController,
+            LeaderboardController leaderboardController)
         {
             _menuView = menuView;
             _analyticsProvider = analyticsProvider;
             _menuSettingsController = menuSettingsController;
+            _leaderboardController = leaderboardController;
             _cameraController = cameraController;
 
             _menuView.OnStartGameClicked += StartGame;
@@ -28,6 +35,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _menuView.SettingsRequested += OnSettingsRequested;
 
             _menuSettingsController.Closed += OnSettingsClosed;
+            _menuView.LeaderboardClicked += ShowLeaderboard;
+        }
+
+        private void ShowLeaderboard()
+        {
+            _leaderboardController.ShowLeaderboard();
         }
 
         private void RemoveGameProgress()
@@ -78,6 +91,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Menu
             _menuView.SettingsRequested -= OnSettingsRequested;
 
             _menuSettingsController.Closed -= OnSettingsClosed;
+            _menuView.LeaderboardClicked -= ShowLeaderboard;
         }
     }
 }

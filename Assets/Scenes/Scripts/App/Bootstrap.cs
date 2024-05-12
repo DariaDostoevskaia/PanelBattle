@@ -9,7 +9,9 @@ using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Infrastructure.Unity.Authentification;
+using LegoBattaleRoyal.Infrastructure.Unity.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
@@ -85,7 +87,7 @@ namespace LegoBattaleRoyal.App
             var cinemachine = camera.GetComponent<CinemachineBrain>();
             var cameraController = new CameraController(raycaster, cinemachine);
             cameraController.ShowRaycaster();
-            
+
             var authentificationController = new AuthentificationController();
             await authentificationController.SignInAsync();
 
@@ -96,11 +98,15 @@ namespace LegoBattaleRoyal.App
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
 
             var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, cameraController);
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
 
+            var leaderboardProvider = new UnityLeaderboardProvider();
+            var leaderboardController = new LeaderboardController(leaderboardProvider);
+            await leaderboardController.InitAsync();
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController, leaderboardController);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
 
@@ -177,7 +183,8 @@ namespace LegoBattaleRoyal.App
                     _soundController,
                     analyticsProvider,
                     adsProvider,
-                    cameraController);
+                    cameraController,
+                    leaderboardController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {

@@ -12,6 +12,7 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         public event Action RemoveProgressGameClicked;
 
         public event Action<bool> SettingsRequested;
+        public event Action LeaderboardClicked;
 
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _leaderboardGameButton;
@@ -26,6 +27,7 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
         private void Start()
         {
             _startGameButton.onClick.AddListener(() => OnStartGameClicked?.Invoke());
+            _leaderboardGameButton.onClick.AddListener(() => LeaderboardClicked?.Invoke());
             _resetGameButton.onClick.AddListener(() => RemoveProgressGameClicked?.Invoke());
             _endGameButton.onClick.AddListener(EndGame);
 
@@ -59,8 +61,10 @@ namespace LegoBattaleRoyal.Presentation.UI.MainMenu
 
             OnStartGameClicked = null;
             RemoveProgressGameClicked = null;
+            LeaderboardClicked = null;
 
             _startGameButton.onClick.RemoveAllListeners();
+            _leaderboardGameButton.onClick.RemoveAllListeners();
             _resetGameButton.onClick.RemoveAllListeners();
             _endGameButton.onClick.RemoveAllListeners();
 

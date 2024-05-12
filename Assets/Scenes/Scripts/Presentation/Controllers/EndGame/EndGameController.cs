@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using System;
@@ -21,6 +22,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly WalletController _walletController;
         private readonly GeneralController _generalController;
         private readonly UnityAdsProvider _adsProvider;
+        private readonly LeaderboardController _leaderboardController;
         private readonly SoundController _soundController;
 
         public EndGameController(CharacterRepository characterRepository,
@@ -28,7 +30,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
-            UnityAdsProvider adsProvider)
+            UnityAdsProvider adsProvider,
+            LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -36,6 +39,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _adsProvider = adsProvider;
+            _leaderboardController = leaderboardController;
         }
 
         private void ExitMainMenu()
@@ -80,6 +84,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _walletController.EarnCoins(currentLevel.Reward);
 
             _soundController.PLayWinGameMusic();
+
+            _leaderboardController.AddScore(currentLevel.Reward);
 
             var popup = _generalController.CreatePopup("You Win!", popupText);
 

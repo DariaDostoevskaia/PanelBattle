@@ -5,13 +5,17 @@ using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Core.Panels.Models;
 using LegoBattaleRoyal.Extensions;
+using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
+using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.AI;
 using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
+using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.GameView.Panel;
 using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
@@ -37,10 +41,14 @@ namespace LegoBattaleRoyal.App
         private ILevelRepository _levelRepository;
         private readonly Dictionary<Guid, (Presentation.Controllers.Character.CharacterController, PanelController)> _players = new();
 
-        public void Configure(ILevelRepository levelRepository, GameSettingsSO gameSettingsSO,
-            Presentation.Controllers.Wallet.WalletController walletController, SoundController soundController,
-            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider,
-            Infrastructure.Unity.Ads.UnityAdsProvider adsProvider, CameraController cameraController)
+        public void Configure(ILevelRepository levelRepository,
+            GameSettingsSO gameSettingsSO,
+            WalletController walletController,
+            SoundController soundController,
+           FirebaseAnalyticsProvider analyticsProvider,
+           UnityAdsProvider adsProvider,
+           CameraController cameraController,
+           LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
@@ -61,7 +69,14 @@ namespace LegoBattaleRoyal.App
             var roundController = new RoundController();
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
 
-            _endGameController = new EndGameController(_characterRepository, levelRepository, soundController, walletController, generalController, adsProvider);
+            _endGameController = new EndGameController(_characterRepository,
+                levelRepository,
+                soundController,
+                walletController,
+                generalController,
+                adsProvider,
+                leaderboardController);
+
             _endGameController.OnGameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
@@ -110,7 +125,7 @@ namespace LegoBattaleRoyal.App
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
             (PanelModel panelModel, PanelView panelView)[] pairs, RoundController roundController,
             EndGameController endGameController, GameSettingsSO gameSettingsSO,
-            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            FirebaseAnalyticsProvider analyticsProvider)
         {
             var characterModel = characterSO is AICharacterSO aiCharacterSO
 
@@ -187,7 +202,7 @@ namespace LegoBattaleRoyal.App
         }
 
         public void CreateMainPlayerModule(PanelController panelController, RoundController roundController,
-            EndGameController endGameController, Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            EndGameController endGameController, FirebaseAnalyticsProvider analyticsProvider)
         {
             panelController.OnMoveSelected += ChangeRound;
             panelController.SubscribeOnInput();
@@ -214,7 +229,7 @@ namespace LegoBattaleRoyal.App
 
         public void CreateAIPlayerModule(PanelController panelController, (PanelModel panelModel, PanelView panelView)[] pairs,
             AICharacterModel characterModel, RoundController roundController, EndGameController endGameController,
-            Infrastructure.Firebase.Analytics.FirebaseAnalyticsProvider analyticsProvider)
+            FirebaseAnalyticsProvider analyticsProvider)
         {
             var aiController = new AIController(panelController, pairs, characterModel);
             roundController.OnRoundChanged += aiController.ProcessRound;
