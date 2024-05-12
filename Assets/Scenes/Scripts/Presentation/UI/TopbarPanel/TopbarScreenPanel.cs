@@ -23,8 +23,10 @@ namespace LegoBattaleRoyal.Presentation.UI.TopbarPanel
             _moneyCount.SetText($"{count}");
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnSettingsButtonClicked = null;
 
             _settingsButton.onClick.RemoveAllListeners();

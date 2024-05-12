@@ -27,6 +27,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
   - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
   - {fileID: 11400000, guid: 0705d8479cc29b8448201427e52e7791, type: 2}
+  _levelIcon: {fileID: 21300000, guid: 9934ded304c738143a007b5bcc06b05b, type: 3}
+  _levelName: Fight
   _rect: 0900000009000000
   _startedPosition:
   - 0

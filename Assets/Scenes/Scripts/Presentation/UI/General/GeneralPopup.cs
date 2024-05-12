@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Extensions;
+using LegoBattaleRoyal.Presentation.UI.Base;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.General
 {
-    public class GeneralPopup : MonoBehaviour
+    public class GeneralPopup : BaseViewUI
     {
         public event Action OnGeneralButtonClicked;
 
@@ -31,14 +32,9 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             _closeButton.onClick.AddListener(Close);
         }
 
-        public void Show()
+        public override void Close()
         {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
+            base.Close();
 
             ClearButtons();
         }
@@ -104,8 +100,10 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             await UniTask.WaitWhile(() => gameObject.activeSelf);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnGeneralButtonClicked = null;
         }
     }

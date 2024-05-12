@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/MainMenu/Levels.meta
+guid: 0926e0cac31e90c46af9bf89e62c89b3
+========
 guid: 91953a09d2a845d4388d3596dab6c160
+>>>>>>>> dev:Assets/Scenes/Scripts/Presentation/UI/Base.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

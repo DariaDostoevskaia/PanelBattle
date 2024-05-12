@@ -16,9 +16,9 @@ namespace LegoBattaleRoyal.Extensions
                 : null;
         }
 
-        public static void DestroyGameObject<T>(this T component) where T : MonoBehaviour
+        public static void DestroyGameObject<T>(this T component) where T : Component
         {
-            if (component.Value())
+            if (component != null)
                 Object.Destroy(component.gameObject);
         }
     }

@@ -26,6 +26,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
   - {fileID: 11400000, guid: e7d3807913d38b848890f55a70f5a108, type: 2}
+  _levelIcon: {fileID: 21300000, guid: d5c7e9c8a9ab36c40b629b3142d691ca, type: 3}
+  _levelName: Security
   _rect: 0b0000000b000000
   _startedPosition:
   - 0

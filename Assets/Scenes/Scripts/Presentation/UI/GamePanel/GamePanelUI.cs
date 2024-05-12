@@ -51,8 +51,10 @@ namespace LegoBattaleRoyal.Presentation.UI.GamePanel
             _removeAllProgressGameButton.gameObject.SetActive(value);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             OnRestartClicked = null;
             OnNextLevelClicked = null;
             OnRemoveAllProgressClicked = null;
