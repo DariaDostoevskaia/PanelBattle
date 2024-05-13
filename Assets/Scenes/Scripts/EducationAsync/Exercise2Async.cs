@@ -21,32 +21,6 @@ namespace LegoBattaleRoyal.EducationAsync
             await LoadTextureWithTask();
         }
 
-        private void SetTextureOnObject(Texture2D texture)
-        {
-            _texture.sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
-            _texture.SetNativeSize();
-        }
-
-        private UnityWebRequest GetTextureUrl()
-        {
-            var www = UnityWebRequestTexture.GetTexture(_imageUrl);
-
-            if (www == null)
-                Exercise6ReportExeptions();
-
-            return www;
-        }
-
-        private Texture2D GetContent(UnityWebRequest request)
-        {
-            return DownloadHandlerTexture.GetContent(request);
-        }
-
-        private void Exercise6ReportExeptions()
-        {
-            throw new ArgumentOutOfRangeException(nameof(GetTextureUrl));
-        }
-
         public async UniTask LoadTextureWithUniTask()
         {
             var request = GetTextureUrl();
@@ -72,6 +46,32 @@ namespace LegoBattaleRoyal.EducationAsync
 
             var texture = GetContent(request);
             SetTextureOnObject(texture);
+        }
+
+        private void SetTextureOnObject(Texture2D texture)
+        {
+            _texture.sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
+            _texture.SetNativeSize();
+        }
+
+        private UnityWebRequest GetTextureUrl()
+        {
+            var www = UnityWebRequestTexture.GetTexture(_imageUrl);
+
+            if (www == null)
+                Exercise6ReportExeptions();
+
+            return www;
+        }
+
+        private Texture2D GetContent(UnityWebRequest request)
+        {
+            return DownloadHandlerTexture.GetContent(request);
+        }
+
+        private void Exercise6ReportExeptions()
+        {
+            throw new ArgumentOutOfRangeException(nameof(GetTextureUrl));
         }
     }
 }
