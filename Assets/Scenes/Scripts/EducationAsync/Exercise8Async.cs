@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,12 +29,28 @@ namespace LegoBattaleRoyal.EducationAsync
 
         public async UniTask OnButtonClickAsync()
         {
-            await UpdateTextWithDelay(2);
+            await ShowTextForUniTask(2);
+            await ShowTextForTask(4);
+
+            StartCoroutine(ShowTextForCoroutine());
         }
 
-        private async UniTask UpdateTextWithDelay(float delayInSeconds)
+        private IEnumerator<WaitForSeconds> ShowTextForCoroutine()
         {
-            await UniTask.Delay((int)(delayInSeconds * 1000));
+            yield return new WaitForSeconds(6);
+            SetText("Text updated after delay");
+        }
+
+        private async UniTask ShowTextForUniTask(float seconds)
+        {
+            await UniTask.WaitForSeconds(seconds);
+
+            SetText("Text updated after delay");
+        }
+
+        private async UniTask ShowTextForTask(float seconds)
+        {
+            await Task.Delay((int)(seconds * 1000));
 
             SetText("Text updated after delay");
         }
