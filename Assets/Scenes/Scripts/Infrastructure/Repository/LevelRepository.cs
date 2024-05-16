@@ -16,6 +16,11 @@ namespace LegoBattaleRoyal.Infrastructure.Repository
             _levelModels.Add(levelModel);
         }
 
+        public LevelModel Get(int levelOrder)
+        {
+            return _levelModels.First(level => level.Order == levelOrder);
+        }
+
         public IEnumerable<LevelModel> GetAll()
         {
             return _levelModels;

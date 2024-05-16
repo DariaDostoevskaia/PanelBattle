@@ -14,14 +14,28 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private TextMeshProUGUI _title;
+
+        [SerializeField] private TextMeshProUGUI _energyCountText;
+        [SerializeField] private RectTransform _energyPanel;
+
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private Button _buttonPrefab;
 
+        [SerializeField] private Button _closeButton;
+
         private readonly List<Button> _buttons = new();
+
+        public RectTransform RectTransform { get; set; }
+
+        private void Awake()
+        {
+            RectTransform = GetComponent<RectTransform>();
+        }
 
         private void Start()
         {
             _buttonPrefab.gameObject.SetActive(false);
+            _closeButton.onClick.AddListener(Close);
         }
 
         public void Show()
@@ -29,18 +43,16 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             gameObject.SetActive(true);
         }
 
-        public async UniTask ShowAsync()
-        {
-            Show();
-
-            await UniTask.WaitWhile(() => gameObject.activeSelf);
-        }
-
         public void Close()
         {
             gameObject.SetActive(false);
 
             ClearButtons();
+        }
+
+        public void SetActiveCloseButton(bool isActive)
+        {
+            _closeButton.gameObject.SetActive(isActive);
         }
 
         private void ClearButtons()
@@ -51,6 +63,22 @@ namespace LegoBattaleRoyal.Presentation.UI.General
                 button.DestroyGameObject();
             }
             _buttons.Clear();
+        }
+
+        public void SetEnergyCount(int count)
+        {
+            ShowEnergyContainer();
+            _energyCountText.SetText($"{count}");
+        }
+
+        public void CloseEnergyContainer()
+        {
+            _energyPanel.gameObject.SetActive(false);
+        }
+
+        private void ShowEnergyContainer()
+        {
+            _energyPanel.gameObject.SetActive(true);
         }
 
         public void SetTitle(string title)
@@ -74,6 +102,13 @@ namespace LegoBattaleRoyal.Presentation.UI.General
             button.onClick.AddListener(() => OnGeneralButtonClicked?.Invoke());
 
             return button;
+        }
+
+        public async UniTask ShowAsync()
+        {
+            Show();
+
+            await UniTask.WaitWhile(() => gameObject.activeSelf);
         }
 
         private void OnDestroy()

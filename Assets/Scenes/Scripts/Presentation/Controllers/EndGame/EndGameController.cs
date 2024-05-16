@@ -1,8 +1,10 @@
+using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Characters.Models;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
-using LegoBattaleRoyal.Presentation.UI.GamePanel;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -13,59 +15,44 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
     {
         public event Action OnGameRestarted;
 
-        public event Action OnProgressRemoved;
-
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
-        private readonly GamePanelUI _endGamePopup;
+        private readonly GeneralController _generalController;
+        private readonly UnityAdsProvider _adsProvider;
         private readonly SoundController _soundController;
 
-        public EndGameController(GamePanelUI endGamePopup, CharacterRepository characterRepository,
-            ILevelRepository levelRepository, SoundController soundController, WalletController walletController)
+        public EndGameController(CharacterRepository characterRepository,
+            ILevelRepository levelRepository,
+            SoundController soundController,
+            WalletController walletController,
+            GeneralController generalController,
+            UnityAdsProvider adsProvider)
         {
-            _endGamePopup = endGamePopup;
-
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
             _walletController = walletController;
             _soundController = soundController;
-
-            _endGamePopup.OnRestartClicked += RestartGame;
-            _endGamePopup.OnNextLevelClicked += RestartGame;
-            _endGamePopup.OnRemoveAllProgressClicked += Remove;
-            _endGamePopup.OnExitMainMenuClicked += ExitMainMenu;
-        }
-
-        private void Remove()
-        {
-            _endGamePopup.Close();
-
-            OnProgressRemoved?.Invoke();
+            _generalController = generalController;
+            _adsProvider = adsProvider;
         }
 
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //loadingScreen
         }
 
         private void RestartGame()
         {
-            _endGamePopup.Close();
-
             OnGameRestarted?.Invoke();
         }
 
         public void LoseGame()
         {
-            _endGamePopup.SetTitle("You Lose!");
-            _endGamePopup.SetActiveRestartButton(true);
-            _endGamePopup.SetActiveNextLevelButton(false);
-            _endGamePopup.SetActiveRemoveAllProgress(false);
-
             _soundController.PlayLoseGameMusic();
 
-            _endGamePopup.Show();
+            _generalController.ShowLosePopup(RestartGame, ExitMainMenu);
         }
 
         public bool TryWinGame()
@@ -76,45 +63,95 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             var currentLevel = _levelRepository.GetCurrentLevel();
-            currentLevel.Win();
+            var currentLevelReward = currentLevel.Reward;
 
-            _walletController.EarnCoins(currentLevel.Reward);
+            currentLevel.Win();
+            _walletController.EarnCoins(currentLevelReward);
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
-            _endGamePopup.SetTitle("You Win!");
-            _endGamePopup.SetActiveRestartButton(false);
-            _endGamePopup.SetActiveRemoveAllProgress(false);
-            _endGamePopup.SetActiveNextLevelButton(!isLastLevel);
-
             _soundController.PLayWinGameMusic();
 
-            if (!isLastLevel)
+            var popupText = isLastLevel
+
+                ? $"You earn {currentLevelReward}. " +
+                $"Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
+
+                : $"You earn {currentLevelReward}. " +
+                $"Next for {_levelRepository.GetNextLevel().Price}.";
+
+            var popup = _generalController.CreatePopup("You Win!", popupText);
+
+            if (isLastLevel)
+            {
+                currentLevel.Exit();
+
+                var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+                var firstLevel = _levelRepository.Get(firstLevelOrder);
+
+                var restartButton = popup.CreateButton($"Restart");
+                restartButton.onClick.AddListener(() =>
+                {
+                    restartButton.interactable = false;
+                    popup.Close();
+
+                    firstLevel.Launch();
+
+                    RestartGame();
+                });
+            }
+            else
             {
                 var nextLevel = _levelRepository.GetNextLevel();
                 currentLevel.Exit();
-                nextLevel.Launch();
 
-                _endGamePopup.Show();
+                var nextButton = popup.CreateButton($"Next");
+                nextButton.onClick.AddListener(() =>
+                {
+                    nextButton.interactable = false;
+                    popup.Close();
 
-                return true;
+                    nextLevel.Launch();
+
+                    RestartGame();
+                });
             }
+            var exitButton = popup.CreateButton("Exit");
+            exitButton.onClick.AddListener(() =>
+            {
+                exitButton.interactable = false;
+                popup.Close();
+                ExitMainMenu();
+            });
 
-            _endGamePopup.SetTitle("You Won this game!");
-            _endGamePopup.SetActiveRemoveAllProgress(true);
-            _endGamePopup.Show();
+            var showAdsButton = popup.CreateButton("x2 coins");
+            showAdsButton.onClick.AddListener(() =>
+            {
+                showAdsButton.interactable = false;
+
+                ShowRewarededAsync(currentLevelReward)
+                .ContinueWith((result) => showAdsButton.interactable = !result)
+                .Forget();
+            });
+            popup.Show();
+
+            return true;
+        }
+
+        private async UniTask<bool> ShowRewarededAsync(int reward)
+        {
+            var result = await _adsProvider.ShowRewarededAsync();
+
+            if (!result)
+                return false;
+
+            _walletController.EarnCoins(reward);
             return true;
         }
 
         public void Dispose()
         {
             OnGameRestarted = null;
-            OnProgressRemoved = null;
-
-            _endGamePopup.OnRestartClicked -= RestartGame;
-            _endGamePopup.OnNextLevelClicked -= RestartGame;
-            _endGamePopup.OnRemoveAllProgressClicked -= Remove;
-            _endGamePopup.OnExitMainMenuClicked -= ExitMainMenu;
         }
     }
 }

@@ -3,7 +3,6 @@ using LegoBattaleRoyal.App.DTO.Level;
 using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
-using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -17,17 +16,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
         private readonly ISaveService _saveService;
 
         private readonly WalletController _walletController;
-        private readonly UnityAdsProvider _adsProvider;
         private LevelDTO _levelDTO;
 
         public LevelController(ILevelRepository levelRepository, ISaveService saveService,
-            WalletController walletController, UnityAdsProvider adsProvider)
+            WalletController walletController)
         {
             _levelRepository = levelRepository;
             _saveService = saveService;
-
             _walletController = walletController;
-            _adsProvider = adsProvider;
         }
 
         public void CreateLevels(LevelSO[] levelSettings)
@@ -54,11 +50,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             }
         }
 
-        public void RemoveAllProgress()
-        {
-            _saveService.DeleteAllLocal();
-        }
-
         public bool TryBuyLevel(int price)
         {
             if (!_walletController.CanBuy(price))
@@ -68,9 +59,17 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             return true;
         }
 
-        public void EarnCoins(int price)
+        public void RemoveAllProgress()
         {
-            _walletController.EarnCoins(price);
+            var currentLevel = _levelRepository.GetCurrentLevel();
+            currentLevel.Exit();
+
+            var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
+            var firstLevel = _levelRepository.Get(firstLevelOrder);
+            firstLevel.Launch();
+
+            _saveService.DeleteAllLocal();
+            _saveService.Save(firstLevel);
         }
 
         private void OnSuccessEnded()
