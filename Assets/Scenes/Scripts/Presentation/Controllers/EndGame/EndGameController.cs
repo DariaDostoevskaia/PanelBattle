@@ -56,7 +56,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         public void LoseGame()
         {
             _soundController.PlayLoseGameMusic();
-            var currentLevel = _levelRepository.GetCurrentLevel();
 
             _generalController.ShowLosePopup(RestartGame, ExitMainMenu);
         }
@@ -69,6 +68,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 return false;
 
             var currentLevel = _levelRepository.GetCurrentLevel();
+            var currentLevelReward = currentLevel.Reward;
 
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
 
@@ -141,7 +141,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             {
                 showAdsButton.interactable = false;
 
-                ShowRewarededAsync(currentLevel.Reward)
+                ShowRewarededAsync(currentLevelReward)
                 .ContinueWith((result) => showAdsButton.interactable = !result)
                 .Forget();
             });
