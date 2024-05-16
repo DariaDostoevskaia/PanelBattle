@@ -77,31 +77,34 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
 
         public void ShowLosePopup(Action restartCallback, Action exitCallback)
         {
-            _generalPopup.SetTitle("You Lose!");
+            var popup = UnityEngine.Object.Instantiate(_generalPopup);
 
+            popup.SetTitle("You Lose!");
             var currentLevel = _levelRepository.GetCurrentLevel();
 
-            _generalPopup.SetEnergyCount(currentLevel.Price);
+            popup.SetEnergyCount(currentLevel.Price);
 
-            var restartButton = _generalPopup.CreateButton($"Restart for {currentLevel.Price}");
+            var restartButton = popup.CreateButton($"Restart");
             restartButton.onClick.AddListener(() =>
             {
-                restartButton.interactable = false;
-                _generalPopup.Close();
+                popup.Close();
                 restartCallback?.Invoke();
             });
 
-            var exitButton = _generalPopup.CreateButton("Exit");
+            var exitButton = popup.CreateButton("Exit");
             exitButton.onClick.AddListener(() =>
             {
                 exitButton.interactable = false;
-                _generalPopup.Close();
+                popup.Close();
                 exitCallback?.Invoke();
             });
-            _generalPopup.SetActiveCloseButton(false);
+            popup.SetActiveCloseButton(false);
 
-            _generalPopup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet");
-            _generalPopup.Show();
+            popup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet. Restart for {currentLevel.Price}");
+            popup.Show();
+
+            popup.transform.SetParent(_generalPopup.transform.parent);
+            popup.RectTransform.anchoredPosition = UnityEngine.Vector2.zero;
         }
 
         public GeneralPopup CreatePopup(string title, string text)

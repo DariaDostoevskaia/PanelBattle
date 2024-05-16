@@ -49,7 +49,7 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
-#if DEBUG && ! UNITY_EDITOR
+#if DEBUG && !UNITY_EDITOR
             if (_debugLogManager == null)
             {
                 _debugLogManager = Instantiate(_debugLogManagerPrefab);
@@ -57,6 +57,7 @@ namespace LegoBattaleRoyal.App
                 DebugLogConsole.AddCommandInstance(nameof(RemoveProgress), "Remove all progress", nameof(RemoveProgress), this);
                 DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.WinGame), "Win level", nameof(_gameBootstrap.WinGame), _gameBootstrap);
                 DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.LoseLevel), "Lose level", nameof(_gameBootstrap.LoseLevel), _gameBootstrap);
+                DebugLogConsole.AddCommandInstance(nameof(_gameBootstrap.InvokeLevel), "Summon a level: ", nameof(_gameBootstrap.InvokeLevel), _gameBootstrap);
 
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
@@ -150,7 +151,6 @@ namespace LegoBattaleRoyal.App
                 }
 
                 entriesGameNumber++;
-
                 if (entriesGameNumber % 4 == 0)
                 {
                     analyticsProvider.SendEvent(AnalyticsEvents.NeedInterstitial);
@@ -168,7 +168,7 @@ namespace LegoBattaleRoyal.App
 
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
-                levelSelectController.CloseLevelSelect();
+
                 menuController.CloseMenu();
                 levelSelectController.CloseLevelSelect();
 

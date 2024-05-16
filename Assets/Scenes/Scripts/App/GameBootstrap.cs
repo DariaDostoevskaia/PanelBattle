@@ -280,7 +280,7 @@ namespace LegoBattaleRoyal.App
         }
 
         [Button]
-        private void InvokeLevel(int order)
+        public void InvokeLevel(int order)
         {
             var currentLevel = _levelRepository.GetCurrentLevel();
             currentLevel.Exit();

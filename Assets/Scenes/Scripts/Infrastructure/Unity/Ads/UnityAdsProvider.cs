@@ -52,6 +52,8 @@ namespace LegoBattaleRoyal.Infrastructure.Unity.Ads
                 && Advertisement.isSupported)
             {
                 Advertisement.Initialize(gameId, _testMode, this);
+                _rewardedPlacement.LoadAd();
+                _intrestitialPlacement.LoadAd();
             }
         }
 
