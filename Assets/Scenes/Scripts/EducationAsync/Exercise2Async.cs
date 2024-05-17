@@ -13,8 +13,12 @@ namespace LegoBattaleRoyal.EducationAsync
         [SerializeField] private string _imageUrl = "https://dummyimage.com/500";
         [SerializeField] private Image _texture;
 
+        private Texture2D _loadedTexture;
+
         private async void Start()
         {
+            _loadedTexture = GetComponent<Texture2D>();
+
             StartCoroutine(LoadTextureWithCoroutine());
 
             LoadTextureWithUniTask().Forget();
@@ -26,8 +30,8 @@ namespace LegoBattaleRoyal.EducationAsync
             var request = GetTextureUrl();
             await request.SendWebRequest();
 
-            var texture = GetContent(request);
-            SetTextureOnObject(texture);
+            _loadedTexture = GetContent(request);
+            SetTextureOnObject(_loadedTexture);
         }
 
         public async Task LoadTextureWithTask()
@@ -35,8 +39,8 @@ namespace LegoBattaleRoyal.EducationAsync
             var request = GetTextureUrl();
             await request.SendWebRequest();
 
-            var texture = GetContent(request);
-            SetTextureOnObject(texture);
+            _loadedTexture = GetContent(request);
+            SetTextureOnObject(_loadedTexture);
         }
 
         public IEnumerator LoadTextureWithCoroutine()
@@ -44,8 +48,8 @@ namespace LegoBattaleRoyal.EducationAsync
             var request = GetTextureUrl();
             yield return request.SendWebRequest();
 
-            var texture = GetContent(request);
-            SetTextureOnObject(texture);
+            _loadedTexture = GetContent(request);
+            SetTextureOnObject(_loadedTexture);
         }
 
         private void SetTextureOnObject(Texture2D texture)
@@ -66,12 +70,22 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private Texture2D GetContent(UnityWebRequest request)
         {
-            return DownloadHandlerTexture.GetContent(request);
+            _loadedTexture = DownloadHandlerTexture.GetContent(request);
+
+            return _loadedTexture;
         }
 
         private void Exercise6ReportExeptions()
         {
             throw new ArgumentOutOfRangeException(nameof(GetTextureUrl));
+        }
+
+        private void OnDestroy()
+        {
+            if (_loadedTexture != null)
+            {
+                Destroy(_loadedTexture);
+            }
         }
     }
 }
