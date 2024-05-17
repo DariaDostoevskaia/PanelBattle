@@ -11,37 +11,35 @@ namespace LegoBattaleRoyal.EducationAsync
     {
         [SerializeField] private Button _cancelButton;
 
+        private CancellationTokenSource _cancellationTokenSource;
+
         private async void Start()
         {
-            var cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancellationTokenSource.Token;
+            _cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = _cancellationTokenSource.Token;
+
+            _cancelButton.onClick.AddListener(() =>
+            {
+                _cancellationTokenSource?.Cancel();
+                Debug.Log("Cancel button clicked");
+            });
 
             await ExerciseForUniTask(cancellationToken);
             await ExerciseForTask(cancellationToken);
             StartCoroutine(ExerciseForCoroutine(cancellationToken));
-
-            _cancelButton.onClick.AddListener(() =>
-            {
-                CancelToken(cancellationTokenSource);
-            });
         }
 
         private IEnumerator<WaitForSeconds> ExerciseForCoroutine(CancellationToken cancellationToken)
         {
             var timeCount = 10;
 
-            if (!cancellationToken.IsCancellationRequested)
+            //if (cancellationToken.Register()) ?????
+
+            if (!cancellationToken.IsCancellationRequested) // переделать на .регистр
             {
                 Debug.Log("Hello, Async!");
             }
-
             yield return new WaitForSeconds(timeCount);
-        }
-
-        private void CancelToken(CancellationTokenSource cancellationTokenSource)
-        {
-            cancellationTokenSource.Cancel();
-            Debug.Log("Canceled");
         }
 
         private async UniTask ExerciseForUniTask(CancellationToken cancellationToken)
@@ -66,6 +64,8 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private void OnDestroy()
         {
+            _cancellationTokenSource.Dispose();
+
             _cancelButton.onClick.RemoveAllListeners();
         }
     }
