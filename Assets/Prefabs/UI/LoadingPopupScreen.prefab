@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _progressBar: {fileID: 9123121984297358920}
+  _duration: 2
 --- !u!114 &2842668518297650419
 MonoBehaviour:
   m_ObjectHideFlags: 0

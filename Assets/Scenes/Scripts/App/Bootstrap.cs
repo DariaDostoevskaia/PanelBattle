@@ -50,7 +50,7 @@ namespace LegoBattaleRoyal.App
 
         private async UniTaskVoid ConfigureAsync()
         {
-#if DEBUG && ! UNITY_EDITOR
+#if DEBUG && !UNITY_EDITOR
             if (_debugLogManager == null)
             {
                 _debugLogManager = Instantiate(_debugLogManagerPrefab);
@@ -62,15 +62,21 @@ namespace LegoBattaleRoyal.App
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
 #endif
-            var loadingController = new LoadingController(_uiContainer.LoadingScreen);
-            loadingController.ShowLoadingPopup();
-            await loadingController.LoadMockAsync();
+            _uiContainer.CloseAll();
             _uiContainer.Background.SetActive(true);
 
-            var analyticsProvider = new FirebaseAnalyticsProvider();
-            await analyticsProvider.InitAsync();
+            var loadingController = new LoadingController(_uiContainer.LoadingScreen);
+            loadingController.ResetLoadingPopup();
+            loadingController.ShowLoadingPopup();
+            IProgress<int> progress = new Progress<int>((progressValue) =>
+            {
+                float percent = (float)progressValue / 100;
+                loadingController.SetProgress(percent);
+            });
 
-            _uiContainer.CloseAll();
+            var analyticsProvider = new FirebaseAnalyticsProvider();
+            progress.Report(35);
+            await analyticsProvider.InitAsync();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
@@ -93,6 +99,7 @@ namespace LegoBattaleRoyal.App
             cameraController.ShowRaycaster();
 
             var authentificationController = new AuthentificationController();
+            progress.Report(65);
             await authentificationController.SignInAsync();
 
             var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, loadingController, cameraController);
@@ -108,6 +115,7 @@ namespace LegoBattaleRoyal.App
 
             var leaderboardProvider = new UnityLeaderboardProvider();
             var leaderboardController = new LeaderboardController(leaderboardProvider);
+            progress.Report(100);
             await leaderboardController.InitAsync();
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController, leaderboardController);
@@ -118,6 +126,7 @@ namespace LegoBattaleRoyal.App
 
             menuController.ShowMenu();
 
+            await loadingController.WaitAsync();
             loadingController.CloseLoadingPopup();
 
             OnDisposed += () =>

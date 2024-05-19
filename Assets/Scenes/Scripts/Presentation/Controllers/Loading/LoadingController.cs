@@ -25,12 +25,22 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Loading
             _loadingScreen.Close();
         }
 
+        public void ResetLoadingPopup()
+        {
+            _loadingScreen.ResetProgress();
+        }
+
         public void SetProgress(float percent)
         {
             _loadingScreen.SetProgress(percent);
         }
 
-        public async UniTask LoadMockAsync()
+        public async UniTask WaitAsync()
+        {
+            await UniTask.WaitWhile(() => _loadingScreen.IsAnimation);
+        }
+
+        private async UniTask LoadMockAsync()
         {
             IProgress<int> progress = new Progress<int>((progressValue) =>
             {

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,10 +7,23 @@ namespace LegoBattaleRoyal.Presentation.UI.LoadingPopup
     public class LoadingScreenUI : MonoBehaviour
     {
         [SerializeField] private Slider _progressBar;
+        [SerializeField] private float _duration;
+        private Tween _tween;
+
+        public bool IsAnimation => _tween?.IsActive() ?? false;
 
         public void SetProgress(float percent)
         {
-            _progressBar.value = percent;
+            _tween?.Kill();
+            var initValue = _progressBar.value;
+            _tween = DOVirtual.Float(initValue, percent, _duration, (value) => _progressBar.value = value)
+                .SetEase(Ease.Linear);
+        }
+
+        public void ResetProgress()
+        {
+            _tween?.Kill();
+            _progressBar.value = 0;
         }
 
         public void Show()
@@ -20,6 +34,11 @@ namespace LegoBattaleRoyal.Presentation.UI.LoadingPopup
         public void Close()
         {
             gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            _tween?.Kill();
         }
     }
 }
