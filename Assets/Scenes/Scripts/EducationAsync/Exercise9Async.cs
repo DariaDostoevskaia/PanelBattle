@@ -15,6 +15,9 @@ namespace LegoBattaleRoyal.EducationAsync
             await StartTimerTask();
 
             StartCoroutine(StartTimerCoroutine(8));
+
+            //Timer ++
+            //Update ++
         }
 
         private IEnumerator<WaitForSeconds> StartTimerCoroutine(float seconds)

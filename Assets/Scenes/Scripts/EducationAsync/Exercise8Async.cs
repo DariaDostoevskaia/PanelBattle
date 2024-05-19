@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -18,6 +18,7 @@ namespace LegoBattaleRoyal.EducationAsync
             SetText("Text for exercise 8");
 
             _button.onClick.AddListener(() => OnButtonClick());
+            //множество нажатий на кнопку - предотвратить    (состояние гонки)
         }
 
         private void SetText(string text)
@@ -29,19 +30,13 @@ namespace LegoBattaleRoyal.EducationAsync
         {
             await ShowTextForUniTask(2);
             await ShowTextForTask(4);
-            await AwaitForCoroutine(6);
+            StartCoroutine(ShowTextForCoroutine(6));
         }
 
-        private async UniTask AwaitForCoroutine(float seconds)
+        private IEnumerator ShowTextForCoroutine(float seconds)
         {
-            StartCoroutine(ShowTextForCoroutine());
-            await UniTask.WaitForSeconds(seconds);
-        }
-
-        private IEnumerator<string> ShowTextForCoroutine()
-        {
+            yield return new WaitForSeconds(seconds);
             var text = "Text updated after delay";
-            yield return text;
             SetText(text);
         }
 

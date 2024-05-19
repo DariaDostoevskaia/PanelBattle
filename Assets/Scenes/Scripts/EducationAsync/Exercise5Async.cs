@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
+using System;
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -12,41 +13,64 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private async void Start()
         {
-            var task = PrintNumbersAsync();
-            var unitask = PrintWorldsAsync();
-            var coroutine = PrintWorldsForCoroutineAsync();
+            Func<Task<int[]>> funcTask = () => GetNumbersAsync();
+            Func<UniTask<string[]>> funcUnitask = () => GetWorldsAsync();
 
-            await task;
-            await unitask;
+            var array = Array.Empty<int>();
+            var coroutine = PrintWorldsForCoroutineAsync((numbers) =>
+            {
+                array = numbers;
+                Debug.Log(string.Join(",", array));
+            });
+
+            var worlds = await funcUnitask.Invoke();
+            var numbers = await funcTask.Invoke();
             StartCoroutine(coroutine);
+
+            Debug.Log(string.Join(",", worlds));
+            Debug.Log(string.Join(",", numbers));
         }
 
-        private async Task PrintNumbersAsync()
+        private async Task<int[]> GetNumbersAsync()
         {
             foreach (var number in _numbers)
             {
                 Debug.Log(number + " ");
             }
             await Task.Delay(2000);
+            return _numbers;
         }
 
-        private async UniTask PrintWorldsAsync()
+        private async UniTask<string[]> GetWorldsAsync()
         {
             foreach (var world in _worlds)
             {
                 Debug.Log(world + " ");
             }
-            await UniTask.WaitForSeconds(2);
+            await UniTask.WaitForSeconds(1);
+            return _worlds;
         }
 
-        private IEnumerator<WaitForSeconds> PrintWorldsForCoroutineAsync()
+        private IEnumerator PrintWorldsForCoroutineAsync(Action<int[]> callback)
         {
+            yield return new WaitForSeconds(2);
+
             foreach (var number in _numbers)
             {
                 Debug.Log(number + " ");
             }
-
-            yield return new WaitForSeconds(2);
+            callback?.Invoke(_numbers);
         }
+
+        //private IEnumerator PrintWorldsForCoroutineAsync(Action<string[]> callback)
+        //{
+        //    yield return new WaitForSeconds(2);
+
+        //    foreach (var number in _numbers)
+        //    {
+        //        Debug.Log(number + " ");
+        //    }
+        //    callback?.Invoke(_numbers);
+        //}
     }
 }

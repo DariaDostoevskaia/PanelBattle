@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -19,50 +18,41 @@ namespace LegoBattaleRoyal.EducationAsync
             _cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = _cancellationTokenSource.Token;
 
-            Action action = _cancellationTokenSource.Cancel;
-            //cancellationToken.Register(action);
+            await ExerciseForUniTask(cancellationToken);
+            await ExerciseForTask(cancellationToken);
+
+            var coroutine = StartCoroutine(ExerciseForCoroutine());
 
             _cancelButton.onClick.AddListener(() =>
             {
                 _cancellationTokenSource?.Cancel();
+                StopCoroutine(coroutine);
                 Debug.Log("Cancel button clicked");
             });
-
-            await ExerciseForUniTask(cancellationToken);
-            await ExerciseForTask(cancellationToken);
         }
 
-        private IEnumerator<WaitForSeconds> ExerciseForCoroutine(CancellationToken cancellationToken)
+        private IEnumerator ExerciseForCoroutine()
         {
             var timeCount = 10;
 
-            //if (cancellationToken.Register()) ?????
+            Debug.Log("Hello, Async!");
 
-            if (!cancellationToken.IsCancellationRequested) // переделать на .регистр
-            {
-                Debug.Log("Hello, Async!");
-            }
             yield return new WaitForSeconds(timeCount);
+            Debug.Log("Bye, bye");
         }
 
         private async UniTask ExerciseForUniTask(CancellationToken cancellationToken)
         {
-            if (!cancellationToken.IsCancellationRequested)
-            {
-                await UniTask.WaitForSeconds(10);
-                Debug.Log("Hello, Async!");
-                return;
-            }
+            Debug.Log("Hello, Async!");
+            await UniTask.WaitForSeconds(10, cancellationToken: cancellationToken);
+            Debug.Log("Bye, bye");
         }
 
         private async Task ExerciseForTask(CancellationToken cancellationToken)
         {
-            if (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(10000);
-                Debug.Log("Hello, Async!");
-                return;
-            }
+            Debug.Log("Hello, Async!");
+            await Task.Delay(10000, cancellationToken: cancellationToken);
+            Debug.Log("Bye, bye");
         }
 
         private void OnDestroy()
