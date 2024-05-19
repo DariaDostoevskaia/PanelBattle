@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -25,14 +26,14 @@ namespace LegoBattaleRoyal.EducationAsync
             StartCoroutine(PrintElementForCoroutine());
         }
 
-        private IEnumerator<WaitForSeconds> PrintElementForCoroutine()
+        private IEnumerator PrintElementForCoroutine()
         {
             foreach (var world in _worldsList)
             {
-                new WaitForSeconds(2);
+                new WaitForSeconds(1);
                 Debug.Log(world);
             }
-            yield return new WaitForSeconds(0);
+            yield return null;
         }
 
         private async Task PrintElementForTaskAsync()

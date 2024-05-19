@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -16,10 +17,7 @@ namespace LegoBattaleRoyal.EducationAsync
         {
             SetText("Text for exercise 8");
 
-            _button.onClick.AddListener(async () =>
-            {
-                await OnButtonClickAsync();
-            });
+            _button.onClick.AddListener(() => OnButtonClick());
         }
 
         private void SetText(string text)
@@ -27,18 +25,24 @@ namespace LegoBattaleRoyal.EducationAsync
             _text.SetText(text);
         }
 
-        public async UniTask OnButtonClickAsync()
+        private async void OnButtonClick()
         {
             await ShowTextForUniTask(2);
             await ShowTextForTask(4);
-
-            StartCoroutine(ShowTextForCoroutine());
+            await AwaitForCoroutine(6);
         }
 
-        private IEnumerator<WaitForSeconds> ShowTextForCoroutine()
+        private async UniTask AwaitForCoroutine(float seconds)
         {
-            yield return new WaitForSeconds(6);
-            SetText("Text updated after delay");
+            StartCoroutine(ShowTextForCoroutine());
+            await UniTask.WaitForSeconds(seconds);
+        }
+
+        private IEnumerator<string> ShowTextForCoroutine()
+        {
+            var text = "Text updated after delay";
+            yield return text;
+            SetText(text);
         }
 
         private async UniTask ShowTextForUniTask(float seconds)
@@ -50,7 +54,7 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private async UniTask ShowTextForTask(float seconds)
         {
-            await Task.Delay((int)(seconds * 1000));
+            await Task.Delay(TimeSpan.FromSeconds(seconds));
 
             SetText("Text updated after delay");
         }

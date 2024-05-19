@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace LegoBattaleRoyal.EducationAsync
             _cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = _cancellationTokenSource.Token;
 
+            Action action = _cancellationTokenSource.Cancel;
+            //cancellationToken.Register(action);
+
             _cancelButton.onClick.AddListener(() =>
             {
                 _cancellationTokenSource?.Cancel();
@@ -26,7 +30,6 @@ namespace LegoBattaleRoyal.EducationAsync
 
             await ExerciseForUniTask(cancellationToken);
             await ExerciseForTask(cancellationToken);
-            StartCoroutine(ExerciseForCoroutine(cancellationToken));
         }
 
         private IEnumerator<WaitForSeconds> ExerciseForCoroutine(CancellationToken cancellationToken)
