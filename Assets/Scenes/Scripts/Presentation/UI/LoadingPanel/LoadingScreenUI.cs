@@ -1,10 +1,11 @@
 using DG.Tweening;
+using LegoBattaleRoyal.Presentation.UI.Base;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LegoBattaleRoyal.Presentation.UI.LoadingPopup
 {
-    public class LoadingScreenUI : MonoBehaviour
+    public class LoadingScreenUI : BaseViewUI
     {
         [SerializeField] private Slider _progressBar;
         [SerializeField] private float _duration;
@@ -26,18 +27,9 @@ namespace LegoBattaleRoyal.Presentation.UI.LoadingPopup
             _progressBar.value = 0;
         }
 
-        public void Show()
+        protected override void OnDestroy()
         {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
-        }
-
-        private void OnDestroy()
-        {
+            base.OnDestroy();
             _tween?.Kill();
         }
     }
