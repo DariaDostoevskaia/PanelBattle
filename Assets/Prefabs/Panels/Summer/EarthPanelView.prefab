@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EarthPanelView
       objectReference: {fileID: 0}
+    - target: {fileID: 1160906271520517804, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2986923045873706976, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Mesh
@@ -98,6 +103,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 6059446442257236823, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Size.x

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
   - component: {fileID: 824434403183988463}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: StonesDecorationPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 4538361932355631857}
   - component: {fileID: 2387517186155839681}
   - component: {fileID: 5579387737651801400}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HoverPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,6 +231,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4332688210431700001}
     m_Modifications:
+    - target: {fileID: 1285663694762368865, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548204162846733055, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378154429851426288, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6245761137342586407, guid: a7f5eb554597f7c4788b076f72007feb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -305,6 +320,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock_3_2 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766295623526171805, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573784601883453096, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961529075683458340, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
