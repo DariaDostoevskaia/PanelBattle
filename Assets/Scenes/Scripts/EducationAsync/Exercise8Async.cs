@@ -18,7 +18,6 @@ namespace LegoBattaleRoyal.EducationAsync
             SetText("Text for exercise 8");
 
             _button.onClick.AddListener(() => OnButtonClick());
-            //множество нажатий на кнопку - предотвратить    (состояние гонки)
         }
 
         private void SetText(string text)
@@ -28,9 +27,13 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private async void OnButtonClick()
         {
+            _button.enabled = false;
+
             await ShowTextForUniTask(2);
             await ShowTextForTask(4);
             StartCoroutine(ShowTextForCoroutine(6));
+
+            _button.enabled = true;
         }
 
         private IEnumerator ShowTextForCoroutine(float seconds)
