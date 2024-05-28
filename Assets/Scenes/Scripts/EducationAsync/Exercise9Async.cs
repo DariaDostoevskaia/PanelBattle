@@ -1,17 +1,18 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Threading.Tasks;
-using System.Timers;
+using TMPro;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.EducationAsync
 {
     public class Exercise9Async : MonoBehaviour
     {
-        private readonly string _text = "The timer went off";
+        [SerializeField] private float _time = 5;
+        [SerializeField] private TextMeshProUGUI _timerText;
 
-        private float _timerInterval = 5f;
-        private bool _useTimer = true;
+        private readonly string _text = "The timer went off";
+        private int _timer = 10;
 
         private async void Start()
         {
@@ -20,43 +21,33 @@ namespace LegoBattaleRoyal.EducationAsync
 
             StartCoroutine(StartTimerCoroutine());
 
-            //Timer ++
-            //Update ++
-
-            //TimerExample();
+            StartTimer();
         }
 
-        private void TimerExample()
+        private void Update()
         {
-            if (_useTimer)
+            if (_time > 0)
             {
-                var timer = new Timer(_timerInterval * 1000);
-
-                timer.Elapsed += OnTimerElapsed;
-                timer.AutoReset = true;
-                timer.Enabled = true;
+                _time -= Time.deltaTime;
+                var result = Mathf.Round(_time * 100) / 100.0;
+                _timerText.SetText($"{result}");
             }
         }
 
-        private static void OnTimerElapsed(object source, System.Timers.ElapsedEventArgs e)
+        private void StartTimer()
         {
-            Debug.Log("Timer elapsed!");
+            Debug.Log("Timer is : " + _timer);
+            _timer--;
+            Invoke(nameof(StartTimer), 1);
+
+            if (_timer < 0)
+                StopTimer();
         }
 
-        //private void Update()
-        //{
-        //    if (!_useTimer)
-        //    {
-        //        _timerInterval -= Time.deltaTime;
-
-        //        if (_timerInterval <= 0f)
-        //        {
-        //            OnTimerElapsed(null, null);
-        //            _timerInterval = 5f;
-        //            // —брос таймера
-        //        }
-        //    }
-        //}
+        private void StopTimer()
+        {
+            CancelInvoke(nameof(StartTimer));
+        }
 
         private IEnumerator StartTimerCoroutine()
         {
