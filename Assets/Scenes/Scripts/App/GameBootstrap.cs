@@ -242,6 +242,8 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
+                panelController.UnsubscribeOnInput(); // ?
+
                 endGameController.TryWinGame();
                 analyticsProvider.SendEvent(AnalyticsEvents.Win);
             }

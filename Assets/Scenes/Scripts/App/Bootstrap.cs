@@ -139,6 +139,7 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                // доб Отписку от контроллера capture path?
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
 
