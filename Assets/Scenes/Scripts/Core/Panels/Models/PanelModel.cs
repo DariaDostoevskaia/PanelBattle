@@ -12,7 +12,7 @@ namespace LegoBattaleRoyal.Core.Panels.Models
 
         public GridPosition GridPosition { get; }
 
-        public bool IsJumpBlock { get; }
+        public bool IsJumpBlock { get; set; }
 
         public bool IsBase => _stateForCharacters.Values.Any(state => state.IsBase);
 
