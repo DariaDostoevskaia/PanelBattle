@@ -101,9 +101,9 @@ namespace LegoBattaleRoyal.App
                     //.OrderBy(pair => Guid.NewGuid())
                     //.Where(pair => pair.panelModel.IsJumpBlock)
                     //.Where(pair => pair.panelModel.GridPosition.Row == 0
-                    //|| pair.panelModel.GridPosition.Row == /*gridRowCount - 1*/ levelSO.Rect.First()
+                    //|| pair.panelModel.GridPosition.Row == /*gridRowCount - 1*/ levelSO.Rect[0]
                     //|| pair.panelModel.GridPosition.Column == 0
-                    //|| pair.panelModel.GridPosition.Column == /*gridColumnCount - 1*/levelSO.Rect.Last());
+                    //|| pair.panelModel.GridPosition.Column == /*gridColumnCount - 1*/levelSO.Rect[1]);
 
                     character.Move(availablePair.panelModel);
 
