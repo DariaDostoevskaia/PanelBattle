@@ -93,17 +93,8 @@ namespace LegoBattaleRoyal.App
                 .ForEach(character =>
                 {
                     var availablePair = pairs
-                    .OrderBy(pair => Guid.NewGuid())
-                    .First(pair => pair.panelModel.IsJumpBlock
+                    .First(pair => pair.panelModel.IsExternalPanel
                     && !pair.panelModel.IsBase);
-
-                    //var perimeterBlocks = pairs
-                    //.OrderBy(pair => Guid.NewGuid())
-                    //.Where(pair => pair.panelModel.IsJumpBlock)
-                    //.Where(pair => pair.panelModel.GridPosition.Row == 0
-                    //|| pair.panelModel.GridPosition.Row == /*gridRowCount - 1*/ levelSO.Rect[0]
-                    //|| pair.panelModel.GridPosition.Column == 0
-                    //|| pair.panelModel.GridPosition.Column == /*gridColumnCount - 1*/levelSO.Rect[1]);
 
                     character.Move(availablePair.panelModel);
 
@@ -118,28 +109,6 @@ namespace LegoBattaleRoyal.App
                     panelController.MarkToAvailableNeighborPanels(availablePair.panelModel.GridPosition, character.JumpLenght);
                 });
 
-            void GetPerimeterPanels()
-            {
-                var perimeterBlocks = pairs;
-
-                foreach (var pair in pairs)
-                {
-                    var pairPosition = pair.panelModel.GridPosition;
-                    int column = pairPosition.Column;
-                    int row = pairPosition.Row;
-
-                    var panelsRow = levelSO.Rect.First();
-                    var panelsColumn = levelSO.Rect.Last();
-
-                    //SortPerimetrArray(levelSO.Rect);
-
-                    // pair => pair.panelModel.GridPosition.Row == 0
-                    //|| pair.panelModel.GridPosition.Row == /*gridRowCount - 1*/ levelSO.Rect.First()
-                    //|| pair.panelModel.GridPosition.Column == 0
-                    //|| pair.panelModel.GridPosition.Column == /*gridColumnCount - 1*/levelSO.Rect.Last();
-                }
-            }
-
             OnDisposed += () =>
             {
                 _endGameController.OnGameRestarted -= OnRestarted;
@@ -150,68 +119,6 @@ namespace LegoBattaleRoyal.App
                     pair.panelView.DestroyGameObject();
                 }
             };
-        }
-
-        //public  List<Pair> GetPairsOnPerimeter(List<Pair> pairs, int[] rect)
-        //{
-        //    List<Pair> perimeterPairs = new List<Pair>();
-
-        //    foreach (Pair pair in pairs)
-        //    {
-        //        if(pair.row == 0
-        //            || pair.row == rect[0] - 1
-        //            || pair.column == 0
-        //            || pair.column == rect[1] - 1)
-        //        {
-        //            perimeterPairs.Add(pair);
-        //        }
-        //    }
-
-        //    return perimeterPairs;
-        //}
-
-        private int[] GetPerimetrValue(int[,] array)
-        {
-            int arraySide = (int)Math.Sqrt(array.Length);
-            int[] result = new int[(arraySide * 4 - 4)];
-            int next = 0;
-
-            for (int i = 0; i < arraySide; i++)
-                result[next++] = array[0, i];
-
-            for (int i = 1; i < arraySide - 1; i++)
-                result[next++] = array[i, arraySide - 1];
-
-            for (int i = arraySide - 1; i > 0; i--)
-                result[next++] = array[arraySide - 1, i];
-
-            for (int i = arraySide - 1; i > 0; i--)
-                result[next++] = array[i, 0];
-
-            return result;
-        }
-
-        public int[,] SortPerimetrArray(int[,] array)
-        {
-            int[] sortedValue = GetPerimetrValue(array);
-            Array.Sort(sortedValue);
-            int arraySide = (int)Math.Sqrt(array.Length);
-
-            int next = 0;
-
-            for (int i = 0; i < arraySide; i++)
-                array[0, i] = sortedValue[next++];
-
-            for (int i = 1; i < arraySide - 1; i++)
-                array[i, arraySide - 1] = sortedValue[next++];
-
-            for (int i = arraySide - 1; i > 0; i--)
-                array[arraySide - 1, i] = sortedValue[next++];
-
-            for (int i = arraySide - 1; i > 0; i--)
-                array[i, 0] = sortedValue[next++];
-
-            return array;
         }
 
         public void CreatePlayer(CharacterSO characterSO, CharacterRepository characterRepository,
