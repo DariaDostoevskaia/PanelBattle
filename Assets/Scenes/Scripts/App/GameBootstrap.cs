@@ -12,6 +12,7 @@ using LegoBattaleRoyal.Presentation.Controllers.CapturePath;
 using LegoBattaleRoyal.Presentation.Controllers.EndGame;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Panel;
 using LegoBattaleRoyal.Presentation.Controllers.Round;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
@@ -48,7 +49,8 @@ namespace LegoBattaleRoyal.App
            FirebaseAnalyticsProvider analyticsProvider,
            UnityAdsProvider adsProvider,
            CameraController cameraController,
-           LeaderboardController leaderboardController)
+           LeaderboardController leaderboardController,
+           LoadingController loadingController)
         {
             _levelRepository = levelRepository;
             var characterSO = gameSettingsSO.CharacterSO;
@@ -61,7 +63,6 @@ namespace LegoBattaleRoyal.App
             soundController.Play(music);
 
             var gridFactory = new GridFactory(levelSO);
-
             var pairs = gridFactory.CreatePairs(_levelContainer);
 
             _characterRepository = new CharacterRepository();
@@ -75,7 +76,8 @@ namespace LegoBattaleRoyal.App
                 walletController,
                 generalController,
                 adsProvider,
-                leaderboardController);
+                leaderboardController,
+                loadingController);
 
             _endGameController.OnGameRestarted += OnRestarted;
 

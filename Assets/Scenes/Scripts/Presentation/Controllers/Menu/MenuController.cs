@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
+using LegoBattaleRoyal.Presentation.Controllers.Settings;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using System;
 

@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.General;
 using LegoBattaleRoyal.Presentation.UI.LevelSelect;
+using LegoBattaleRoyal.Presentation.UI.LoadingPopup;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
@@ -17,8 +18,8 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         [SerializeField] private LevelSelectView _levelSelectView;
 
-        [SerializeField] private GameObject _loadingScreen;
         [SerializeField] private GameObject _background;
+        [SerializeField] private LoadingScreenUI _loadingScreen;
 
         [SerializeField] private AudioClip _buttonsClickAudio;
 
@@ -36,7 +37,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public LevelSelectView LevelSelectView => _levelSelectView;
 
-        public GameObject LoadingScreen => _loadingScreen;
+        public LoadingScreenUI LoadingScreen => _loadingScreen;
 
         public GameObject Background => _background;
 
@@ -72,7 +73,6 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public void CloseAll()
         {
-            _loadingScreen.SetActive(false);
             _background.SetActive(false);
 
             _menuPanel.Close();
@@ -81,6 +81,7 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
             _gameSettingsPopup.Close();
             _mainMenuSettingsPopup.Close();
+            _loadingScreen.Close();
         }
 
         private void OnDestroy()

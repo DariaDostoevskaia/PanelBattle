@@ -5,6 +5,7 @@ using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using System;
@@ -20,10 +21,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
         private readonly WalletController _walletController;
-        private readonly GeneralController _generalController;
         private readonly UnityAdsProvider _adsProvider;
         private readonly LeaderboardController _leaderboardController;
         private readonly SoundController _soundController;
+        private readonly GeneralController _generalController;
+        private readonly LoadingController _loadingController;
 
         public EndGameController(CharacterRepository characterRepository,
             ILevelRepository levelRepository,
@@ -31,13 +33,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             WalletController walletController,
             GeneralController generalController,
             UnityAdsProvider adsProvider,
-            LeaderboardController leaderboardController)
+            LeaderboardController leaderboardController,
+            LoadingController loadingController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
             _walletController = walletController;
             _soundController = soundController;
             _generalController = generalController;
+            _loadingController = loadingController;
             _adsProvider = adsProvider;
             _leaderboardController = leaderboardController;
         }
@@ -45,7 +49,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //loadingScreen
         }
 
         private void RestartGame()

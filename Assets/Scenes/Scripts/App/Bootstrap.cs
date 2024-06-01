@@ -1,7 +1,6 @@
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using EasyButtons;
-using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Extensions;
@@ -14,7 +13,9 @@ using LegoBattaleRoyal.Presentation.Controllers.General;
 using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
 using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
+using LegoBattaleRoyal.Presentation.Controllers.Loading;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
+using LegoBattaleRoyal.Presentation.Controllers.Settings;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
@@ -36,7 +37,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
-#if DEBUG
+#if DEBUG && ! UNITY_EDITOR
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
         private DebugLogManager _debugLogManager;
 #endif
@@ -64,9 +65,18 @@ namespace LegoBattaleRoyal.App
 #endif
             _uiContainer.CloseAll();
             _uiContainer.Background.SetActive(true);
-            _uiContainer.LoadingScreen.SetActive(true);
+
+            var loadingController = new LoadingController(_uiContainer.LoadingScreen);
+            loadingController.ResetLoadingPopup();
+            loadingController.ShowLoadingPopup();
+            IProgress<int> progress = new Progress<int>((progressValue) =>
+            {
+                float percent = (float)progressValue / 100;
+                loadingController.SetProgress(percent);
+            });
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
+            progress.Report(35);
             await analyticsProvider.InitAsync();
 
             _soundController.Play(_gameSettingsSO.MainMusic);
@@ -90,21 +100,23 @@ namespace LegoBattaleRoyal.App
             cameraController.ShowRaycaster();
 
             var authentificationController = new AuthentificationController();
+            progress.Report(65);
             await authentificationController.SignInAsync();
 
-            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, cameraController);
+            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, loadingController, cameraController);
             var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
 
             var generalPopup = _uiContainer.GeneralPopup;
             var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
 
-            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, cameraController);
+            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, loadingController, cameraController);
 
             var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
             levelSelectController.ShowLevelSelect();
 
             var leaderboardProvider = new UnityLeaderboardProvider();
             var leaderboardController = new LeaderboardController(leaderboardProvider);
+            progress.Report(100);
             await leaderboardController.InitAsync();
 
             var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController, leaderboardController);
@@ -115,7 +127,8 @@ namespace LegoBattaleRoyal.App
 
             menuController.ShowMenu();
 
-            _uiContainer.LoadingScreen.SetActive(false);
+            await loadingController.WaitAsync();
+            loadingController.CloseLoadingPopup();
 
             OnDisposed += () =>
             {
@@ -166,9 +179,9 @@ namespace LegoBattaleRoyal.App
                 // subscribe again after dispose
                 _gameBootstrap.OnRestarted += StartGame;
 
-                _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
-
+                levelSelectController.CloseLevelSelect();
+                loadingController.CloseLoadingPopup();
                 menuController.CloseMenu();
                 levelSelectController.CloseLevelSelect();
 
@@ -184,7 +197,8 @@ namespace LegoBattaleRoyal.App
                     analyticsProvider,
                     adsProvider,
                     cameraController,
-                    leaderboardController);
+                    leaderboardController,
+                    loadingController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {

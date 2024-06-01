@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Presentation.Controllers.Settings;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using System;
@@ -24,7 +25,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
         {
             _settingsController.ShowSettings();
         }
-        
+
         private void SetCount(int count)
         {
             _topbarPopup.SetText(count);
