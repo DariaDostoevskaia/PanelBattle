@@ -180,6 +180,8 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
 
+                capturePathController.ResetPath();
+
                 characterView.DestroyGameObject();
                 characterModel.Dispose();
                 panelController.Dispose();
@@ -242,7 +244,7 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= TryWinGame;
 
-                panelController.UnsubscribeOnInput(); // ?
+                panelController.UnsubscribeOnInput();
 
                 endGameController.TryWinGame();
                 analyticsProvider.SendEvent(AnalyticsEvents.Win);

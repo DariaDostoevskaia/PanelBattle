@@ -45,7 +45,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //loadingScreen
         }
 
         private void RestartGame()
