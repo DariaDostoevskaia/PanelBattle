@@ -180,8 +180,6 @@ namespace LegoBattaleRoyal.App
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
 
-                capturePathController.ResetPath();
-
                 characterView.DestroyGameObject();
                 characterModel.Dispose();
                 panelController.Dispose();
