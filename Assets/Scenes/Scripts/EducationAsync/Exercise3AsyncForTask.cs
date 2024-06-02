@@ -10,13 +10,13 @@ namespace LegoBattaleRoyal.EducationAsync
             await CombineAndDisplayResultsAsync();
         }
 
-        public async Task<string> GetFirstDataAsync()
+        public async Task<string> GetWorldAsync()
         {
             await Task.Delay(1000);
             return "Task";
         }
 
-        public async Task<int> GetSecondDataAsync()
+        public async Task<int> GetNumberAsync()
         {
             await Task.Delay(1000);
             return 42;
@@ -24,12 +24,12 @@ namespace LegoBattaleRoyal.EducationAsync
 
         public async Task CombineAndDisplayResultsAsync()
         {
-            Task<string> firstDataTask = GetFirstDataAsync();
-            Task<int> secondDataTask = GetSecondDataAsync();
+            Task<string> worldTask = GetWorldAsync();
+            Task<int> numberTask = GetNumberAsync();
 
-            await Task.WhenAll(firstDataTask, secondDataTask);
+            await Task.WhenAll(worldTask, numberTask);
 
-            string combinedResult = $"{await firstDataTask} : {await secondDataTask}";
+            string combinedResult = $"{worldTask.Result} : {numberTask.Result}";
 
             Debug.Log(combinedResult);
         }

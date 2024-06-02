@@ -61,16 +61,5 @@ namespace LegoBattaleRoyal.EducationAsync
             }
             callback?.Invoke(_numbers);
         }
-
-        //private IEnumerator PrintWorldsForCoroutineAsync(Action<string[]> callback)
-        //{
-        //    yield return new WaitForSeconds(2);
-
-        //    foreach (var number in _numbers)
-        //    {
-        //        Debug.Log(number + " ");
-        //    }
-        //    callback?.Invoke(_numbers);
-        //}
     }
 }
