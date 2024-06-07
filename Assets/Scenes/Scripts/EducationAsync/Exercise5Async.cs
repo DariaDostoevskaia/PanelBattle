@@ -16,19 +16,16 @@ namespace LegoBattaleRoyal.EducationAsync
             Func<Task<int[]>> funcTask = () => GetNumbersAsync();
             Func<UniTask<string[]>> funcUnitask = () => GetWorldsAsync();
 
+            var worlds = await funcUnitask.Invoke();
+
+            var numbers = await funcTask.Invoke();
+
             var array = Array.Empty<int>();
-            var coroutine = PrintWorldsForCoroutineAsync((numbers) =>
+            StartCoroutine(PrintWorldsForCoroutineAsync((numbers) =>
             {
                 array = numbers;
                 Debug.Log(string.Join(",", array));
-            });
-
-            var worlds = await funcUnitask.Invoke();
-            var numbers = await funcTask.Invoke();
-            StartCoroutine(coroutine);
-
-            Debug.Log(string.Join(",", worlds));
-            Debug.Log(string.Join(",", numbers));
+            }));
         }
 
         private async Task<int[]> GetNumbersAsync()
@@ -53,11 +50,10 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private IEnumerator PrintWorldsForCoroutineAsync(Action<int[]> callback)
         {
-            yield return new WaitForSeconds(2);
-
             foreach (var number in _numbers)
             {
                 Debug.Log(number + " ");
+                yield return new WaitForSeconds(1);
             }
             callback?.Invoke(_numbers);
         }

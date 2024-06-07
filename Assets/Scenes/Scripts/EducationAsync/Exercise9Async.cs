@@ -29,10 +29,23 @@ namespace LegoBattaleRoyal.EducationAsync
             if (_time > 0)
             {
                 _time -= Time.deltaTime;
+                // await 1 sek
                 var result = Mathf.Round(_time * 100) / 100.0;
                 _timerText.SetText($"{result}");
             }
         }
+
+        //public static Timer Delay(uint millis, Action action)
+        //{
+        //    Timer timer = null;
+        //    timer = new Timer(sender =>
+        //    {
+        //        action();
+        //        timer.Dispose();
+        //    });
+        //    timer.Change(millis, Timeout.Infinite);
+        //    return timer;
+        //}
 
         private void StartTimer()
         {
