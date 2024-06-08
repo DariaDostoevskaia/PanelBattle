@@ -50,10 +50,11 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private IEnumerator PrintWorldsForCoroutineAsync(Action<int[]> callback)
         {
+            var wait = new WaitForSeconds(1);
             foreach (var number in _numbers)
             {
                 Debug.Log(number + " ");
-                yield return new WaitForSeconds(1);
+                yield return wait;
             }
             callback?.Invoke(_numbers);
         }

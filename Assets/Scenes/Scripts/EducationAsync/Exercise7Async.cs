@@ -28,29 +28,29 @@ namespace LegoBattaleRoyal.EducationAsync
 
         private IEnumerator PrintElementForCoroutine()
         {
-            foreach (var world in _worldsList)
+            var wait = new WaitForSeconds(1);
+            for (int i = 0; i < _worldsList.Count; i++)
             {
-                new WaitForSeconds(1);
-                Debug.Log(world);
+                yield return wait;
+                Debug.Log(_worldsList[i]);
             }
-            yield return null;
         }
 
         private async Task PrintElementForTaskAsync()
         {
-            foreach (var world in _worldsList)
+            for (int i = 0; i < _worldsList.Count; i++)
             {
                 await Task.Delay(2000);
-                Debug.Log(world);
+                Debug.Log(_worldsList[i]);
             }
         }
 
         private async UniTask PrintElementForUniTaskAsync()
         {
-            foreach (var world in _worldsList)
+            for (int i = 0; i < _worldsList.Count; i++)
             {
                 await UniTask.WaitForSeconds(2);
-                Debug.Log(world);
+                Debug.Log(_worldsList[i]);
             }
         }
     }

@@ -1,51 +1,44 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
+using System.Threading;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.EducationAsync
 {
     public class Exercise9Async : MonoBehaviour
     {
-        [SerializeField] private float _time = 5;
-        [SerializeField] private TextMeshProUGUI _timerText;
-
-        private readonly string _text = "The timer went off";
+        private string _text = "The timer went off";
+        private float _time = 10f;
         private int _timer = 10;
 
-        private async void Start()
+        private void Start()
         {
-            await StartTimerUniTask();
-            await StartTimerTask();
+            //await StartTimerUniTask();
+            //await StartTimerTask();
 
-            StartCoroutine(StartTimerCoroutine());
+            //StartCoroutine(StartTimerCoroutine());
 
-            StartTimer();
+            //StartTimer();
+
+            Timer();
         }
 
-        private void Update()
+        private void Timer()
         {
-            if (_time > 0)
+            TimerCallback timerCallback = new TimerCallback(Count);
+            var timer = new Timer(timerCallback, 0, 10, 1000);
+
+            void Count(object obj)
             {
-                _time -= Time.deltaTime;
-                // await 1 sek
-                var result = Mathf.Round(_time * 100) / 100.0;
-                _timerText.SetText($"{result}");
+                int x = (int)obj;
+
+                for (int i = x; i > 0; i--)
+                {
+                    Debug.Log(i);
+                }
             }
         }
-
-        //public static Timer Delay(uint millis, Action action)
-        //{
-        //    Timer timer = null;
-        //    timer = new Timer(sender =>
-        //    {
-        //        action();
-        //        timer.Dispose();
-        //    });
-        //    timer.Change(millis, Timeout.Infinite);
-        //    return timer;
-        //}
 
         private void StartTimer()
         {
@@ -65,9 +58,11 @@ namespace LegoBattaleRoyal.EducationAsync
         private IEnumerator StartTimerCoroutine()
         {
             var seconds = 6;
+            var wait = new WaitForSeconds(1);
+
             for (int i = 1; i <= seconds; i++)
             {
-                yield return new WaitForSeconds(1);
+                yield return wait;
                 Debug.Log(i);
             }
 
