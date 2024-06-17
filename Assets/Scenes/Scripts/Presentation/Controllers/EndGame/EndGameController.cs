@@ -93,10 +93,10 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
             if (isLastLevel)
             {
-                currentLevel.Exit();
-
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
                 nextLevel = _levelRepository.Get(firstLevelOrder);
+
+                currentLevel.Exit();
 
                 var restartButton = popup.CreateButton($"Restart");
                 restartButton.onClick.AddListener(() =>

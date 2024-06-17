@@ -139,6 +139,10 @@ namespace LegoBattaleRoyal.App
 
             void StartGame()
             {
+                //var firstLevelOrder = levelRepository.GetAll().Min(level => level.Order);
+                //var level = levelRepository.Get(firstLevelOrder);
+                //level.Launch();
+
                 var level = levelRepository.GetCurrentLevel();
                 var entriesGameNumber = GetNumberInputsPlayer();
 
