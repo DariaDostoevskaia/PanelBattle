@@ -8,45 +8,40 @@ namespace LegoBattaleRoyal.EducationAsync
 {
     public class Exercise9Async : MonoBehaviour
     {
+        private Timer _timer;
+
         private string _text = "The timer went off";
         private float _time = 10f;
-        private int _timer = 10;
+        private int _timeForTimer = 10;
 
-        private void Start()
+        private async void Start()
         {
-            //await StartTimerUniTask();
-            //await StartTimerTask();
+            await StartTimerUniTask();
+            await StartTimerTask();
 
-            //StartCoroutine(StartTimerCoroutine());
+            StartCoroutine(StartTimerCoroutine());
 
-            //StartTimer();
+            StartTimer();
 
-            Timer();
+            _timer = new Timer(TimerCallback, null, 0, 1000);
         }
 
-        private void Timer()
+        private void TimerCallback(object state)
         {
-            TimerCallback timerCallback = new TimerCallback(Count);
-            var timer = new Timer(timerCallback, 0, 10, 1000);
+            Debug.Log(_timeForTimer);
+            _timeForTimer--;
 
-            void Count(object obj)
-            {
-                int x = (int)obj;
-
-                for (int i = x; i > 0; i--)
-                {
-                    Debug.Log(i);
-                }
-            }
+            if (_timeForTimer < 0)
+                _timer.Dispose();
         }
 
         private void StartTimer()
         {
-            Debug.Log("Timer is : " + _timer);
-            _timer--;
+            Debug.Log("Timer is : " + _timeForTimer);
+            _timeForTimer--;
             Invoke(nameof(StartTimer), 1);
 
-            if (_timer < 0)
+            if (_timeForTimer < 0)
                 StopTimer();
         }
 
