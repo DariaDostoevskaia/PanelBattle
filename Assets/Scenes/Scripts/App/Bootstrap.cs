@@ -168,7 +168,7 @@ namespace LegoBattaleRoyal.App
 
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
-                levelSelectController.CloseLevelSelect();
+
                 menuController.CloseMenu();
                 levelSelectController.CloseLevelSelect();
 
