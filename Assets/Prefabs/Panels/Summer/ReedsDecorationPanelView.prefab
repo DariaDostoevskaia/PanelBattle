@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8118296412409645337}
   - component: {fileID: 3164172307425116035}
   - component: {fileID: 5186377061109429778}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HoverPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
   - component: {fileID: 8348433209423044530}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ReedsDecorationPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,6 +236,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reeds01-03
       objectReference: {fileID: 0}
+    - target: {fileID: 2816785834026973336, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -305,6 +310,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528794675361660993, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
