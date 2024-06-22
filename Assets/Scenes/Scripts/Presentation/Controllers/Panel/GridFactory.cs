@@ -47,11 +47,34 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
 
         private (PanelModel panelModel, PanelView panelView) CreatePair(float[] cell, Transform parent, GridPosition gridPosition)
         {
-            var lenght = _panelSettings.Length;
-            var random = Random.Range(0, lenght);
-            var panelSetting = _panelSettings[random];
+            PanelSO panelSetting;
 
-            var panelModel = new PanelModel(panelSetting.IsJumpBlock, gridPosition);
+            const int minX = 0;
+            const int minY = 0;
+            int maxX = _levelSettings.Rect[0] - 1;
+            int maxY = _levelSettings.Rect[1] - 1;
+
+            var isExternalPanel = gridPosition.Row == minX
+                || gridPosition.Row == maxX
+                || gridPosition.Column == minY
+                || gridPosition.Column == maxY;
+
+            if (isExternalPanel)
+            {
+                var jumpPanelSettings = _panelSettings
+                    .Where((panel) => panel.IsJumpBlock)
+                    .ToList();
+
+                var random = Random.Range(0, jumpPanelSettings.Count);
+                panelSetting = jumpPanelSettings[random];
+            }
+            else
+            {
+                var random = Random.Range(0, _panelSettings.Length);
+                panelSetting = _panelSettings[random];
+            }
+
+            var panelModel = new PanelModel(panelSetting.IsJumpBlock, gridPosition, isExternalPanel);
 
             var panelView = Object
                .Instantiate(panelSetting.PanelView, new Vector3(cell[0], parent.position.y, cell[1]),
