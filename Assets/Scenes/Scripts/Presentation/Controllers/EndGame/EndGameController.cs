@@ -88,6 +88,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _leaderboardController.AddScore(currentLevel.Reward);
 
             var popup = _generalController.CreatePopup("You Win!", popupText);
+            popup.SetActiveCloseButton(false);
 
             LevelModel nextLevel;
 
@@ -97,14 +98,13 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                 nextLevel = _levelRepository.Get(firstLevelOrder);
 
                 currentLevel.Exit();
+                nextLevel.Launch();
 
                 var restartButton = popup.CreateButton($"Restart");
                 restartButton.onClick.AddListener(() =>
                 {
                     restartButton.interactable = false;
                     popup.Close();
-
-                    nextLevel.Launch();
 
                     RestartGame();
                 });
