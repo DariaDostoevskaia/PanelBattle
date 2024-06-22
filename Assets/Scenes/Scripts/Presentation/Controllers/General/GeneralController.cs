@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
 using System;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
@@ -103,8 +104,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             popup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet. Restart for {currentLevel.Price}");
             popup.Show();
 
-            popup.transform.SetParent(_generalPopup.transform.parent);
-            popup.RectTransform.anchoredPosition = UnityEngine.Vector2.zero;
+            popup.transform.localScale = Vector3.one;
         }
 
         public GeneralPopup CreatePopup(string title, string text)
