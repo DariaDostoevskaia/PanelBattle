@@ -104,6 +104,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             popup.SetText($"There are {_walletController.GetCurrentMoney()} energy in your wallet. Restart for {currentLevel.Price}");
             popup.Show();
 
+            popup.transform.SetParent(_generalPopup.transform.parent);
+            popup.RectTransform.anchoredPosition = Vector2.one;
             popup.transform.localScale = Vector3.one;
         }
 

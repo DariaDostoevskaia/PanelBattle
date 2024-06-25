@@ -1,6 +1,5 @@
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.App.DTO.Wallet;
-using LegoBattaleRoyal.ApplicationLayer.SaveSystem;
 using LegoBattaleRoyal.Core.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
@@ -12,7 +11,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Wallet
         public event Action<int> Changed;
 
         private WalletModel _walletModel;
-        private readonly ISaveService _saveService;
+        private readonly SaveService _saveService;
         private readonly GameSettingsSO _gameSettingsSO;
 
         public WalletController(SaveService saveService, GameSettingsSO gameSettingsSO)
