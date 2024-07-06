@@ -7,6 +7,7 @@ using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using System.Linq;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 {
@@ -62,9 +63,15 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
 
         public void RemoveAllProgress()
         {
-            var currentLevel = _levelRepository.GetCurrentLevel();
-            currentLevel.Exit();
-
+            try
+            {
+                var currentLevel = _levelRepository.GetCurrentLevel();
+                currentLevel.Exit();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
             var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
             var firstLevel = _levelRepository.Get(firstLevelOrder);
             firstLevel.Launch();
@@ -85,7 +92,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Levels
             _saveService.Save(new LevelDTO()
             {
                 FinishedOrders = finishedLevels,
-                CurrentOrder = currentLevel.Order + 1
+                CurrentOrder = currentLevel.Order >= _levelRepository.Count
+                ? 1
+                : currentLevel.Order + 1,
             });
         }
 

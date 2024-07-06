@@ -95,8 +95,7 @@ namespace LegoBattaleRoyal.App
                 .ForEach(character =>
                 {
                     var availablePair = pairs
-                    .OrderBy(pair => Guid.NewGuid())
-                    .First(pair => pair.panelModel.IsJumpBlock
+                    .First(pair => pair.panelModel.IsExternalPanel
                     && !pair.panelModel.IsBase);
 
                     character.Move(availablePair.panelModel);
@@ -243,6 +242,8 @@ namespace LegoBattaleRoyal.App
                 roundController.OnRoundChanged -= aiController.ProcessRound;
 
                 panelController.OnCharacterLoss -= TryWinGame;
+
+                panelController.UnsubscribeOnInput();
 
                 endGameController.TryWinGame();
                 analyticsProvider.SendEvent(AnalyticsEvents.Win);

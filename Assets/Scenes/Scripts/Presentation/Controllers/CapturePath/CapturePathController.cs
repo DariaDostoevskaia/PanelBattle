@@ -1,9 +1,11 @@
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.GameView.CapturePath;
+using System;
 using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
 {
-    public class CapturePathController
+    public class CapturePathController : IDisposable
     {
         private readonly CapturePathView _capturePathView;
 
@@ -27,6 +29,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
         public void UnBind()
         {
             _capturePathView.UnBind();
+        }
+
+        public void Dispose()
+        {
+            ResetPath();
+            _capturePathView.DestroyGameObject();
         }
     }
 }

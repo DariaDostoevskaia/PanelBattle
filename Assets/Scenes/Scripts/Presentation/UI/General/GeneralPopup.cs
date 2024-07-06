@@ -26,7 +26,7 @@ namespace LegoBattaleRoyal.Presentation.UI.General
 
         private readonly List<Button> _buttons = new();
 
-        public RectTransform RectTransform { get; set; }
+        public RectTransform RectTransform { get; private set; }
 
         private void Awake()
         {

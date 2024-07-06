@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
   - component: {fileID: 824434403183988463}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: StonesDecorationPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0625556, y: 2.220446e-16, z: 1.3145124}
-  m_Center: {x: -0.0055664303, y: 0, z: -0.105355315}
+  m_Size: {x: 1.14, y: 0, z: 1.14}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7659229185233088805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 4538361932355631857}
   - component: {fileID: 2387517186155839681}
   - component: {fileID: 5579387737651801400}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HoverPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,6 +231,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4332688210431700001}
     m_Modifications:
+    - target: {fileID: 1285663694762368865, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548204162846733055, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378154429851426288, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6245761137342586407, guid: a7f5eb554597f7c4788b076f72007feb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -306,7 +321,27 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock_3_2 Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6766295623526171805, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573784601883453096, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961529075683458340, guid: a7f5eb554597f7c4788b076f72007feb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9110668748631110615, guid: a7f5eb554597f7c4788b076f72007feb, type: 3}
+    - {fileID: 8172322861286568801, guid: a7f5eb554597f7c4788b076f72007feb, type: 3}
+    - {fileID: 7022650878249084740, guid: a7f5eb554597f7c4788b076f72007feb, type: 3}
+    - {fileID: 2333333295870208702, guid: a7f5eb554597f7c4788b076f72007feb, type: 3}
+    - {fileID: 5435788329593197828, guid: a7f5eb554597f7c4788b076f72007feb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

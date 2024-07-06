@@ -4,6 +4,7 @@ using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
 using System;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
@@ -104,7 +105,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             popup.Show();
 
             popup.transform.SetParent(_generalPopup.transform.parent);
-            popup.RectTransform.anchoredPosition = UnityEngine.Vector2.zero;
+            popup.RectTransform.anchoredPosition = Vector2.one;
+            popup.transform.localScale = Vector3.one;
         }
 
         public GeneralPopup CreatePopup(string title, string text)
