@@ -6,20 +6,25 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
 {
     public class TopbarController : IDisposable
     {
-        public event Action OnButtonClicked;
-
         private readonly TopbarScreenPanel _topbarPopup;
+        private readonly SettingsController _settingsController;
         private readonly WalletController _walletController;
 
-        public TopbarController(TopbarScreenPanel topbarPopup, WalletController walletController)
+        public TopbarController(TopbarScreenPanel topbarPopup, SettingsController settingsController, WalletController walletController)
         {
             _topbarPopup = topbarPopup;
+            _settingsController = settingsController;
             _walletController = walletController;
 
-            _topbarPopup.OnSettingsButtonClicked += ButtonClicked;
+            _topbarPopup.OnSettingsButtonClicked += OnSettingsButtonClicked;
             _walletController.Changed += SetCount;
         }
 
+        public void OnSettingsButtonClicked()
+        {
+            _settingsController.ShowSettings();
+        }
+        
         private void SetCount(int count)
         {
             _topbarPopup.SetText(count);
@@ -30,16 +35,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Topbar
             _topbarPopup.Show();
         }
 
-        private void ButtonClicked()
-        {
-            OnButtonClicked?.Invoke();
-        }
-
         public void Dispose()
         {
-            OnButtonClicked = null;
-
-            _topbarPopup.OnSettingsButtonClicked -= ButtonClicked;
+            _topbarPopup.OnSettingsButtonClicked -= OnSettingsButtonClicked;
             _walletController.Changed -= SetCount;
         }
     }

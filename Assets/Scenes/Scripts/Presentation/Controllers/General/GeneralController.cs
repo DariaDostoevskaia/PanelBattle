@@ -1,22 +1,33 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Levels.Contracts;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using LegoBattaleRoyal.Presentation.UI.General;
 using System;
+using UnityEngine;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.General
 {
-    public class GeneralController
+    public class GeneralController : IDisposable
     {
         private readonly GeneralPopup _generalPopup;
         private readonly WalletController _walletController;
         private readonly ILevelRepository _levelRepository;
+        private readonly CameraController _cameraController;
 
-        public GeneralController(GeneralPopup generalPopup, WalletController walletController, ILevelRepository levelRepository)
+        public GeneralController
+            (GeneralPopup generalPopup,
+            WalletController walletController,
+            ILevelRepository levelRepository,
+            CameraController cameraController)
         {
             _generalPopup = generalPopup;
             _walletController = walletController;
             _levelRepository = levelRepository;
+            _cameraController = cameraController;
+
+            _generalPopup.Shown += _cameraController.CloseRaycaster;
+            _generalPopup.Closed += _cameraController.ShowRaycaster;
         }
 
         public void ShowRefinementRemovePanel(Action callback)
@@ -94,7 +105,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             popup.Show();
 
             popup.transform.SetParent(_generalPopup.transform.parent);
-            popup.RectTransform.anchoredPosition = UnityEngine.Vector2.zero;
+            popup.RectTransform.anchoredPosition = Vector2.one;
+            popup.transform.localScale = Vector3.one;
         }
 
         public GeneralPopup CreatePopup(string title, string text)
@@ -102,6 +114,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.General
             _generalPopup.SetTitle(title);
             _generalPopup.SetText(text);
             return _generalPopup;
+        }
+
+        public void Dispose()
+        {
+            _generalPopup.Shown -= _cameraController.CloseRaycaster;
+            _generalPopup.Closed -= _cameraController.ShowRaycaster;
         }
     }
 }

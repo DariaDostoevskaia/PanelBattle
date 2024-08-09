@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
   - component: {fileID: 8635480754114543211}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GrassPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0831971, y: 2.220446e-16, z: 1.3023535}
-  m_Center: {x: -0.004776621, y: 0, z: -0.22842093}
+  m_Size: {x: 1.14, y: 0, z: 1.14}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7659229185233088805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 3594597769355199946}
   - component: {fileID: 4611626357363179758}
   - component: {fileID: 3903757432914331625}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HoverPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}

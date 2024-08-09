@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7504420108461403380}
   - component: {fileID: 7659229185233088805}
   - component: {fileID: 712760319765060982}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: IceReedsDecorationPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0334598, y: 2.220446e-16, z: 1.2562183}
-  m_Center: {x: -0.0030590536, y: 0, z: -0.061411094}
+  m_Size: {x: 1.14, y: 0, z: 1.14}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7659229185233088805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Reeds01-03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2816785834026973336, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3196688660442898978, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
         type: 3}
@@ -221,6 +226,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528794675361660993, guid: b7857d505ec4d4c4faa8fad60f4f8fb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

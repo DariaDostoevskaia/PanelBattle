@@ -12,14 +12,17 @@ namespace LegoBattaleRoyal.Core.Panels.Models
 
         public GridPosition GridPosition { get; }
 
+        public bool IsExternalPanel { get; }
+
         public bool IsJumpBlock { get; }
 
         public bool IsBase => _stateForCharacters.Values.Any(state => state.IsBase);
 
-        public PanelModel(bool isJumpBlock, GridPosition gridPosition)
+        public PanelModel(bool isJumpBlock, GridPosition gridPosition, bool isExternalPanel)
         {
             IsJumpBlock = isJumpBlock;
             GridPosition = gridPosition;
+            IsExternalPanel = isExternalPanel;
         }
 
         public bool IsCaptured(Guid characterId)

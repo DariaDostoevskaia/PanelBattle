@@ -1,13 +1,19 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using EasyButtons;
 using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Infrastructure.Firebase.Analytics;
 using LegoBattaleRoyal.Infrastructure.Repository;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
+using LegoBattaleRoyal.Infrastructure.Unity.Authentification;
+using LegoBattaleRoyal.Infrastructure.Unity.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Levels;
+using LegoBattaleRoyal.Presentation.Controllers.LevelSelect;
 using LegoBattaleRoyal.Presentation.Controllers.Menu;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Topbar;
@@ -16,6 +22,7 @@ using LegoBattaleRoyal.Presentation.UI.Container;
 using LegoBattaleRoyal.ScriptableObjects;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace LegoBattaleRoyal.App
 {
@@ -55,13 +62,13 @@ namespace LegoBattaleRoyal.App
                 DontDestroyOnLoad(_debugLogManager.gameObject);
             }
 #endif
+            _uiContainer.CloseAll();
             _uiContainer.Background.SetActive(true);
             _uiContainer.LoadingScreen.SetActive(true);
 
             var analyticsProvider = new FirebaseAnalyticsProvider();
             await analyticsProvider.InitAsync();
 
-            _uiContainer.CloseAll();
             _soundController.Play(_gameSettingsSO.MainMusic);
             var adsProvider = new UnityAdsProvider(analyticsProvider);
             adsProvider.InitializeAds();
@@ -76,15 +83,35 @@ namespace LegoBattaleRoyal.App
             _levelController = levelController;
             walletController.LoadWalletData();
 
-            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, walletController);
-            var settingsController = new SettingsController(topbarController, _uiContainer.SettingsPopup, _soundController);
+            var camera = Camera.main;
+            var raycaster = camera.GetComponent<PhysicsRaycaster>();
+            var cinemachine = camera.GetComponent<CinemachineBrain>();
+            var cameraController = new CameraController(raycaster, cinemachine);
+            cameraController.ShowRaycaster();
+
+            var authentificationController = new AuthentificationController();
+            await authentificationController.SignInAsync();
+
+            var gameSettingsController = new SettingsController(_uiContainer.GameSettingsPopup, _soundController, cameraController);
+            var topbarController = new TopbarController(_uiContainer.TopbarScreenPanel, gameSettingsController, walletController);
 
             var generalPopup = _uiContainer.GeneralPopup;
-            var generalController = new GeneralController(generalPopup, walletController, levelRepository);
+            var generalController = new GeneralController(_uiContainer.GeneralPopup, walletController, levelRepository, cameraController);
 
-            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider);
+            var mainSettingsController = new SettingsController(_uiContainer.MainMenuSettingsPopup, _soundController, cameraController);
+
+            var levelSelectController = new LevelSelectController(_uiContainer.LevelSelectView, levelRepository, _gameSettingsSO);
+            levelSelectController.ShowLevelSelect();
+
+            var leaderboardProvider = new UnityLeaderboardProvider();
+            var leaderboardController = new LeaderboardController(leaderboardProvider);
+            await leaderboardController.InitAsync();
+
+            var menuController = new MenuController(_uiContainer.MenuView, analyticsProvider, mainSettingsController, cameraController, leaderboardController);
             menuController.OnGameStarted += StartGame;
             menuController.OnGameProgressRemoved += RemoveProgress;
+
+            levelSelectController.OnLevelInvoked += StartGame;
 
             menuController.ShowMenu();
 
@@ -99,10 +126,15 @@ namespace LegoBattaleRoyal.App
                 saveService.Dispose();
                 levelController.Dispose();
                 menuController.Dispose();
-                settingsController.Dispose();
+
+                mainSettingsController.Dispose();
+                gameSettingsController.Dispose();
+
                 topbarController.Dispose();
                 walletController.Dispose();
                 adsProvider.Dispose();
+                levelSelectController.Dispose();
+                generalController.Dispose();
             };
 
             void StartGame()
@@ -136,12 +168,23 @@ namespace LegoBattaleRoyal.App
 
                 _uiContainer.LoadingScreen.SetActive(false);
                 _uiContainer.Background.SetActive(false);
+
                 menuController.CloseMenu();
-                _uiContainer.Background.SetActive(false);
+                levelSelectController.CloseLevelSelect();
 
                 topbarController.ShowTopbar();
+
                 analyticsProvider.SendEvent(AnalyticsEvents.StartGameScene);
-                _gameBootstrap.Configure(levelRepository, _gameSettingsSO, walletController, _soundController, analyticsProvider, adsProvider);
+
+                _gameBootstrap.Configure
+                    (levelRepository,
+                    _gameSettingsSO,
+                    walletController,
+                    _soundController,
+                    analyticsProvider,
+                    adsProvider,
+                    cameraController,
+                    leaderboardController);
 
                 async UniTask<bool> ShowRewardedAdsAsync()
                 {
@@ -164,6 +207,7 @@ namespace LegoBattaleRoyal.App
             void RemoveProgress()
             {
                 generalController.ShowRefinementRemovePanel(Remove);
+                levelSelectController.ShowLevelSelect();
             }
 
             void Remove()

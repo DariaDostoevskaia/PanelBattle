@@ -1,8 +1,10 @@
 using Cysharp.Threading.Tasks;
 using LegoBattaleRoyal.Core.Characters.Models;
+using LegoBattaleRoyal.Core.Levels;
 using LegoBattaleRoyal.Core.Levels.Contracts;
 using LegoBattaleRoyal.Infrastructure.Unity.Ads;
 using LegoBattaleRoyal.Presentation.Controllers.General;
+using LegoBattaleRoyal.Presentation.Controllers.Leaderboard;
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.Controllers.Wallet;
 using System;
@@ -20,6 +22,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
         private readonly WalletController _walletController;
         private readonly GeneralController _generalController;
         private readonly UnityAdsProvider _adsProvider;
+        private readonly LeaderboardController _leaderboardController;
         private readonly SoundController _soundController;
 
         public EndGameController(CharacterRepository characterRepository,
@@ -27,7 +30,8 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             SoundController soundController,
             WalletController walletController,
             GeneralController generalController,
-            UnityAdsProvider adsProvider)
+            UnityAdsProvider adsProvider,
+            LeaderboardController leaderboardController)
         {
             _levelRepository = levelRepository;
             _characterRepository = characterRepository;
@@ -35,12 +39,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             _soundController = soundController;
             _generalController = generalController;
             _adsProvider = adsProvider;
+            _leaderboardController = leaderboardController;
         }
 
         private void ExitMainMenu()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            //loadingScreen
         }
 
         private void RestartGame()
@@ -65,29 +69,35 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             var currentLevel = _levelRepository.GetCurrentLevel();
             var currentLevelReward = currentLevel.Reward;
 
-            currentLevel.Win();
-            _walletController.EarnCoins(currentLevelReward);
-
             var isLastLevel = _levelRepository.Count == currentLevel.Order;
-
-            _soundController.PLayWinGameMusic();
 
             var popupText = isLastLevel
 
-                ? $"You earn {currentLevelReward}. " +
+                ? $"You earn {currentLevel.Reward}. " +
                 $"Restart for {_levelRepository.Get(_levelRepository.GetAll().Min(level => level.Order)).Price}"
 
-                : $"You earn {currentLevelReward}. " +
+                : $"You earn {currentLevel.Reward}. " +
                 $"Next for {_levelRepository.GetNextLevel().Price}.";
 
+            currentLevel.Win();
+            _walletController.EarnCoins(currentLevel.Reward);
+
+            _soundController.PLayWinGameMusic();
+
+            _leaderboardController.AddScore(currentLevel.Reward);
+
             var popup = _generalController.CreatePopup("You Win!", popupText);
+            popup.SetActiveCloseButton(false);
+
+            LevelModel nextLevel;
 
             if (isLastLevel)
             {
-                currentLevel.Exit();
-
                 var firstLevelOrder = _levelRepository.GetAll().Min(level => level.Order);
-                var firstLevel = _levelRepository.Get(firstLevelOrder);
+                nextLevel = _levelRepository.Get(firstLevelOrder);
+
+                currentLevel.Exit();
+                nextLevel.Launch();
 
                 var restartButton = popup.CreateButton($"Restart");
                 restartButton.onClick.AddListener(() =>
@@ -95,14 +105,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
                     restartButton.interactable = false;
                     popup.Close();
 
-                    firstLevel.Launch();
-
                     RestartGame();
                 });
             }
             else
             {
-                var nextLevel = _levelRepository.GetNextLevel();
+                nextLevel = _levelRepository.GetNextLevel();
                 currentLevel.Exit();
 
                 var nextButton = popup.CreateButton($"Next");
@@ -121,6 +129,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
             {
                 exitButton.interactable = false;
                 popup.Close();
+
+                nextLevel.Launch();
+
                 ExitMainMenu();
             });
 

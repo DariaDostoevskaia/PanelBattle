@@ -1,5 +1,6 @@
 using LegoBattaleRoyal.Presentation.Controllers.Sound;
 using LegoBattaleRoyal.Presentation.UI.General;
+using LegoBattaleRoyal.Presentation.UI.LevelSelect;
 using LegoBattaleRoyal.Presentation.UI.MainMenu;
 using LegoBattaleRoyal.Presentation.UI.TopbarPanel;
 using UnityEngine;
@@ -10,8 +11,12 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
     {
         [SerializeField] private MainMenuPanelUI _menuPanel;
         [SerializeField] private GeneralPopup _generalPopup;
-        [SerializeField] private SettingsPopup _settingsPopup;
+        [SerializeField] private SettingsPopup _mainMenuSettingsPopup;
+        [SerializeField] private SettingsPopup _gameSettingsPopup;
         [SerializeField] private TopbarScreenPanel _topbarScreenPanel;
+
+        [SerializeField] private LevelSelectView _levelSelectView;
+
         [SerializeField] private GameObject _loadingScreen;
         [SerializeField] private GameObject _background;
 
@@ -23,9 +28,13 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
         public GeneralPopup GeneralPopup => _generalPopup;
 
-        public SettingsPopup SettingsPopup => _settingsPopup;
+        public SettingsPopup MainMenuSettingsPopup => _mainMenuSettingsPopup;
+
+        public SettingsPopup GameSettingsPopup => _gameSettingsPopup;
 
         public TopbarScreenPanel TopbarScreenPanel => _topbarScreenPanel;
+
+        public LevelSelectView LevelSelectView => _levelSelectView;
 
         public GameObject LoadingScreen => _loadingScreen;
 
@@ -40,13 +49,15 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
             _generalPopup.OnGeneralButtonClicked += _audioSource.Play;
 
-            _settingsPopup.OnOkClicked += _audioSource.Play;
-            _settingsPopup.OnHomeClicked += _audioSource.Play;
-            _settingsPopup.OnCloseClicked += _audioSource.Play;
+            _gameSettingsPopup.OnOkClicked += _audioSource.Play;
+            _gameSettingsPopup.OnHomeClicked += _audioSource.Play;
+            _gameSettingsPopup.OnCloseClicked += _audioSource.Play;
+
+            _mainMenuSettingsPopup.OnOkClicked += _audioSource.Play;
+            _mainMenuSettingsPopup.OnHomeClicked += _audioSource.Play;
+            _mainMenuSettingsPopup.OnCloseClicked += _audioSource.Play;
 
             _topbarScreenPanel.OnSettingsButtonClicked += _audioSource.Play;
-
-            _settingsPopup.OnHomeClicked += GoHome;
 
             _audioSource.loop = false;
             _audioSource.clip = _buttonsClickAudio;
@@ -55,18 +66,21 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
         private void GoHome()
         {
             CloseAll();
+            _background.SetActive(true);
             _menuPanel.Show();
         }
 
         public void CloseAll()
         {
-            _menuPanel.Close();
+            _loadingScreen.SetActive(false);
+            _background.SetActive(false);
 
+            _menuPanel.Close();
             _generalPopup.Close();
             _topbarScreenPanel.Close();
-            _settingsPopup.Close();
 
-            _loadingScreen.SetActive(false);
+            _gameSettingsPopup.Close();
+            _mainMenuSettingsPopup.Close();
         }
 
         private void OnDestroy()
@@ -76,13 +90,15 @@ namespace LegoBattaleRoyal.Presentation.UI.Container
 
             _generalPopup.OnGeneralButtonClicked -= _audioSource.Play;
 
-            _settingsPopup.OnOkClicked -= _audioSource.Play;
-            _settingsPopup.OnHomeClicked -= _audioSource.Play;
-            _settingsPopup.OnCloseClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnOkClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnHomeClicked -= _audioSource.Play;
+            _gameSettingsPopup.OnCloseClicked -= _audioSource.Play;
+
+            _mainMenuSettingsPopup.OnOkClicked -= _audioSource.Play;
+            _mainMenuSettingsPopup.OnHomeClicked -= _audioSource.Play;
+            _mainMenuSettingsPopup.OnCloseClicked -= _audioSource.Play;
 
             _topbarScreenPanel.OnSettingsButtonClicked -= _audioSource.Play;
-
-            _settingsPopup.OnHomeClicked -= GoHome;
         }
     }
 }

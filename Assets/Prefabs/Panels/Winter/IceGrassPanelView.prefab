@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IceGrassPanelView
       objectReference: {fileID: 0}
+    - target: {fileID: 1160906271520517804, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2986923045873706976, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Mesh
@@ -86,22 +91,27 @@ PrefabInstance:
     - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Size.x
-      value: 1.0154672
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Size.z
-      value: 1.2772223
+      value: 1.14
       objectReference: {fileID: 0}
     - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Center.x
-      value: -0.0024920942
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7504420108461403380, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
       propertyPath: m_Center.z
-      value: -0.26143464
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7659229185233088805, guid: d2f94afbb6360e64a9fdf7be02fd12e4,
         type: 3}
