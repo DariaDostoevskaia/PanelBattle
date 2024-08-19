@@ -79,7 +79,7 @@ namespace LegoBattaleRoyal.App
                 leaderboardController,
                 loadingController);
 
-            _endGameController.OnGameRestarted += OnRestarted;
+            _endGameController.GameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -89,10 +89,13 @@ namespace LegoBattaleRoyal.App
             CreatePlayer(characterSO, _characterRepository, pairs, roundController,
                 _endGameController, gameSettingsSO, analyticsProvider);
 
-            _characterRepository
+            var players = _characterRepository
                 .GetAll()
-                .ToList()
-                .ForEach(character =>
+                .ToList();
+
+            //var list = new Founder(pairs, players);
+
+            players.ForEach(character =>
                 {
                     var availablePair = pairs
                     .First(pair => pair.panelModel.IsExternalPanel
@@ -113,7 +116,7 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
-                _endGameController.OnGameRestarted -= OnRestarted;
+                _endGameController.GameRestarted -= OnRestarted;
 
                 foreach (var pair in pairs)
                 {
@@ -180,7 +183,7 @@ namespace LegoBattaleRoyal.App
                 panelController.UnsubscribeOnInput();
 
                 panelController.OnCharacterLoss -= OnCharacterLoss;
-
+                capturePathController.Dispose();
                 characterView.DestroyGameObject();
                 characterModel.Dispose();
                 panelController.Dispose();
