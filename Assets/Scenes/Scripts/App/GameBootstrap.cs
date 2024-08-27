@@ -93,7 +93,7 @@ namespace LegoBattaleRoyal.App
                 .GetAll()
                 .ToList();
 
-            //var list = new Founder(pairs, players);
+            var basePanelsList = new BasePanelController(pairs, players, levelSO.Rect);
 
             players.ForEach(character =>
                 {
