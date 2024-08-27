@@ -52,7 +52,6 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Character
             _characterView.DestroyGameObject();
 
             _capturePathController.Dispose();
-            Debug.Break();
 
             Dispose();
         }
