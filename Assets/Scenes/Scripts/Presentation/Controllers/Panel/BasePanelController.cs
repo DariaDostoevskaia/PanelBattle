@@ -49,15 +49,26 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             return perimeterBlocksList;
         }
 
-        private void GetBaseBlocks()
+        public List<(int row, int column)> GetBaseBlocks()
         {
             var perimeterBlocksList = GetPerimeterBlocksList();
 
             // Выделение 4 сторон
-            var leftSide = perimeterBlocksList.Where(pair => pair.panelModel.GridPosition.Row == _minX).ToList();
-            var rightSide = perimeterBlocksList.Where(pair => pair.panelModel.GridPosition.Row == _maxX).ToList();
-            var topSide = perimeterBlocksList.Where(pair => pair.panelModel.GridPosition.Column == _minY).ToList();
-            var bottomSide = perimeterBlocksList.Where(pair => pair.panelModel.GridPosition.Column == _maxX).ToList();
+            var leftSide = perimeterBlocksList
+                .Where(pair => pair.panelModel.GridPosition.Row == _minX)
+                .ToList();
+
+            var rightSide = perimeterBlocksList
+                .Where(pair => pair.panelModel.GridPosition.Row == _maxX)
+                .ToList();
+
+            var topSide = perimeterBlocksList
+                .Where(pair => pair.panelModel.GridPosition.Column == _minY)
+                .ToList();
+
+            var bottomSide = perimeterBlocksList
+                .Where(pair => pair.panelModel.GridPosition.Column == _maxX)
+                .ToList();
 
             // Количество игроков и распределение по сторонам
             var playersCount = _players.Count;
@@ -66,8 +77,49 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             var y = playersCount % sides;
 
             // Расстановка игроков на сторонах
-            var sideLists = new List<List<(PanelModel panelModel, PanelView panelView)>>()
-            {leftSide, rightSide, topSide, bottomSide };
+            //var sideLists = new List<List<(PanelModel panelModel, PanelView panelView)>>()
+            //{leftSide, rightSide, topSide, bottomSide };
+
+            // Алгоритм расстановки игроков на равной отдаленности
+            var playerCoordinates = new List<(int row, int column)>(_players.Count);
+
+            if (y > 0)
+            {
+                for (int i = 0; i < x; i++)
+                {
+                    playerCoordinates
+                        .Add((leftSide[i].panelModel.GridPosition.Row, leftSide[i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((rightSide[i].panelModel.GridPosition.Row, rightSide[i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((topSide[i].panelModel.GridPosition.Row, topSide[i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((bottomSide[i].panelModel.GridPosition.Row, bottomSide[i].panelModel.GridPosition.Column));
+                }
+            }
+            if (y == 0)
+            {
+                // Дополнительное распределение игроков по сторонам, если есть остаток
+                for (int i = 0; i < y; i++)
+                {
+                    playerCoordinates
+                        .Add((leftSide[x + i].panelModel.GridPosition.Row, leftSide[x + i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((rightSide[x + i].panelModel.GridPosition.Row, rightSide[x + i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((topSide[x + i].panelModel.GridPosition.Row, topSide[x + i].panelModel.GridPosition.Column));
+
+                    playerCoordinates
+                        .Add((bottomSide[x + i].panelModel.GridPosition.Row, bottomSide[x + i].panelModel.GridPosition.Column));
+                }
+            }
+
+            return playerCoordinates;
         }
     }
 }

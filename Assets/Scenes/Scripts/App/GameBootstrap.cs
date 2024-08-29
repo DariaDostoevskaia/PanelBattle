@@ -94,6 +94,7 @@ namespace LegoBattaleRoyal.App
                 .ToList();
 
             var basePanelsList = new BasePanelController(pairs, players, levelSO.Rect);
+            var needBlocks = basePanelsList.GetBaseBlocks();
 
             players.ForEach(character =>
                 {
