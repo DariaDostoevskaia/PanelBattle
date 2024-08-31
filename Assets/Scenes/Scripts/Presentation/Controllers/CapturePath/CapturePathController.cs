@@ -1,3 +1,4 @@
+using LegoBattaleRoyal.Extensions;
 using LegoBattaleRoyal.Presentation.GameView.CapturePath;
 using System;
 using UnityEngine;

@@ -73,51 +73,62 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             // Количество игроков и распределение по сторонам
             var playersCount = _players.Count;
             var sides = 4;
-            var x = playersCount / sides;
-            var y = playersCount % sides;
+            var playersForSideCount = playersCount / sides;
+            var playersNeedAddCount = playersCount % sides;
 
-            // Расстановка игроков на сторонах
-            //var sideLists = new List<List<(PanelModel panelModel, PanelView panelView)>>()
-            //{leftSide, rightSide, topSide, bottomSide };
+            var playersForLeftSide = playersForSideCount;
+            var playersForRightSide = playersForSideCount;
+            var playersForToptSide = playersForSideCount;
+            var playersForBottomSide = playersForSideCount;
 
             // Алгоритм расстановки игроков на равной отдаленности
             var playerCoordinates = new List<(int row, int column)>(_players.Count);
 
-            if (y > 0)
+            var sideList = new List<List<(PanelModel panelModel, PanelView panelView)>>()
+            {leftSide, rightSide, topSide, bottomSide };
+
+            var allPlayersCountArray = new int[4]
             {
-                for (int i = 0; i < x; i++)
+                playersForLeftSide,
+                playersForRightSide,
+                playersForToptSide,
+                playersForBottomSide
+            };
+
+            if (playersNeedAddCount != 0)
+            {
+                var i = playersNeedAddCount;
+                playersForLeftSide += i;
+            }
+
+            for (int i = 0; i < playersNeedAddCount; i++)
+            {
+                if (playersNeedAddCount >= 0)
                 {
-                    playerCoordinates
-                        .Add((leftSide[i].panelModel.GridPosition.Row, leftSide[i].panelModel.GridPosition.Column));
-
-                    playerCoordinates
-                        .Add((rightSide[i].panelModel.GridPosition.Row, rightSide[i].panelModel.GridPosition.Column));
-
-                    playerCoordinates
-                        .Add((topSide[i].panelModel.GridPosition.Row, topSide[i].panelModel.GridPosition.Column));
-
-                    playerCoordinates
-                        .Add((bottomSide[i].panelModel.GridPosition.Row, bottomSide[i].panelModel.GridPosition.Column));
+                    allPlayersCountArray[i] += 1;
                 }
             }
-            if (y == 0)
-            {
-                // Дополнительное распределение игроков по сторонам, если есть остаток
-                for (int i = 0; i < y; i++)
-                {
-                    playerCoordinates
-                        .Add((leftSide[x + i].panelModel.GridPosition.Row, leftSide[x + i].panelModel.GridPosition.Column));
 
-                    playerCoordinates
-                        .Add((rightSide[x + i].panelModel.GridPosition.Row, rightSide[x + i].panelModel.GridPosition.Column));
+            //foreach (var side in sideList)
+            //{
+            //    var sideCount = side.Count;
+            //    var blocks = sideCount / _players.Count;
 
-                    playerCoordinates
-                        .Add((topSide[x + i].panelModel.GridPosition.Row, topSide[x + i].panelModel.GridPosition.Column));
+            //    for (int i = 0; i < blocks; i++)
+            //    {
+            //        int index = i * _players.Count + sideList.IndexOf(side);
 
-                    playerCoordinates
-                        .Add((bottomSide[x + i].panelModel.GridPosition.Row, bottomSide[x + i].panelModel.GridPosition.Column));
-                }
-            }
+            //        (int row, int column) midpoint = new (
+
+            //            side.row + (int)Math.Floor((double)(side.row + sideList[(index + 1)
+            //            % _players.Count].row) / 2),
+
+            //            side.column + (int)Math.Floor((double)(side.column + sideList[(index + 1)
+            //            % _players.Count].column) / 2)
+            //        );
+            //        playerCoordinates.Add(midpoint);
+            //    }
+            //}
 
             return playerCoordinates;
         }
