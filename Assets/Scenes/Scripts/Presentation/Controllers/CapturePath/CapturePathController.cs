@@ -1,6 +1,7 @@
 using LegoBattaleRoyal.Presentation.GameView.CapturePath;
 using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
 {
@@ -21,8 +22,11 @@ namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
 
         public void ResetPath()
         {
-            _capturePathView.gameObject.SetActive(false);
-            _capturePathView.Clear();
+            if (_capturePathView != null)
+            {
+                _capturePathView.gameObject.SetActive(false);
+                _capturePathView.Clear();
+            }
         }
 
         public void UnBind()
@@ -33,7 +37,9 @@ namespace LegoBattaleRoyal.Presentation.Controllers.CapturePath
         public void Dispose()
         {
             ResetPath();
-            _capturePathView.gameObject.SetActive(false);
+
+            if (_capturePathView != null)
+                Object.Destroy(_capturePathView.gameObject);
         }
     }
 }
