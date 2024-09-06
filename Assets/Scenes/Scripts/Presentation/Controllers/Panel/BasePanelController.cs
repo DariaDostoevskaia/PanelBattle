@@ -118,12 +118,14 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             //    {
             //        int index = i * _players.Count + sideList.IndexOf(side);
 
-            //        (int row, int column) midpoint = new (
+            //        (int row, int column) midpoint = new(
 
-            //            side.row + (int)Math.Floor((double)(side.row + sideList[(index + 1)
+            //            side[i].panelModel.GridPosition.Row
+            //            + (int)Math.Floor((double)(side[i].panelModel.GridPosition.Row + sideList[(index + 1)
             //            % _players.Count].row) / 2),
 
-            //            side.column + (int)Math.Floor((double)(side.column + sideList[(index + 1)
+            //            side[i].panelModel.GridPosition.Column
+            //            + (int)Math.Floor((double)(side[i].panelModel.GridPosition.Column + sideList[(index + 1)
             //            % _players.Count].column) / 2)
             //        );
             //        playerCoordinates.Add(midpoint);
