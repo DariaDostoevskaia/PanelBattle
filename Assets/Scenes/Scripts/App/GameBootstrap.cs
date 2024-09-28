@@ -79,7 +79,7 @@ namespace LegoBattaleRoyal.App
                 leaderboardController,
                 loadingController);
 
-            _endGameController.OnGameRestarted += OnRestarted;
+            _endGameController.GameRestarted += OnRestarted;
 
             for (int i = 0; i < levelSO.AICharactersSO.Length; i++)
             {
@@ -113,7 +113,7 @@ namespace LegoBattaleRoyal.App
 
             OnDisposed += () =>
             {
-                _endGameController.OnGameRestarted -= OnRestarted;
+                _endGameController.GameRestarted -= OnRestarted;
 
                 foreach (var pair in pairs)
                 {
@@ -186,6 +186,7 @@ namespace LegoBattaleRoyal.App
                 panelController.Dispose();
                 roundController.Dispose();
                 endGameController.Dispose();
+                capturePathController.Dispose();
             };
 
             void OnCharacterLoss()
