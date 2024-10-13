@@ -1,6 +1,7 @@
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using EasyButtons;
+using IngameDebugConsole;
 using LegoBattaleRoyal.App.AppService;
 using LegoBattaleRoyal.ApplicationLayer.Analytics;
 using LegoBattaleRoyal.Extensions;
@@ -37,7 +38,7 @@ namespace LegoBattaleRoyal.App
         [SerializeField] private GameSettingsSO _gameSettingsSO;
         [SerializeField] private SoundController _soundController;
         [SerializeField] private UIContainer _uiContainer;
-#if DEBUG && ! UNITY_EDITOR
+#if DEBUG
         [SerializeField] private DebugLogManager _debugLogManagerPrefab;
         private DebugLogManager _debugLogManager;
 #endif

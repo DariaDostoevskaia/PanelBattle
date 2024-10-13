@@ -1537,6 +1537,8 @@ MonoBehaviour:
   _gameSettingsSO: {fileID: 11400000, guid: 71ae0da16dc27f54c9d14bcc1fb13bc2, type: 2}
   _soundController: {fileID: 1048069292}
   _uiContainer: {fileID: 1642433174}
+  _debugLogManagerPrefab: {fileID: 11452418, guid: 67117722a812a2e46ab8cb8eafbf5f5e,
+    type: 3}
 --- !u!1 &1147830068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,6 +1730,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LoadingPopupScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3525339302462741091, guid: 6aa223983027b95499386bbdd02ef6bc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6428916020110223919, guid: 6aa223983027b95499386bbdd02ef6bc,
         type: 3}
