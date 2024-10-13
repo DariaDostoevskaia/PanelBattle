@@ -16,7 +16,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 {
     public class EndGameController : IDisposable
     {
-        public event Action OnGameRestarted;
+        public event Action GameRestarted;
 
         private readonly CharacterRepository _characterRepository;
         private readonly ILevelRepository _levelRepository;
@@ -53,7 +53,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
         private void RestartGame()
         {
-            OnGameRestarted?.Invoke();
+            GameRestarted?.Invoke();
         }
 
         public void LoseGame()
@@ -166,7 +166,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.EndGame
 
         public void Dispose()
         {
-            OnGameRestarted = null;
+            GameRestarted = null;
         }
     }
 }
