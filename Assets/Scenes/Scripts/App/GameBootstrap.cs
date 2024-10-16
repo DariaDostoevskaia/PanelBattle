@@ -190,6 +190,7 @@ namespace LegoBattaleRoyal.App
                 panelController.Dispose();
                 roundController.Dispose();
                 endGameController.Dispose();
+                capturePathController.Dispose();
             };
 
             void OnCharacterLoss()
