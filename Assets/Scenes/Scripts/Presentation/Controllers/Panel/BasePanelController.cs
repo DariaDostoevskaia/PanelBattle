@@ -87,6 +87,12 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
             var sideList = new List<List<(PanelModel panelModel, PanelView panelView)>>()
             {leftSide, rightSide, topSide, bottomSide };
 
+            if (playersNeedAddCount != 0)
+            {
+                var i = playersNeedAddCount;
+                playersForLeftSide += i;
+            }
+
             var allPlayersCountArray = new int[4]
             {
                 playersForLeftSide,
@@ -94,13 +100,7 @@ namespace LegoBattaleRoyal.Presentation.Controllers.Panel
                 playersForToptSide,
                 playersForBottomSide
             };
-
-            if (playersNeedAddCount != 0)
-            {
-                var i = playersNeedAddCount;
-                playersForLeftSide += i;
-            }
-
+            // исправить - оставить 1 обьект вместо 4
             for (int i = 0; i < playersNeedAddCount; i++)
             {
                 if (playersNeedAddCount >= 0)
