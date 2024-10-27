@@ -155,7 +155,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.DDost.PanelBattle
-    Standalone: com.DDost.Panel-Battle
+    Standalone: com.DDost.PanelBattle
     iPhone: com.Unity-Technologies.com.unity.template.urp-blank
   buildNumber:
     Standalone: 0
